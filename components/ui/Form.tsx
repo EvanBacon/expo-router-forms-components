@@ -551,14 +551,9 @@ function Separator() {
 }
 
 function mergedStyles(style: ViewStyle | TextStyle, props: any) {
-  if (props.style == null) {
-    return style;
-  } else if (Array.isArray(props.style)) {
-    return [style, ...props.style];
-  } else {
-    return [style, props.style];
-  }
+  return mergedStyleProp(style, props.style);
 }
+
 export function mergedStyleProp<TStyle extends ViewStyle | TextStyle>(
   style: TStyle,
   styleProps?: StyleProp<TStyle> | null
