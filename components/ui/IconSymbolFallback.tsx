@@ -19,6 +19,7 @@ const MAPPING = {
   "cursorarrow.rays": "cursor-default-click-outline",
   "person.text.rectangle": "account-box-outline",
   "hand.raised.fill": "hand-front-left",
+  "brain.fill": "brain",
   "0.square": "numeric-0-box-outline",
   "0.square.fill": "numeric-0-box",
   "1.square": "numeric-1-box-outline",

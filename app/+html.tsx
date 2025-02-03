@@ -1,4 +1,3 @@
-import { ScrollViewStyleReset } from "expo-router/html";
 import { type PropsWithChildren } from "react";
 
 // This file is web-only and used to configure the root HTML for every
@@ -20,14 +19,20 @@ export default function Root({ children }: PropsWithChildren) {
           Disable body scrolling on web. This makes ScrollView components work closer to how they do on native.
           However, body scrolling is often nice to have for mobile web. If you want to enable it, remove this line.
         */}
-        <ScrollViewStyleReset />
-        {/* <style
+        {/* <ScrollViewStyleReset /> */}
+        <style
           id="expo-reset"
           dangerouslySetInnerHTML={{
-            __html: `body,html{height:100%}#root{min-height:100%;display:flex}`,
+            __html: `#root{min-height:100%}body,html{height:100%}body{overflow:scroll}#root{display:flex}`,
           }}
-        /> */}
+        />
 
+        <style
+          id="scroll-bar"
+          dangerouslySetInnerHTML={{
+            __html: `* {scrollbar-width:thin;scrollbar-color:var(--apple-systemGray3) transparent}`,
+          }}
+        />
         {/* Add any additional <head> elements that you want globally available on web... */}
       </head>
       <body>{children}</body>

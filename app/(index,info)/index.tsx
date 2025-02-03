@@ -55,6 +55,9 @@ export default function Page() {
   const ref = useAnimatedRef();
   const scroll = useScrollViewOffset(ref);
   const style = useAnimatedStyle(() => {
+    if (process.env.EXPO_OS === "web") {
+      return {};
+    }
     return {
       opacity: interpolate(scroll.value, [0, 30], [0, 1], "clamp"),
       transform: [
