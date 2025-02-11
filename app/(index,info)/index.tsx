@@ -158,6 +158,7 @@ export default function Page() {
 
         <Form.Section title="Features">
           <Form.Link href="/icon">Icon</Form.Link>
+          <Form.Link href="/blur">Blur modal</Form.Link>
         </Form.Section>
 
         <Form.Section>

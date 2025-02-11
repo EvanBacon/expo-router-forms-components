@@ -42,6 +42,23 @@ export default function Layout({ segment }: { segment: string }) {
       {firstScreen}
 
       <Stack.Screen
+        name="blur"
+        options={{
+          presentation: "transparentModal",
+          animation: "fade",
+          title: "Blur",
+          headerRight: () => (
+            <Form.Link headerRight href="/" dismissTo>
+              <IconSymbol
+                name="xmark.circle.fill"
+                color={AC.systemGray}
+                size={28}
+              />
+            </Form.Link>
+          ),
+        }}
+      />
+      <Stack.Screen
         name="icon"
         sheet
         options={{
