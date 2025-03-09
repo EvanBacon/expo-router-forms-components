@@ -19,6 +19,7 @@ const MAPPING = {
   "cursorarrow.rays": "cursor-default-click-outline",
   "person.text.rectangle": "account-box-outline",
   "hand.raised.fill": "hand-front-left",
+  "brain.fill": "brain",
   "0.square": "numeric-0-box-outline",
   "0.square.fill": "numeric-0-box",
   "1.square": "numeric-1-box-outline",
@@ -41,6 +42,7 @@ const MAPPING = {
   "9.square.fill": "numeric-9-box",
   "10.square": "numeric-10-box-outline",
   "10.square.fill": "numeric-10-box",
+  "filemenu.and.selection": "file-cabinet",
 
   // From: https://github.com/roninoss/icons/blob/05c6ec9eda6c1be50f29577946d7cf778df1501c/packages/icons/src/icon-mapping.ts#L1
   "square.and.arrow.up": "tray-arrow-up",

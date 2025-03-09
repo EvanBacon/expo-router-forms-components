@@ -55,6 +55,9 @@ export default function Page() {
   const ref = useAnimatedRef();
   const scroll = useScrollViewOffset(ref);
   const style = useAnimatedStyle(() => {
+    if (process.env.EXPO_OS === "web") {
+      return {};
+    }
     return {
       opacity: interpolate(scroll.value, [0, 30], [0, 1], "clamp"),
       transform: [
@@ -155,6 +158,7 @@ export default function Page() {
 
         <Form.Section title="Features">
           <Form.Link href="/icon">Icon</Form.Link>
+          <Form.Link href="/blur">Blur modal</Form.Link>
         </Form.Section>
 
         <Form.Section>
