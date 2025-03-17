@@ -6,7 +6,9 @@ import { Href, LinkProps, Link as RouterLink, Stack } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
 import React, { forwardRef } from "react";
 import {
+  ActivityIndicator,
   Button,
+  ColorValue,
   OpaqueColorValue,
   Text as RNText,
   ScrollViewProps,
@@ -142,6 +144,23 @@ type SystemImageProps =
       size?: number;
     };
 
+type ActivityIndicatorProps = {
+  /**
+   * The foreground color of the spinner (default is gray).
+   */
+  color?: ColorValue | undefined;
+
+  /**
+   * Size of the indicator.
+   * Small has a height of 20, large has a height of 36.
+   *
+   * enum('small', 'large')
+   */
+  size?: number | "small" | "large" | undefined;
+
+  style?: StyleProp<ViewStyle> | undefined;
+};
+
 /** Text but with iOS default color and sizes. */
 export const Text = React.forwardRef<
   RNText,
@@ -150,6 +169,12 @@ export const Text = React.forwardRef<
     hint?: React.ReactNode;
     /** Adds a prefix SF Symbol image to the left of the text */
     systemImage?: SystemImageProps;
+    /** Changes the right icon. */
+    hintImage?: SystemImageProps;
+    /** Shows activity indicator on the right side of the form item */
+    loading?: boolean;
+    /** Additional props to activity indicator */
+    loaderProps?: ActivityIndicatorProps;
 
     bold?: boolean;
   }
@@ -186,6 +211,11 @@ export const Link = React.forwardRef<
     // TODO: Automatically detect this somehow.
     /** Is the link inside a header. */
     headerRight?: boolean;
+
+    /** Shows activity indicator on the right side of the form item */
+    loading?: boolean;
+    /** Additional props to activity indicator */
+    loaderProps?: ActivityIndicatorProps;
 
     bold?: boolean;
   }
@@ -396,13 +426,42 @@ export function Section({
         );
       })();
 
-      if (hintView || symbolView) {
+      const hintImageProps = (() => {
+        if (!resolvedProps.hintImage) {
+          return null;
+        }
+
+        const size = process.env.EXPO_OS === "ios" ? 14 : 24;
+        if (typeof resolvedProps.hintImage === "string") {
+          return {
+            name: resolvedProps.hintImage,
+            size,
+            color: AppleColors.tertiaryLabel,
+          };
+        } else {
+          return resolvedProps.hintImage;
+        }
+      })();
+
+      if (hintView || symbolView || hintImageProps || resolvedProps.loading) {
         child = (
           <HStack>
             {symbolView}
             {child}
-            {hintView && <View style={{ flex: 1 }} />}
+            {(hintView || hintImageProps || resolvedProps.loading) && (
+              <View style={{ flex: 1 }} />
+            )}
             {hintView}
+            {hintImageProps && (
+              <LinkChevronIcon
+                systemImage={hintImageProps}
+                loading={resolvedProps.loading}
+                loaderProps={resolvedProps.loaderProps}
+              />
+            )}
+            {!hintImageProps && resolvedProps.loading && (
+              <ActivityIndicator {...resolvedProps.loaderProps} />
+            )}
           </HStack>
         );
       }
@@ -495,6 +554,8 @@ export function Section({
                 <LinkChevronIcon
                   href={resolvedProps.href}
                   systemImage={resolvedProps.hintImage}
+                  loading={resolvedProps.loading}
+                  loaderProps={resolvedProps.loaderProps}
                 />
               </View>
             </HStack>
@@ -595,14 +656,22 @@ export function Section({
 function LinkChevronIcon({
   href,
   systemImage,
+  loading,
+  loaderProps,
 }: {
   href?: any;
   systemImage?: SystemImageProps;
+  loading?: boolean;
+  loaderProps?: ActivityIndicatorProps;
 }) {
   const isHrefExternal =
     typeof href === "string" && /^([\w\d_+.-]+:)?\/\//.test(href);
 
   const size = process.env.EXPO_OS === "ios" ? 14 : 24;
+
+  if (loading) {
+    return <ActivityIndicator {...loaderProps} />;
+  }
 
   if (systemImage && typeof systemImage !== "string") {
     return (
