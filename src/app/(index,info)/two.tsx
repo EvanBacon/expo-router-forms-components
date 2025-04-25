@@ -1,12 +1,12 @@
 import { BodyScrollView } from "@/components/ui/BodyScrollView";
 import { StyleSheet, Text, View } from "react-native";
 
-import * as AC from "@bacons/apple-colors";
 import { FadeIn } from "@/components/ui/FadeIn";
-import { useState } from "react";
-import TouchableBounce from "@/components/ui/TouchableBounce";
-import Skeleton from "@/components/ui/Skeleton";
 import { IconSymbol } from "@/components/ui/IconSymbol";
+import Skeleton from "@/components/ui/Skeleton";
+import TouchableBounce from "@/components/ui/TouchableBounce";
+import * as AC from "@bacons/apple-colors";
+import { useState } from "react";
 export default function Page() {
   return (
     <BodyScrollView>

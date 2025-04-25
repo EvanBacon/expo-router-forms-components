@@ -28,7 +28,7 @@ import Animated, {
   useScrollViewOffset,
 } from "react-native-reanimated";
 
-import ExpoSvg from "@/assets/svg/expo.svg";
+import ExpoSvg from "@/svg/expo.svg";
 
 function Switches() {
   const [on, setOn] = React.useState(false);
