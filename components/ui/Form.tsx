@@ -95,7 +95,11 @@ export function FormItem({
   href,
   onPress,
   ref,
-}: Pick<ViewProps, "children"> & { href?: Href<any>; onPress?: () => void }) {
+}: Pick<ViewProps, "children"> & {
+  href?: Href<any>;
+  onPress?: () => void;
+  ref?: React.Ref<View>;
+}) {
   if (href == null) {
     if (onPress == null) {
       return (
@@ -307,7 +311,7 @@ export function Section({
   title?: string | React.ReactNode;
   footer?: string | React.ReactNode;
 }) {
-  const listStyle = React.useContext(ListStyleContext) ?? "auto";
+  const listStyle = React.use(ListStyleContext) ?? "auto";
 
   const childrenWithSeparator = React.Children.map(children, (child, index) => {
     if (!React.isValidElement(child)) {
@@ -506,7 +510,11 @@ export function Section({
       });
     }
     // Ensure child is a FormItem otherwise wrap it in a FormItem
-    if (!wrapsFormItem && !child.props.custom && child.type !== FormItem) {
+    if (
+      !wrapsFormItem &&
+      !(child.props as any).custom &&
+      child.type !== FormItem
+    ) {
       child = <FormItem onPress={originalOnPress}>{child}</FormItem>;
     }
 

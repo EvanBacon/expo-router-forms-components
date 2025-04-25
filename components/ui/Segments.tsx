@@ -1,13 +1,13 @@
 "use client";
 
-import React, {
-  createContext,
-  useContext,
-  useState,
-  ReactNode,
-  Children,
-} from "react";
 import SegmentedControl from "@react-native-segmented-control/segmented-control";
+import React, {
+  Children,
+  createContext,
+  ReactNode,
+  use,
+  useState,
+} from "react";
 import { StyleProp, View, ViewStyle } from "react-native";
 
 /* ----------------------------------------------------------------------------------
@@ -39,9 +39,7 @@ export function Segments({ defaultValue, children }: SegmentsProps) {
   const [value, setValue] = useState(defaultValue);
 
   return (
-    <SegmentsContext.Provider value={{ value, setValue }}>
-      {children}
-    </SegmentsContext.Provider>
+    <SegmentsContext value={{ value, setValue }}>{children}</SegmentsContext>
   );
 }
 
@@ -55,7 +53,7 @@ export function SegmentsList({
   children: ReactNode;
   style?: StyleProp<ViewStyle>;
 }) {
-  const context = useContext(SegmentsContext);
+  const context = use(SegmentsContext);
   if (!context) {
     throw new Error("SegmentsList must be used within a Segments");
   }
@@ -119,7 +117,7 @@ interface SegmentsContentProps {
 }
 
 export function SegmentsContent({ value, children }: SegmentsContentProps) {
-  const context = useContext(SegmentsContext);
+  const context = use(SegmentsContext);
   if (!context) {
     throw new Error("SegmentsContent must be used within a Segments");
   }
