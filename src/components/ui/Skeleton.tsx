@@ -82,12 +82,6 @@ const Skeleton = ({
   const colors = dark ? DARK_COLORS : LIGHT_COLORS;
   const targetRef = React.useRef<View>(null);
 
-  const onLayout = React.useCallback(() => {
-    targetRef.current?.measureInWindow((_x, _y, width, _height) => {
-      setWidth(width);
-    });
-  }, []);
-
   React.useEffect(() => {
     const anim = Animated.loop(
       Animated.sequence([
@@ -107,20 +101,6 @@ const Skeleton = ({
     };
   }, [translateX, delay]);
 
-  const translateXStyle = React.useMemo(
-    () => ({
-      transform: [
-        {
-          translateX: translateX.interpolate({
-            inputRange: [-1, 1],
-            outputRange: [-width * 8, width],
-          }),
-        },
-      ],
-    }),
-    [translateX, width]
-  );
-
   return (
     <View
       ref={targetRef}
@@ -134,13 +114,26 @@ const Skeleton = ({
         },
         style,
       ]}
-      onLayout={onLayout}
+      onLayout={() => {
+        targetRef.current?.measureInWindow((_x, _y, width, _height) => {
+          setWidth(width);
+        });
+      }}
     >
       <Animated.View
-        style={[
-          translateXStyle,
-          { width: "800%", height: "100%", backgroundColor: "transparent" },
-        ]}
+        style={{
+          transform: [
+            {
+              translateX: translateX.interpolate({
+                inputRange: [-1, 1],
+                outputRange: [-width * 8, width],
+              }),
+            },
+          ],
+          width: "800%",
+          height: "100%",
+          backgroundColor: "transparent",
+        }}
       >
         <Animated.View
           style={[

@@ -18,6 +18,8 @@
     "@svgr/core": "^8.1.0",
     "@svgr/plugin-jsx": "^8.1.0",
     "@svgr/plugin-svgo": "^8.1.0",
+    "babel-plugin-react-compiler": "^19.0.0-beta-af1b7da-20250417",
+    "eslint-plugin-react-compiler": "^19.1.0-rc.1",
     "expo": "^53.0.0-canary-20250408-7f0ab53",
     "expo-blur": "14.1.1-canary-20250408-7f0ab53",
     "expo-constants": "17.1.1-canary-20250408-7f0ab53",
