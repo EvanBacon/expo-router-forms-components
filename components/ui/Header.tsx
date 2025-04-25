@@ -7,24 +7,21 @@ import {
 import React from "react";
 import { Platform, StyleSheet } from "react-native";
 
-export const HeaderButton = React.forwardRef(function HeaderButton(
-  {
-    disabled,
-    onPress,
-    pressColor,
-    pressOpacity,
-    accessibilityLabel,
-    testID,
-    style,
-    href,
-    children,
-  }: HeaderButtonProps,
-  ref: React.Ref<any>
-) {
+export function HeaderButton({
+  disabled,
+  onPress,
+  pressColor,
+  pressOpacity,
+  accessibilityLabel,
+  testID,
+  style,
+  children,
+  ...props
+}: HeaderButtonProps) {
   return (
     <PlatformPressable
+      {...props}
       disabled={disabled}
-      href={href}
       accessibilityLabel={accessibilityLabel}
       testID={testID}
       onPress={onPress}
@@ -40,7 +37,7 @@ export const HeaderButton = React.forwardRef(function HeaderButton(
       {children}
     </PlatformPressable>
   );
-});
+}
 
 const androidRipple = {
   borderless: true,

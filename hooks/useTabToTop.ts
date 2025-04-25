@@ -24,7 +24,7 @@ type ScrollableWrapper =
 function getScrollableNode(
   ref: React.RefObject<ScrollableWrapper> | React.RefObject<WebView>
 ) {
-  if (ref.current == null) {
+  if (ref?.current == null) {
     return null;
   }
 

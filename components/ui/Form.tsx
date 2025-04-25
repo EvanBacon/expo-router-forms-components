@@ -4,7 +4,7 @@ import { IconSymbol, IconSymbolName } from "@/components/ui/IconSymbol";
 import * as AppleColors from "@bacons/apple-colors";
 import { Href, LinkProps, Link as RouterLink, Stack } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
-import React, { forwardRef } from "react";
+import React from "react";
 import {
   Button,
   OpaqueColorValue,
@@ -26,22 +26,21 @@ type ListStyle = "grouped" | "auto";
 
 const ListStyleContext = React.createContext<ListStyle>("auto");
 
-export const List = forwardRef<
-  any,
-  ScrollViewProps & {
-    /** Set the Expo Router `<Stack />` title when mounted. */
-    navigationTitle?: string;
-    listStyle?: ListStyle;
-  }
->(({ contentContainerStyle, ...props }, ref) => {
+export function List({
+  contentContainerStyle,
+  ...props
+}: ScrollViewProps & {
+  /** Set the Expo Router `<Stack />` title when mounted. */
+  navigationTitle?: string;
+  listStyle?: ListStyle;
+}) {
   return (
     <>
       {props.navigationTitle && (
         <Stack.Screen options={{ title: props.navigationTitle }} />
       )}
-      <ListStyleContext.Provider value={props.listStyle ?? "auto"}>
+      <ListStyleContext value={props.listStyle ?? "auto"}>
         <BodyScrollView
-          ref={ref}
           contentContainerStyle={mergedStyleProp(
             {
               paddingVertical: 16,
@@ -56,10 +55,10 @@ export const List = forwardRef<
           }}
           {...props}
         />
-      </ListStyleContext.Provider>
+      </ListStyleContext>
     </>
   );
-});
+}
 
 if (__DEV__) List.displayName = "FormList";
 
@@ -91,10 +90,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export const FormItem = forwardRef<
-  typeof TouchableHighlight,
-  Pick<ViewProps, "children"> & { href?: Href<any>; onPress?: () => void }
->(function FormItem({ children, href, onPress }, ref) {
+export function FormItem({
+  children,
+  href,
+  onPress,
+  ref,
+}: Pick<ViewProps, "children"> & { href?: Href<any>; onPress?: () => void }) {
   if (href == null) {
     if (onPress == null) {
       return (
@@ -125,7 +126,7 @@ export const FormItem = forwardRef<
       </TouchableHighlight>
     </Link>
   );
-});
+}
 
 const Colors = {
   systemGray4: AppleColors.systemGray4, // "rgba(209, 209, 214, 1)",
@@ -143,17 +144,17 @@ type SystemImageProps =
     };
 
 /** Text but with iOS default color and sizes. */
-export const Text = React.forwardRef<
-  RNText,
-  TextProps & {
-    /** Value displayed on the right side of the form item. */
-    hint?: React.ReactNode;
-    /** Adds a prefix SF Symbol image to the left of the text */
-    systemImage?: SystemImageProps;
+export function Text({
+  bold,
+  ...props
+}: TextProps & {
+  /** Value displayed on the right side of the form item. */
+  hint?: React.ReactNode;
+  /** Adds a prefix SF Symbol image to the left of the text */
+  systemImage?: SystemImageProps;
 
-    bold?: boolean;
-  }
->(({ bold, ...props }, ref) => {
+  bold?: boolean;
+}) {
   const font: TextStyle = {
     ...FormFont.default,
     flexShrink: 0,
@@ -164,32 +165,34 @@ export const Text = React.forwardRef<
     <RNText
       dynamicTypeRamp="body"
       {...props}
-      ref={ref}
       style={mergedStyleProp(font, props.style)}
     />
   );
-});
+}
 
 if (__DEV__) Text.displayName = "FormText";
 
-export const Link = React.forwardRef<
-  typeof RouterLink,
-  LinkProps & {
-    /** Value displayed on the right side of the form item. */
-    hint?: React.ReactNode;
-    /** Adds a prefix SF Symbol image to the left of the text. */
-    systemImage?: SystemImageProps;
+export function Link({
+  bold,
+  children,
+  headerRight,
+  hintImage,
+  ...props
+}: LinkProps & {
+  /** Value displayed on the right side of the form item. */
+  hint?: React.ReactNode;
+  /** Adds a prefix SF Symbol image to the left of the text. */
+  systemImage?: SystemImageProps;
 
-    /** Changes the right icon. */
-    hintImage?: SystemImageProps;
+  /** Changes the right icon. */
+  hintImage?: SystemImageProps;
 
-    // TODO: Automatically detect this somehow.
-    /** Is the link inside a header. */
-    headerRight?: boolean;
+  // TODO: Automatically detect this somehow.
+  /** Is the link inside a header. */
+  headerRight?: boolean;
 
-    bold?: boolean;
-  }
->(({ bold, children, headerRight, hintImage, ...props }, ref) => {
+  bold?: boolean;
+}) {
   const font: TextStyle = {
     ...FormFont.default,
     fontWeight: bold ? "600" : "normal",
@@ -243,7 +246,6 @@ export const Link = React.forwardRef<
       asChild={
         props.asChild ?? (process.env.EXPO_OS === "web" ? false : headerRight)
       }
-      ref={ref}
       style={mergedStyleProp<TextStyle>(font, props.style)}
       onPress={
         process.env.EXPO_OS === "web"
@@ -269,7 +271,7 @@ export const Link = React.forwardRef<
       children={resolvedChildren}
     />
   );
-});
+}
 
 if (__DEV__) Link.displayName = "FormLink";
 
