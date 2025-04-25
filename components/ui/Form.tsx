@@ -485,6 +485,7 @@ export function Section({
         dynamicTypeRamp: "body",
         numberOfLines: 1,
         adjustsFontSizeToFit: true,
+        // TODO: This causes issues with ref in React 19.
         asChild: process.env.EXPO_OS !== "web",
         children: (
           <FormItem>
