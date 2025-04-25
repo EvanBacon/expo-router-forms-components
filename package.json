@@ -23,6 +23,7 @@
     "expo-constants": "17.1.1-canary-20250408-7f0ab53",
     "expo-font": "13.1.1-canary-20250408-7f0ab53",
     "expo-haptics": "14.1.1-canary-20250408-7f0ab53",
+    "expo-image": "~2.1.4",
     "expo-linking": "7.1.1-canary-20250408-7f0ab53",
     "expo-router": "5.0.1-preview.0-canary-20250408-7f0ab53",
     "expo-splash-screen": "0.30.1-canary-20250408-7f0ab53",
@@ -46,7 +47,7 @@
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@types/react": "^19",
-    "eslint": "^8.57.0",
+    "eslint": "^9.0.0",
     "eslint-config-expo": "9.0.1-canary-20250408-7f0ab53",
     "typescript": "^5.3.3"
   },
