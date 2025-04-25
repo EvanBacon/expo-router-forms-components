@@ -5,7 +5,6 @@
     "source.sortMembers": "explicit"
   },
   "typescript.preferences.autoImportSpecifierExcludeRegexes": [
-    "react-native-reanimated/lib/typescript/Animated",
     "^react-native-reanimated/lib/*",
     "^expo-router/build/*"
   ]
