@@ -1,10 +1,13 @@
 import ThemeProvider from "@/components/ui/ThemeProvider";
 
+import { AsyncFont } from "@/components/data/async-font";
 import Tabs from "@/components/ui/Tabs";
 import { SplashScreen } from "expo-router";
 import { Suspense, useEffect } from "react";
 
-// SplashScreen.preventAutoHideAsync();
+import { SourceCodePro_400Regular } from "@expo-google-fonts/source-code-pro";
+
+SplashScreen.preventAutoHideAsync();
 
 function SplashFallback() {
   useEffect(
@@ -17,9 +20,11 @@ function SplashFallback() {
 }
 
 export default function Layout() {
+  // Keep the splash screen visible while we fetch resources
   return (
     <Suspense fallback={<SplashFallback />}>
-      {/* <AsyncFont src={SourceCodePro_400Regular} fontFamily="Source Code Pro" /> */}
+      {/* Load fonts in suspense */}
+      <AsyncFont src={SourceCodePro_400Regular} fontFamily="Source Code Pro" />
       <ThemeProvider>
         <Tabs>
           <Tabs.Screen name="(index)" systemImage="house.fill" title="Home" />

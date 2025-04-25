@@ -352,7 +352,6 @@ The default `listStyle` is `"auto"` but you can access the old-style with `"grou
 
 ![Simulator Screenshot - iPhone 16 - 2025-02-02 at 22 12 25](https://github.com/user-attachments/assets/30ce1836-117c-4989-ac59-f4359766ba8b)
 
-
 ## Colors
 
 Be sure to use `@bacons/apple-colors` for high-quality P3 colors.
@@ -457,3 +456,18 @@ Other info:
 
 - The `systemImage` can be the name of an SF Symbol or a React node. This is useful for custom/animated icons.
 - `actions` can be provided for a list of buttons to render under the content, e.g. `<ContentUnavailable internet actions={<Button title="Refresh" />} />`
+
+## Font Loading
+
+This project uses a custom suspensy font loading system to show a fallback screen while the fonts are loading. Fonts are only async in development when connected to a server, in production they are embedded in the app.
+
+```tsx
+<Suspense fallback={<SplashFallback />}>
+  <AsyncFont src={SourceCodePro_400Regular} fontFamily="Source Code Pro" />
+  <Stack />
+</Suspense>
+```
+
+## SVG Loading
+
+The `metro.config.js` is configured to load SVGs as React components. This ensures they are optimized for web / native / React Server Components. I'd prefer if Metro had support for import qualifiers like `import SVGImage from "./image.svg?jsx"`, so we could still use SVGs as assets for `expo-image`, but this is a good workaround for now.

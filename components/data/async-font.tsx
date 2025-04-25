@@ -7,12 +7,12 @@ function wrapPromise<T>(promise: Promise<T>) {
   let result: T | unknown;
   let suspender = promise.then(
     (r: T) => {
-      console.log("font loaded", r);
+      //   console.log("font loaded", r);
       status = "success";
       result = r;
     },
     (e: unknown) => {
-      console.log("font error", e);
+      //   console.log("font error", e);
       status = "error";
       result = e;
     }
@@ -20,7 +20,7 @@ function wrapPromise<T>(promise: Promise<T>) {
   return {
     read(): T {
       if (status === "pending") {
-        console.log("font pending");
+        // console.log("font pending");
         throw suspender;
       } else if (status === "error") {
         throw result;

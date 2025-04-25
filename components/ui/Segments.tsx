@@ -8,7 +8,7 @@ import React, {
   use,
   useState,
 } from "react";
-import { StyleProp, View, ViewStyle } from "react-native";
+import { StyleProp, ViewStyle } from "react-native";
 
 /* ----------------------------------------------------------------------------------
  * Context
@@ -42,8 +42,6 @@ export function Segments({ defaultValue, children }: SegmentsProps) {
     <SegmentsContext value={{ value, setValue }}>{children}</SegmentsContext>
   );
 }
-
-Segments.displayName = "Segments";
 
 export function SegmentsList({
   children,
@@ -84,7 +82,6 @@ export function SegmentsList({
     />
   );
 }
-SegmentsList.displayName = "SegmentsList";
 
 /* ----------------------------------------------------------------------------------
  * SegmentsTrigger
@@ -97,14 +94,13 @@ interface SegmentsTriggerProps {
   children: ReactNode;
 }
 
-export function SegmentsTrigger({ value, children }: SegmentsTriggerProps) {
+export function SegmentsTrigger(_: SegmentsTriggerProps) {
   // We don't actually render anything here. This component serves as a "marker"
   // for the SegmentsList to know about possible segments.
   return null;
 }
 
 SegmentsTrigger.displayName = "SegmentsTrigger";
-
 /* ----------------------------------------------------------------------------------
  * SegmentsContent
  * ----------------------------------------------------------------------------------*/
@@ -128,10 +124,10 @@ export function SegmentsContent({ value, children }: SegmentsContentProps) {
   }
 
   if (process.env.EXPO_OS === "web") {
-    return <div>{children}</div>;
+    return <>{children}</>;
   }
 
-  return <View>{children}</View>;
+  return <>{children}</>;
 }
 
 Segments.List = SegmentsList;

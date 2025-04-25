@@ -15,6 +15,9 @@
     "@expo/vector-icons": "^14.1.0",
     "@react-native-masked-view/masked-view": "0.3.2",
     "@react-native-segmented-control/segmented-control": "2.5.7",
+    "@svgr/core": "^8.1.0",
+    "@svgr/plugin-jsx": "^8.1.0",
+    "@svgr/plugin-svgo": "^8.1.0",
     "expo": "^53.0.0-canary-20250408-7f0ab53",
     "expo-blur": "14.1.1-canary-20250408-7f0ab53",
     "expo-constants": "17.1.1-canary-20250408-7f0ab53",
@@ -35,6 +38,7 @@
     "react-native-reanimated": "~3.17.3",
     "react-native-safe-area-context": "5.3.0",
     "react-native-screens": "~4.10.0",
+    "react-native-svg": "15.11.2",
     "react-native-web": "~0.20.0",
     "react-native-webview": "13.13.5",
     "vaul": "^1.1.2"

@@ -28,6 +28,8 @@ import Animated, {
   useScrollViewOffset,
 } from "react-native-reanimated";
 
+import ExpoSvg from "@/assets/svg/expo.svg";
+
 function Switches() {
   const [on, setOn] = React.useState(false);
 
@@ -154,7 +156,7 @@ export default function Page() {
         </Form.Section>
 
         <Form.Section title="Features">
-          <Form.Link href="/icon">Icon</Form.Link>
+          <Form.Link href="/icon">Change App Icon</Form.Link>
         </Form.Section>
 
         <Form.Section>
@@ -163,6 +165,31 @@ export default function Page() {
           </Form.HStack>
         </Form.Section>
 
+        <Form.Section>
+          <Form.Text
+            systemImage="terminal"
+            style={{
+              letterSpacing: 0.5,
+            }}
+          >
+            <Text style={{ color: AC.secondaryLabel }}>{`~ / `}</Text>
+            npx testflight
+          </Form.Text>
+
+          <Form.Link
+            href="https://expo.dev/eas"
+            target="_blank"
+            systemImage={
+              <ExpoSvg
+                fill={AC.systemBlue}
+                style={{ width: 18, height: 18, marginRight: 8 }}
+              />
+            }
+            style={{ color: AC.systemBlue, fontWeight: "400" }}
+          >
+            Deploy on Expo
+          </Form.Link>
+        </Form.Section>
         <Form.Section title="Hints">
           <Form.Text hint="Long hint with extra content that should float below the content">
             Normal
@@ -469,18 +496,12 @@ function SegmentsTest() {
         </SegmentsList>
 
         <SegmentsContent value="account">
-          <Form.List style={{ backgroundColor: "transparent" }}>
-            <Form.Section>
-              <Text>Account Section</Text>
-            </Form.Section>
-          </Form.List>
+          <Form.Text style={{ paddingVertical: 12 }}>Account Section</Form.Text>
         </SegmentsContent>
         <SegmentsContent value="password">
-          <Form.List style={{ backgroundColor: "transparent" }}>
-            <Form.Section>
-              <Text>Password Section</Text>
-            </Form.Section>
-          </Form.List>
+          <Form.Text style={{ paddingVertical: 12 }}>
+            Password Section
+          </Form.Text>
         </SegmentsContent>
       </Segments>
     </View>

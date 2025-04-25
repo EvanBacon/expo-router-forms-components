@@ -186,10 +186,10 @@ export function Link({
   /** Value displayed on the right side of the form item. */
   hint?: React.ReactNode;
   /** Adds a prefix SF Symbol image to the left of the text. */
-  systemImage?: SystemImageProps;
+  systemImage?: SystemImageProps | React.ReactNode;
 
   /** Changes the right icon. */
-  hintImage?: SystemImageProps;
+  hintImage?: SystemImageProps | React.ReactNode;
 
   // TODO: Automatically detect this somehow.
   /** Is the link inside a header. */
@@ -383,6 +383,13 @@ export function Section({
           return null;
         }
 
+        if (
+          typeof resolvedProps.systemImage !== "string" &&
+          React.isValidElement(resolvedProps.systemImage)
+        ) {
+          return resolvedProps.systemImage;
+        }
+
         const symbolProps =
           typeof resolvedProps.systemImage === "string"
             ? { name: resolvedProps.systemImage }
@@ -457,6 +464,14 @@ export function Section({
         if (!resolvedProps.systemImage) {
           return null;
         }
+
+        if (
+          typeof resolvedProps.systemImage !== "string" &&
+          React.isValidElement(resolvedProps.systemImage)
+        ) {
+          return resolvedProps.systemImage;
+        }
+
         const symbolProps =
           typeof resolvedProps.systemImage === "string"
             ? { name: resolvedProps.systemImage }
@@ -608,21 +623,26 @@ function LinkChevronIcon({
   systemImage,
 }: {
   href?: any;
-  systemImage?: SystemImageProps;
+  systemImage?: SystemImageProps | React.ReactNode;
 }) {
   const isHrefExternal =
     typeof href === "string" && /^([\w\d_+.-]+:)?\/\//.test(href);
 
   const size = process.env.EXPO_OS === "ios" ? 14 : 24;
 
-  if (systemImage && typeof systemImage !== "string") {
-    return (
-      <IconSymbol
-        name={systemImage.name}
-        size={systemImage.size ?? size}
-        color={systemImage.color ?? AppleColors.tertiaryLabel}
-      />
-    );
+  if (systemImage) {
+    if (typeof systemImage !== "string") {
+      if (React.isValidElement(systemImage)) {
+        return systemImage;
+      }
+      return (
+        <IconSymbol
+          name={systemImage.name}
+          size={systemImage.size ?? size}
+          color={systemImage.color ?? AppleColors.tertiaryLabel}
+        />
+      );
+    }
   }
 
   const resolvedName =
