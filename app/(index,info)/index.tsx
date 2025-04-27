@@ -63,6 +63,8 @@ export default function Page() {
     };
   });
 
+  const [loading, setLoading] = React.useState(false);
+
   return (
     <View style={{ flex: 1 }}>
       <Stack.Screen
@@ -178,6 +180,27 @@ export default function Page() {
               Long list of text that should wrap around when it gets too long
             </Form.Text>
           </Form.HStack>
+
+          <Form.Text
+            onPress={() => {
+              if (loading) return;
+              setLoading(true);
+              setTimeout(() => {
+                setLoading(false);
+              }, 2000);
+            }}
+            loading={loading}
+            loaderProps={{ color: AC.systemBlue }}
+          >
+            Load with click
+          </Form.Text>
+          <Form.Text
+            hintImage={{ name: "snow", size: 20 }}
+            hint="Snow"
+            loading={loading}
+          >
+            Hint image
+          </Form.Text>
         </Form.Section>
 
         <Switches />
