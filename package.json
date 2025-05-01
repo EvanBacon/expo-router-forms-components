@@ -51,6 +51,7 @@
     "@types/react": "^19",
     "eslint": "^9.0.0",
     "eslint-config-expo": "9.0.1-canary-20250408-7f0ab53",
+    "expo-atlas": "^0.4.0",
     "typescript": "^5.3.3"
   },
   "private": true

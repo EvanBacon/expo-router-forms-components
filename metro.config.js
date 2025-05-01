@@ -13,4 +13,10 @@ config.transformer.babelTransformerPath = require.resolve(
   "./metro.transformer.js"
 );
 
+config.transformer.getTransformOptions = async () => ({
+  transform: {
+    experimentalImportSupport: true,
+  },
+});
+
 module.exports = config;

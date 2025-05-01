@@ -1,6 +1,7 @@
 "use client";
 
 import SegmentedControl from "@react-native-segmented-control/segmented-control";
+
 import React, {
   Children,
   createContext,
