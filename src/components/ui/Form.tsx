@@ -6,10 +6,13 @@ import { Href, LinkProps, Link as RouterLink, Stack } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
 import React from "react";
 import {
+  ActivityIndicator,
   Button,
+  GestureResponderEvent,
   OpaqueColorValue,
   Text as RNText,
   ScrollViewProps,
+  Share,
   StyleProp,
   StyleSheet,
   TextProps,
@@ -21,6 +24,7 @@ import {
 } from "react-native";
 import { BodyScrollView } from "./BodyScrollView";
 import { HeaderButton } from "./Header";
+import Animated from "react-native-reanimated";
 
 type ListStyle = "grouped" | "auto";
 
@@ -49,7 +53,8 @@ export function List({
             contentContainerStyle
           )}
           style={{
-            maxWidth: 650,
+            maxWidth: 768,
+            width: process.env.EXPO_OS === "web" ? "100%" : undefined,
             marginHorizontal:
               process.env.EXPO_OS === "web" ? "auto" : undefined,
           }}
@@ -94,16 +99,20 @@ export function FormItem({
   children,
   href,
   onPress,
+  onLongPress,
+  style,
   ref,
 }: Pick<ViewProps, "children"> & {
   href?: Href<any>;
-  onPress?: () => void;
+  onPress?: (event: any) => void;
+  onLongPress?: (event: GestureResponderEvent) => void;
+  style?: ViewStyle;
   ref?: React.Ref<View>;
 }) {
   if (href == null) {
-    if (onPress == null) {
+    if (onPress == null && onLongPress == null) {
       return (
-        <View style={styles.itemPadding}>
+        <View style={[styles.itemPadding, style]}>
           <HStack style={{ minHeight: minItemHeight }}>{children}</HStack>
         </View>
       );
@@ -113,6 +122,7 @@ export function FormItem({
         ref={ref}
         underlayColor={AppleColors.systemGray4}
         onPress={onPress}
+        onLongPress={onLongPress}
       >
         <View style={styles.itemPadding}>
           <HStack style={{ minHeight: minItemHeight }}>{children}</HStack>
@@ -122,7 +132,7 @@ export function FormItem({
   }
 
   return (
-    <Link asChild href={href} onPress={onPress}>
+    <Link asChild href={href} onPress={onPress} onLongPress={onLongPress}>
       <TouchableHighlight ref={ref} underlayColor={AppleColors.systemGray4}>
         <View style={styles.itemPadding}>
           <HStack style={{ minHeight: minItemHeight }}>{children}</HStack>
@@ -267,6 +277,17 @@ export function Link({
                   presentationStyle:
                     WebBrowser.WebBrowserPresentationStyle.AUTOMATIC,
                 });
+              } else if (
+                props.target === "share" &&
+                // Ensure the resolved href is an external URL.
+                /^([\w\d_+.-]+:)?\/\//.test(RouterLink.resolveHref(props.href))
+              ) {
+                // Prevent the default behavior of linking to the default browser on native.
+                e.preventDefault();
+                // Open the link in an in-app browser.
+                Share.share({
+                  url: props.href as string,
+                });
               } else {
                 props.onPress?.(e);
               }
@@ -313,17 +334,39 @@ export function Section({
 }) {
   const listStyle = React.use(ListStyleContext) ?? "auto";
 
-  const childrenWithSeparator = React.Children.map(children, (child, index) => {
+  const allChildren: React.ReactNode[] = [];
+
+  React.Children.map(children, (child, index) => {
     if (!React.isValidElement(child)) {
       return child;
     }
-    const isLastChild = index === React.Children.count(children) - 1;
+
+    // If the child is a fragment, unwrap it and add the children to the list
+    if (child.type === React.Fragment && child.props.key == null) {
+      React.Children.forEach(child.props.children, (child) => {
+        if (!React.isValidElement(child)) {
+          return child;
+        }
+        allChildren.push(child);
+      });
+      return;
+    }
+
+    allChildren.push(child);
+  });
+
+  const childrenWithSeparator = allChildren.map((child, index) => {
+    if (!React.isValidElement(child)) {
+      return child;
+    }
+    const isLastChild = index === allChildren.length - 1;
 
     const resolvedProps = {
       ...child.props,
     };
     // Extract onPress from child
     const originalOnPress = resolvedProps.onPress;
+    const originalOnLongPress = resolvedProps.onLongPress;
     let wrapsFormItem = false;
     if (child.type === Button) {
       const { title, color } = resolvedProps;
@@ -347,6 +390,7 @@ export function Section({
         adjustsFontSizeToFit: true,
         ...resolvedProps,
         onPress: undefined,
+        onLongPress: undefined,
         style: mergedStyleProp(FormFont.default, resolvedProps.style),
       });
 
@@ -398,8 +442,9 @@ export function Section({
         return (
           <IconSymbol
             name={symbolProps.name}
-            size={symbolProps.size ?? 28}
-            style={{ marginRight: 16 }}
+            size={symbolProps.size ?? 20}
+            style={[{ marginRight: 8 }, symbolProps.style]}
+            weight={symbolProps.weight}
             color={
               symbolProps.color ??
               extractStyle(resolvedProps.style, "color") ??
@@ -480,8 +525,9 @@ export function Section({
         return (
           <IconSymbol
             name={symbolProps.name}
-            size={symbolProps.size ?? 28}
-            style={{ marginRight: 16 }}
+            size={symbolProps.size ?? 20}
+            style={[{ marginRight: 8 }, symbolProps.style]}
+            weight={symbolProps.weight}
             color={
               symbolProps.color ??
               extractStyle(resolvedProps.style, "color") ??
@@ -524,13 +570,14 @@ export function Section({
         ),
       });
     }
+
     // Ensure child is a FormItem otherwise wrap it in a FormItem
-    if (
-      !wrapsFormItem &&
-      !(child.props as any).custom &&
-      child.type !== FormItem
-    ) {
-      child = <FormItem onPress={originalOnPress}>{child}</FormItem>;
+    if (!wrapsFormItem && !child.props.custom && child.type !== FormItem) {
+      child = (
+        <FormItem onPress={originalOnPress} onLongPress={originalOnLongPress}>
+          {child}
+        </FormItem>
+      );
     }
 
     return (
@@ -542,7 +589,7 @@ export function Section({
   });
 
   const contents = (
-    <View
+    <Animated.View
       {...props}
       style={[
         listStyle === "grouped"
@@ -560,8 +607,9 @@ export function Section({
             },
         props.style,
       ]}
-      children={childrenWithSeparator}
-    />
+    >
+      {childrenWithSeparator}
+    </Animated.View>
   );
 
   const padding = listStyle === "grouped" ? 0 : 16;
@@ -607,7 +655,7 @@ export function Section({
           style={{
             color: AppleColors.secondaryLabel,
             paddingHorizontal: 20,
-            paddingVertical: 8,
+            paddingTop: 8,
             fontSize: 14,
           }}
         >
