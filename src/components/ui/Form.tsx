@@ -6,7 +6,6 @@ import { Href, LinkProps, Link as RouterLink, Stack } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
 import React from "react";
 import {
-  ActivityIndicator,
   Button,
   GestureResponderEvent,
   OpaqueColorValue,
@@ -25,6 +24,7 @@ import {
 import { BodyScrollView } from "./BodyScrollView";
 import { HeaderButton } from "./Header";
 import Animated from "react-native-reanimated";
+import { SymbolWeight } from "expo-symbols";
 
 type ListStyle = "grouped" | "auto";
 
@@ -149,13 +149,15 @@ const Colors = {
   separator: AppleColors.separator, // "rgba(61.2, 61.2, 66, 0.29)",
 };
 
-type SystemImageProps =
-  | IconSymbolName
-  | {
-      name: IconSymbolName;
-      color?: OpaqueColorValue;
-      size?: number;
-    };
+type SystemImageCustomProps = {
+  name: IconSymbolName;
+  color?: OpaqueColorValue;
+  size?: number;
+  weight?: SymbolWeight;
+  style?: StyleProp<TextStyle>;
+};
+
+type SystemImageProps = IconSymbolName | SystemImageCustomProps;
 
 /** Text but with iOS default color and sizes. */
 export function Text({
@@ -342,8 +344,8 @@ export function Section({
     }
 
     // If the child is a fragment, unwrap it and add the children to the list
-    if (child.type === React.Fragment && child.props.key == null) {
-      React.Children.forEach(child.props.children, (child) => {
+    if (child.type === React.Fragment && child.props?.key == null) {
+      React.Children.forEach(child.props?.children, (child) => {
         if (!React.isValidElement(child)) {
           return child;
         }
@@ -422,42 +424,13 @@ export function Section({
         });
       })();
 
-      const symbolView = (() => {
-        if (!resolvedProps.systemImage) {
-          return null;
-        }
-
-        if (
-          typeof resolvedProps.systemImage !== "string" &&
-          React.isValidElement(resolvedProps.systemImage)
-        ) {
-          return resolvedProps.systemImage;
-        }
-
-        const symbolProps =
-          typeof resolvedProps.systemImage === "string"
-            ? { name: resolvedProps.systemImage }
-            : resolvedProps.systemImage;
-
-        return (
-          <IconSymbol
-            name={symbolProps.name}
-            size={symbolProps.size ?? 20}
-            style={[{ marginRight: 8 }, symbolProps.style]}
-            weight={symbolProps.weight}
-            color={
-              symbolProps.color ??
-              extractStyle(resolvedProps.style, "color") ??
-              AppleColors.label
-            }
-          />
-        );
-      })();
-
-      if (hintView || symbolView) {
+      if (hintView || resolvedProps.systemImage) {
         child = (
           <HStack>
-            {symbolView}
+            <SymbolView
+              systemImage={resolvedProps.systemImage}
+              style={resolvedProps.style}
+            />
             {child}
             {hintView && <View style={{ flex: 1 }} />}
             {hintView}
@@ -505,38 +478,6 @@ export function Section({
         });
       })();
 
-      const symbolView = (() => {
-        if (!resolvedProps.systemImage) {
-          return null;
-        }
-
-        if (
-          typeof resolvedProps.systemImage !== "string" &&
-          React.isValidElement(resolvedProps.systemImage)
-        ) {
-          return resolvedProps.systemImage;
-        }
-
-        const symbolProps =
-          typeof resolvedProps.systemImage === "string"
-            ? { name: resolvedProps.systemImage }
-            : resolvedProps.systemImage;
-
-        return (
-          <IconSymbol
-            name={symbolProps.name}
-            size={symbolProps.size ?? 20}
-            style={[{ marginRight: 8 }, symbolProps.style]}
-            weight={symbolProps.weight}
-            color={
-              symbolProps.color ??
-              extractStyle(resolvedProps.style, "color") ??
-              AppleColors.label
-            }
-          />
-        );
-      })();
-
       child = React.cloneElement(child, {
         style: [
           FormFont.default,
@@ -555,7 +496,10 @@ export function Section({
         children: (
           <FormItem>
             <HStack>
-              {symbolView}
+              <SymbolView
+                systemImage={resolvedProps.systemImage}
+                style={resolvedProps.style}
+              />
               {wrappedTextChildren}
               <View style={{ flex: 1 }} />
               {hintView}
@@ -663,6 +607,39 @@ export function Section({
         </RNText>
       )}
     </View>
+  );
+}
+
+function SymbolView({
+  systemImage,
+  style,
+}: {
+  systemImage?: SystemImageProps | React.ReactNode;
+  style?: StyleProp<TextStyle>;
+}) {
+  if (!systemImage) {
+    return null;
+  }
+
+  if (typeof systemImage !== "string" && React.isValidElement(systemImage)) {
+    return systemImage;
+  }
+
+  const symbolProps: SystemImageCustomProps =
+    typeof systemImage === "object" && "name" in systemImage
+      ? systemImage
+      : { name: systemImage as unknown as string };
+
+  return (
+    <IconSymbol
+      name={symbolProps.name}
+      size={symbolProps.size ?? 20}
+      style={[{ marginRight: 8 }, symbolProps.style]}
+      weight={symbolProps.weight}
+      color={
+        symbolProps.color ?? extractStyle(style, "color") ?? AppleColors.label
+      }
+    />
   );
 }
 

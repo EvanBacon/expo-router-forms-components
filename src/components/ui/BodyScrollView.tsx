@@ -12,7 +12,7 @@ export function BodyScrollView(
 ) {
   const paddingBottom = useBottomTabOverflow();
 
-  const statusBarInset = useSafeAreaInsets().top; // inset of the status bar
+  const { top: statusBarInset, bottom } = useSafeAreaInsets(); // inset of the status bar
 
   const largeHeaderInset = statusBarInset + 92; // inset to use for a large header since it's frame is equal to 96 + the frame of status bar
 
@@ -24,7 +24,9 @@ export function BodyScrollView(
       automaticallyAdjustsScrollIndicatorInsets
       contentInsetAdjustmentBehavior="automatic"
       contentInset={{ bottom: paddingBottom }}
-      scrollIndicatorInsets={{ bottom: paddingBottom }}
+      scrollIndicatorInsets={{
+        bottom: paddingBottom - (process.env.EXPO_OS === "ios" ? bottom : 0),
+      }}
       {...props}
       style={[{ backgroundColor: AC.systemGroupedBackground }, props.style]}
     />

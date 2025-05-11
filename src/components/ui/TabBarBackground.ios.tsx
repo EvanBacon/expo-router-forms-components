@@ -21,6 +21,6 @@ export function useBottomTabOverflow() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     tabHeight = useBottomTabBarHeight();
   } catch {}
-  const { bottom } = useSafeAreaInsets();
-  return tabHeight - bottom;
+
+  return tabHeight;
 }
