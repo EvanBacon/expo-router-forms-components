@@ -1,7 +1,8 @@
 import * as Form from "@/components/ui/Form";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import * as AC from "@bacons/apple-colors";
-import { Image, View } from "react-native";
+import { Image, Platform, View } from "react-native";
+import * as Application from "expo-application";
 
 export default function Page() {
   return (
@@ -60,6 +61,8 @@ export default function Page() {
         <AppUpdate icon="https://github.com/facebook.png" name="Facebook" />
         <AppUpdate icon="https://github.com/apple.png" name="Apple" />
       </Form.Section>
+
+      <SettingsInfoFooter />
     </Form.List>
   );
 }
@@ -91,6 +94,29 @@ function AppUpdate({ name, icon }: { name: string; icon: string }) {
         />
       </Form.HStack>
       <Form.Text>- Minor bug-fixes</Form.Text>
+    </View>
+  );
+}
+
+function SettingsInfoFooter() {
+  const name = `${Application.applicationName} for ${Platform.select({
+    web: "Web",
+    ios: `iOS v${Application.nativeApplicationVersion} (${Application.nativeBuildVersion})`,
+    android: `Android v${Application.nativeApplicationVersion} (${Application.nativeBuildVersion})`,
+  })}`;
+  return (
+    <View
+      style={{ padding: 12, alignItems: "center", justifyContent: "center" }}
+    >
+      <Form.Text
+        style={{
+          textAlign: "center",
+          fontSize: 12,
+          color: AC.secondaryLabel,
+        }}
+      >
+        {name}
+      </Form.Text>
     </View>
   );
 }

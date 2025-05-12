@@ -41,6 +41,9 @@ const MAPPING = {
   "9.square.fill": "numeric-9-box",
   "10.square": "numeric-10-box-outline",
   "10.square.fill": "numeric-10-box",
+  "app.gift": "gift-outline",
+  "app.gift.fill": "gift",
+  person: "account-outline",
 
   // From: https://github.com/roninoss/icons/blob/05c6ec9eda6c1be50f29577946d7cf778df1501c/packages/icons/src/icon-mapping.ts#L1
   "square.and.arrow.up": "tray-arrow-up",
@@ -613,6 +616,7 @@ const MAPPING = {
 const MATERIAL_MAPPING = {
   "photo.on.rectangle": "photo-library",
   "person.fill.badge.plus": "person-add",
+  iphone: "smartphone",
 } as Partial<
   Record<
     import("expo-symbols").SymbolViewProps["name"],

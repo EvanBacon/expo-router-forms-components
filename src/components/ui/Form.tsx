@@ -166,6 +166,8 @@ export function Text({
 }: TextProps & {
   /** Value displayed on the right side of the form item. */
   hint?: React.ReactNode;
+  /** A true/false value for the hint. */
+  hintBoolean?: React.ReactNode;
   /** Adds a prefix SF Symbol image to the left of the text */
   systemImage?: SystemImageProps;
 
@@ -328,10 +330,12 @@ export const FormFont = {
 export function Section({
   children,
   title,
+  titleHint,
   footer,
   ...props
 }: ViewProps & {
   title?: string | React.ReactNode;
+  titleHint?: string | React.ReactNode;
   footer?: string | React.ReactNode;
 }) {
   const listStyle = React.use(ListStyleContext) ?? "auto";
@@ -366,6 +370,19 @@ export function Section({
     const resolvedProps = {
       ...child.props,
     };
+
+    // Set the hint for the hintBoolean prop.
+    if (resolvedProps.hintBoolean != null) {
+      resolvedProps.hint ??= resolvedProps.hintBoolean ? (
+        <IconSymbol
+          name="checkmark.circle.fill"
+          color={AppleColors.systemGreen}
+        />
+      ) : (
+        <IconSymbol name="slash.circle" color={AppleColors.systemGray} />
+      );
+    }
+
     // Extract onPress from child
     const originalOnPress = resolvedProps.onPress;
     const originalOnLongPress = resolvedProps.onLongPress;
@@ -409,6 +426,7 @@ export function Section({
           if (typeof child === "string") {
             return (
               <RNText
+                selectable
                 dynamicTypeRamp="body"
                 style={{
                   ...FormFont.secondary,
@@ -472,7 +490,11 @@ export function Section({
             return null;
           }
           if (typeof child === "string") {
-            return <Text style={FormFont.secondary}>{child}</Text>;
+            return (
+              <Text selectable style={FormFont.secondary}>
+                {child}
+              </Text>
+            );
           }
           return child;
         });
@@ -570,28 +592,61 @@ export function Section({
     );
   }
 
+  const titleHintJsx = (() => {
+    if (!titleHint) {
+      return null;
+    }
+
+    if (isStringishNode(titleHint)) {
+      return (
+        <RNText
+          dynamicTypeRamp="footnote"
+          style={{
+            color: AppleColors.secondaryLabel,
+            paddingVertical: 8,
+            fontSize: 14,
+          }}
+        >
+          {titleHint}
+        </RNText>
+      );
+    }
+
+    return titleHint;
+  })();
+
   return (
     <View
       style={{
         paddingHorizontal: padding,
       }}
     >
-      {title && (
-        <RNText
-          dynamicTypeRamp="footnote"
-          style={{
-            textTransform: "uppercase",
-            color: AppleColors.secondaryLabel,
-            paddingHorizontal: 20,
-            paddingVertical: 8,
-            fontSize: 14,
-            // use Apple condensed font
-            // fontVariant: ["small-caps"],
-          }}
-        >
-          {title}
-        </RNText>
-      )}
+      <View
+        style={{
+          paddingHorizontal: 20,
+          gap: 20,
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        {title && (
+          <RNText
+            dynamicTypeRamp="footnote"
+            style={{
+              textTransform: "uppercase",
+              color: AppleColors.secondaryLabel,
+
+              paddingVertical: 8,
+              fontSize: 14,
+              // use Apple condensed font
+              // fontVariant: ["small-caps"],
+            }}
+          >
+            {title}
+          </RNText>
+        )}
+        {titleHintJsx}
+      </View>
       {contents}
       {footer && (
         <RNText
@@ -608,6 +663,25 @@ export function Section({
       )}
     </View>
   );
+}
+
+/** @return true if the node should be wrapped in text. */
+function isStringishNode(node: React.ReactNode): boolean {
+  let containsStringChildren = typeof node === "string";
+
+  React.Children.forEach(node, (child) => {
+    if (typeof child === "string") {
+      containsStringChildren = true;
+    } else if (
+      React.isValidElement(child) &&
+      "props" in child &&
+      typeof child.props === "object" &&
+      child.props !== null
+    ) {
+      containsStringChildren = isStringishNode(child.props.children as any);
+    }
+  });
+  return containsStringChildren;
 }
 
 function SymbolView({

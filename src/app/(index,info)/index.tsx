@@ -17,6 +17,7 @@ import {
   Button,
   Image,
   OpaqueColorValue,
+  Platform,
   Switch,
   Text,
   View,
@@ -29,6 +30,7 @@ import Animated, {
 } from "react-native-reanimated";
 
 import ExpoSvg from "@/svg/expo.svg";
+import GithubSvg from "@/svg/github.svg";
 
 function Switches() {
   const [on, setOn] = React.useState(false);
@@ -157,6 +159,7 @@ export default function Page() {
 
         <Form.Section title="Features">
           <Form.Link href="/icon">Change App Icon</Form.Link>
+          <Form.Link href="/_debug">Debug menu</Form.Link>
         </Form.Section>
 
         <Form.Section>
@@ -181,7 +184,7 @@ export default function Page() {
             target="_blank"
             systemImage={
               <ExpoSvg
-                fill={AC.systemBlue}
+                fill={AC.label}
                 style={{ width: 18, height: 18, marginRight: 8 }}
               />
             }
@@ -191,6 +194,21 @@ export default function Page() {
           </Form.Link>
         </Form.Section>
 
+        <Form.Section>
+          <Form.Link
+            href="https://github.com/EvanBacon/expo-router-forms-components"
+            target="_blank"
+            systemImage={
+              <GithubSvg
+                fill={AC.label}
+                style={{ width: 18, height: 18, marginRight: 8 }}
+              />
+            }
+            style={{ color: AC.systemBlue, fontWeight: "400" }}
+          >
+            Clone on GitHub
+          </Form.Link>
+        </Form.Section>
         <Form.Section title="Hints">
           <Form.Text hint="Long hint with extra content that should float below the content">
             Normal
