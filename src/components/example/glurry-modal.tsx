@@ -9,7 +9,6 @@ import {
   Pressable,
   StyleSheet,
   useColorScheme,
-  useWindowDimensions,
   View,
 } from "react-native";
 import Animated, {
@@ -133,7 +132,7 @@ function GloryModal({
   children?: React.ReactNode;
   onClose: () => void;
 }) {
-  const { top, bottom } = useSafeAreaInsets();
+  const { bottom } = useSafeAreaInsets();
   const ref = React.useRef<{ animateToZero: () => void }>(null);
 
   const close = () => {
