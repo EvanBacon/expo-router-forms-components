@@ -64,9 +64,8 @@ export default function Layout({ segment }: { segment: string }) {
 
       <Stack.Screen
         name="account"
+        modal
         options={{
-          presentation: "modal",
-
           headerRight: () => (
             <Form.Link headerRight bold href="/" dismissTo>
               Done

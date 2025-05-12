@@ -11,17 +11,10 @@ import {
 } from "@/components/ui/Segments";
 import Stack from "@/components/ui/Stack";
 import * as AC from "@bacons/apple-colors";
+import { Image } from "expo-image";
 import { Link } from "expo-router";
 import { ComponentProps } from "react";
-import {
-  Button,
-  Image,
-  OpaqueColorValue,
-  Platform,
-  Switch,
-  Text,
-  View,
-} from "react-native";
+import { Button, OpaqueColorValue, Switch, Text, View } from "react-native";
 import Animated, {
   interpolate,
   useAnimatedRef,
@@ -29,6 +22,7 @@ import Animated, {
   useScrollViewOffset,
 } from "react-native-reanimated";
 
+import { GlurryList } from "@/components/example/glurry-modal";
 import ExpoSvg from "@/svg/expo.svg";
 import GithubSvg from "@/svg/github.svg";
 
@@ -67,8 +61,11 @@ export default function Page() {
     };
   });
 
+  const [show, setShow] = React.useState(false);
+
   return (
     <View style={{ flex: 1 }}>
+      {show && <GlurryList setShow={setShow} />}
       <Stack.Screen
         options={{
           headerLargeTitle: false,
@@ -158,6 +155,13 @@ export default function Page() {
         </Form.Section>
 
         <Form.Section title="Features">
+          <Form.Text
+            onPress={() => {
+              setShow(true);
+            }}
+          >
+            Open Blur Modal
+          </Form.Text>
           <Form.Link href="/icon">Change App Icon</Form.Link>
           <Form.Link href="/_debug">Debug menu</Form.Link>
           <Form.Link href="/privacy">Privacy Policy</Form.Link>
