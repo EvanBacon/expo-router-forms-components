@@ -160,6 +160,7 @@ export default function Page() {
         <Form.Section title="Features">
           <Form.Link href="/icon">Change App Icon</Form.Link>
           <Form.Link href="/_debug">Debug menu</Form.Link>
+          <Form.Link href="/privacy">Privacy Policy</Form.Link>
         </Form.Section>
 
         <Form.Section>

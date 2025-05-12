@@ -74,6 +74,29 @@ export default function Layout({ segment }: { segment: string }) {
           ),
         }}
       />
+
+      <Stack.Screen
+        name="privacy"
+        modal
+        options={{
+          headerRight: () => (
+            <Form.Link headerRight bold href="/" dismissTo>
+              Done
+            </Form.Link>
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="_debug"
+        modal
+        options={{
+          headerRight: () => (
+            <Form.Link headerRight bold href="/" dismissTo>
+              Done
+            </Form.Link>
+          ),
+        }}
+      />
     </Stack>
   );
 }
