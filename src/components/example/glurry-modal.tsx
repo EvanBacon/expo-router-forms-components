@@ -8,7 +8,7 @@ import {
   Modal,
   Pressable,
   StyleSheet,
-  Switch,
+  useColorScheme,
   useWindowDimensions,
   View,
 } from "react-native";
@@ -30,29 +30,6 @@ import TouchableBounce from "@/components/ui/TouchableBounce";
 import Masked from "@react-native-masked-view/masked-view";
 import { BlurView } from "expo-blur";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-
-function Switches() {
-  const [on, setOn] = React.useState(false);
-
-  return (
-    <Form.Section title="Toggle">
-      <Form.HStack>
-        <Form.Text>Manual</Form.Text>
-        <View style={{ flex: 1 }} />
-        <Switch value={on} onValueChange={setOn} />
-      </Form.HStack>
-      <Form.Text bold hint={<Switch value={on} onValueChange={setOn} />}>
-        Hint
-      </Form.Text>
-      <Form.Text
-        systemImage={"light.beacon.min"}
-        hint={<Switch value={on} onValueChange={setOn} />}
-      >
-        System Image
-      </Form.Text>
-    </Form.Section>
-  );
-}
 
 const ABlurView = Animated.createAnimatedComponent(BlurView);
 
@@ -164,6 +141,8 @@ function GloryModal({
     onClose();
   };
 
+  const theme = useColorScheme();
+
   return (
     <Modal
       animationType="none"
@@ -177,52 +156,22 @@ function GloryModal({
           style={[StyleSheet.absoluteFill]}
           intensity={70}
           ref={ref}
-          tint="systemThinMaterial"
+          tint={
+            process.env.EXPO_OS === "web"
+              ? theme === "light"
+                ? "systemThinMaterialLight"
+                : "systemThickMaterialDark"
+              : "systemThinMaterial"
+          }
         />
-        {/* <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-          flex: 1,
-          position: "absolute",
-          top: 0,
-          paddingHorizontal: 16,
-          paddingTop: top,
-          left: 0,
-          right: 0,
-        }}
-      >
-        <View style={{ flex: 1 }} />
-        <Form.Text
-          style={{
-            fontSize: 20,
-            fontWeight: "bold",
-            color: AC.label,
-          }}
-        >
-          Bacon Components
-        </Form.Text>
-
-        <View style={{ flex: 1, alignItems: "flex-end" }}>
-          <Form.Text
-            onPress={() => {
-              onClose();
-            }}
-            style={{
-              color: AC.label,
-            }}
-          >
-            Done
-          </Form.Text>
-        </View>
-      </View> */}
 
         {children}
 
-        <Animated.View entering={FadeIn} exiting={FadeOutDown}>
-          <Glur direction="bottom" />
-        </Animated.View>
+        {process.env.EXPO_OS !== "web" && (
+          <Animated.View entering={FadeIn} exiting={FadeOutDown}>
+            <Glur direction="bottom" />
+          </Animated.View>
+        )}
         <View
           style={{
             flexDirection: "row",
@@ -232,7 +181,7 @@ function GloryModal({
             position: "absolute",
             bottom: 0,
             paddingHorizontal: 16,
-            paddingBottom: bottom,
+            paddingBottom: bottom || 16,
             left: 0,
             right: 0,
           }}
@@ -260,8 +209,6 @@ function GloryModal({
 }
 
 export function GlurryList({ setShow }: { setShow: (show: boolean) => void }) {
-  const { height } = useWindowDimensions();
-
   const providers = [
     {
       title: "Expo",
@@ -294,7 +241,7 @@ export function GlurryList({ setShow }: { setShow: (show: boolean) => void }) {
   return (
     <GloryModal onClose={() => setShow(false)}>
       <Animated.View
-        entering={SlideInDown.duration(800).easing(Easing.out(Easing.exp))}
+        entering={SlideInDown.duration(500).easing(Easing.out(Easing.exp))}
         exiting={SlideOutDown.easing(Easing.in(Easing.exp))}
         style={{ flex: 1 }}
       >
