@@ -1,7 +1,8 @@
 import Stack from "@/components/ui/Stack";
 import TouchableBounce from "@/components/ui/TouchableBounce";
-import { Image, ScrollView, View } from "react-native";
-
+import { ScrollView, View } from "react-native";
+import { Image } from "expo-image";
+import * as AC from "@bacons/apple-colors";
 import MaskedView from "@react-native-masked-view/masked-view";
 
 const backgroundImage =
@@ -36,7 +37,9 @@ export default function Page() {
                 style={{
                   aspectRatio: 1,
                   width: 72,
+                  backgroundColor: AC.secondarySystemBackground,
                 }}
+                transition={200}
               />
             </View>
 
