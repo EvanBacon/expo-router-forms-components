@@ -186,6 +186,9 @@ function ExpoSection() {
 }
 
 function OTADynamicSection() {
+  if (process.env.EXPO_OS === "web") {
+    return null;
+  }
   const updates = Updates.useUpdates();
 
   const fetchingTitle = updates.isDownloading
