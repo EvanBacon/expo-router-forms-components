@@ -352,6 +352,56 @@ The default `listStyle` is `"auto"` but you can access the old-style with `"grou
 
 ![Simulator Screenshot - iPhone 16 - 2025-02-02 at 22 12 25](https://github.com/user-attachments/assets/30ce1836-117c-4989-ac59-f4359766ba8b)
 
+## Refreshing
+
+Data fetching can be done by using the nearest `Form.List` for pull-to-refresh functionality.
+
+```tsx
+function App() {
+  return (
+    <Form.List>
+      <Data />
+    </Form.List>
+  );
+}
+
+function Data() {
+  const [data, setData] = useState(
+    // Read some cached data if any exists.
+    () => localStorage.getItem("data")
+  );
+
+  // This will be called when the user pulls to refresh.
+  Form.useListRefresh(async () => {
+    // Perform data fetching...
+    const data = await fetchData();
+    localStorage.setItem("data", data);
+    setData(data);
+  });
+
+  return <Text>Data</Text>;
+}
+```
+
+You can trigger the refresh programmatically with the callback from `Form.useListRefresh()`:
+
+```tsx
+const refresh = Form.useListRefresh();
+
+// Register a button to refresh the list...
+<Stack.Screen
+  options={{
+    headerRight: () => (
+      <Form.Text bold onPress={refresh}>
+        Refresh
+      </Form.Text>
+    ),
+  }}
+/>;
+```
+
+This primitive can be extended to create comprehensive refreshing per-list.
+
 ## Colors
 
 Be sure to use `@bacons/apple-colors` for high-quality P3 colors.

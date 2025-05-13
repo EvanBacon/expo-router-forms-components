@@ -9,6 +9,7 @@ import {
   Button,
   GestureResponderEvent,
   OpaqueColorValue,
+  RefreshControl,
   Text as RNText,
   ScrollViewProps,
   Share,
@@ -30,14 +31,100 @@ type ListStyle = "grouped" | "auto";
 
 const ListStyleContext = React.createContext<ListStyle>("auto");
 
-export function List({
-  contentContainerStyle,
-  ...props
-}: ScrollViewProps & {
+type RefreshCallback = () => Promise<void>;
+
+const RefreshContext = React.createContext<{
+  subscribe: (cb: RefreshCallback) => () => void;
+  hasSubscribers: boolean;
+  refresh: () => Promise<void>;
+  refreshing: boolean;
+}>({
+  subscribe: () => () => {},
+  hasSubscribers: false,
+  refresh: async () => {},
+  refreshing: false,
+});
+
+const RefreshContextProvider: React.FC<{
+  children: React.ReactNode;
+}> = ({ children }) => {
+  const subscribersRef = React.useRef<Set<RefreshCallback>>(new Set());
+  const [subscriberCount, setSubscriberCount] = React.useState(0);
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const subscribe = (cb: RefreshCallback) => {
+    subscribersRef.current.add(cb);
+    setSubscriberCount((count) => count + 1);
+
+    return () => {
+      subscribersRef.current.delete(cb);
+      setSubscriberCount((count) => count - 1);
+    };
+  };
+
+  const refresh = async () => {
+    const subscribers = Array.from(subscribersRef.current);
+    if (subscribers.length === 0) return;
+
+    setRefreshing(true);
+    try {
+      await Promise.all(subscribers.map((cb) => cb()));
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
+  return (
+    <RefreshContext
+      value={{
+        subscribe,
+        refresh,
+        refreshing,
+        hasSubscribers: subscriberCount > 0,
+      }}
+    >
+      {children}
+    </RefreshContext>
+  );
+};
+
+/**
+ * Register a callback to be called when the user pulls down to refresh in the nearest list.
+ *
+ * @param callback Register a function to be called when the user pulls down to refresh.
+ * The function should return a promise that resolves when the refresh is complete.
+ * @returns A function that can be called to trigger a list-wide refresh.
+ */
+export function useListRefresh(callback?: () => Promise<void>) {
+  const { subscribe, refresh } = React.use(RefreshContext);
+
+  React.useEffect(() => {
+    if (callback) {
+      const unsubscribe = subscribe(callback);
+      return unsubscribe;
+    }
+  }, [callback, subscribe]);
+
+  return refresh;
+}
+
+type ListProps = ScrollViewProps & {
   /** Set the Expo Router `<Stack />` title when mounted. */
   navigationTitle?: string;
   listStyle?: ListStyle;
-}) {
+};
+export function List(props: ListProps) {
+  return (
+    <RefreshContextProvider>
+      <InnerList {...props} />
+    </RefreshContextProvider>
+  );
+}
+if (__DEV__) List.displayName = "FormList";
+
+function InnerList({ contentContainerStyle, ...props }: ListProps) {
+  const { hasSubscribers, refreshing, refresh } = React.use(RefreshContext);
+
   return (
     <>
       {props.navigationTitle && (
@@ -58,14 +145,17 @@ export function List({
             marginHorizontal:
               process.env.EXPO_OS === "web" ? "auto" : undefined,
           }}
+          refreshControl={
+            hasSubscribers ? (
+              <RefreshControl refreshing={refreshing} onRefresh={refresh} />
+            ) : undefined
+          }
           {...props}
         />
       </ListStyleContext>
     </>
   );
 }
-
-if (__DEV__) List.displayName = "FormList";
 
 export function HStack(props: ViewProps) {
   return (
