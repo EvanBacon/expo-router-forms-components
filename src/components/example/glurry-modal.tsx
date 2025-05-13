@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import * as Form from "@/components/ui/Form";
 import { IconSymbol } from "@/components/ui/IconSymbol";
@@ -29,6 +29,12 @@ import TouchableBounce from "@/components/ui/TouchableBounce";
 import Masked from "@react-native-masked-view/masked-view";
 import { BlurView } from "expo-blur";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import {
+  impactAsync,
+  ImpactFeedbackStyle,
+  notificationAsync,
+  NotificationFeedbackType,
+} from "expo-haptics";
 
 const ABlurView = Animated.createAnimatedComponent(BlurView);
 
@@ -134,6 +140,10 @@ function GloryModal({
 }) {
   const { bottom } = useSafeAreaInsets();
   const ref = React.useRef<{ animateToZero: () => void }>(null);
+
+  useEffect(() => {
+    impactAsync(ImpactFeedbackStyle.Medium);
+  }, []);
 
   const close = () => {
     ref.current?.animateToZero();
