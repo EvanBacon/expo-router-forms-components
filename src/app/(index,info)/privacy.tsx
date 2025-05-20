@@ -6,7 +6,7 @@ export default function Privacy() {
   return (
     <>
       <Head>
-        <title>Privacy | Pillar Valley</title>
+        <title>Privacy | Bacomponents</title>
       </Head>
       <Stack.Screen
         options={{

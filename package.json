@@ -7,7 +7,10 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "prepare": "npx patch-package",
+    "deploy:ios": "npx testflight",
+    "deploy:web": "expo export -p web && npx eas-cli@latest deploy"
   },
   "dependencies": {
     "@bacons/apple-colors": "^0.0.8",
