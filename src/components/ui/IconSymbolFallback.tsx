@@ -44,6 +44,8 @@ const MAPPING = {
   "app.gift": "gift-outline",
   "app.gift.fill": "gift",
   person: "account-outline",
+  viewfinder: "fit-to-screen-outline",
+  "circle.hexagongrid.fill": "dots-hexagon",
 
   // From: https://github.com/roninoss/icons/blob/05c6ec9eda6c1be50f29577946d7cf778df1501c/packages/icons/src/icon-mapping.ts#L1
   "square.and.arrow.up": "tray-arrow-up",
