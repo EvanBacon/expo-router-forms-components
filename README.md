@@ -362,6 +362,8 @@ This is similar to using the `Switch` component as a `hint` on text but with red
 
 ## Date picker
 
+> Web not supported.
+
 Select dates and time using the `Form.DatePicker` component (extends `Form.Text`):
 
 ```tsx

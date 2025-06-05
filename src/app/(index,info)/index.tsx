@@ -178,7 +178,7 @@ export default function Page() {
             hint={
               <DateTimePicker
                 mode="datetime"
-                accentColor="blue"
+                accentColor={AC.systemTeal}
                 value={new Date()}
               />
             }

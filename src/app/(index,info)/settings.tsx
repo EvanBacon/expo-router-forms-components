@@ -73,12 +73,15 @@ function UserSection() {
               backgroundColor: AC.systemRed,
               borderRadius: 666,
               width: 26,
+
               aspectRatio: 1,
               justifyContent: "center",
               alignItems: "center",
             }}
           >
-            <Text style={{ color: "white" }}>3</Text>
+            <Text adjustsFontSizeToFit style={{ fontSize: 16, color: "white" }}>
+              3
+            </Text>
           </View>
         }
       >
