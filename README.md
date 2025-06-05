@@ -11,7 +11,7 @@ https://github.com/user-attachments/assets/e4f007a3-9316-4f3a-a1fd-352d3af60d11
 For best results, just copy the files to another project. Here are the other deps:
 
 ```
-bunx expo install expo-haptics expo-symbols expo-blur expo-web-browser @bacons/apple-colors vaul @react-native-segmented-control/segmented-control
+bunx expo install expo-haptics expo-symbols expo-blur expo-web-browser @bacons/apple-colors vaul @react-native-segmented-control/segmented-control @react-native-community/datetimepicker
 ```
 
 You can also just bootstrap a project with this repo:
@@ -359,6 +359,34 @@ This is similar to using the `Switch` component as a `hint` on text but with red
   </Form.Text>
 </Form.Section>
 ```
+
+## Date picker
+
+Select dates and time using the `Form.DatePicker` component (extends `Form.Text`):
+
+```tsx
+<Form.DatePicker value={new Date()} onChange={(e) => e.nativeEvent.timestamp}>
+  Birthday
+</Form.DatePicker>
+```
+
+Select time:
+
+```tsx
+<Form.DatePicker value={new Date()} mode="time">
+  Schedule a time
+</Form.DatePicker>
+```
+
+Select both date and time (iOS only):
+
+```tsx
+<Form.DatePicker value={new Date()} mode="datetime">
+  Schedule a time
+</Form.DatePicker>
+```
+
+Make it look cool and monochrome with: `accentColor={AC.label}`
 
 ## Text Input
 

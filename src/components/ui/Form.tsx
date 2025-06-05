@@ -26,6 +26,11 @@ import {
   ViewProps,
   ViewStyle,
 } from "react-native";
+import DateTimePicker, {
+  AndroidNativeProps,
+  DatePickerOptions,
+  IOSNativeProps,
+} from "@react-native-community/datetimepicker";
 
 import { HeaderButton } from "./Header";
 import Animated from "react-native-reanimated";
@@ -369,6 +374,23 @@ export function Toggle({
 
 if (__DEV__) Toggle.displayName = "FormToggle";
 
+export function DatePicker({
+  ...props
+}: FormTextProps &
+  Omit<IOSNativeProps | AndroidNativeProps, "display" | "accentColor"> & {
+    /**
+     * The date picker accent color.
+     *
+     * Sets the color of the selected, date and navigation icons.
+     * Has no effect for display 'spinner'.
+     */
+    accentColor?: OpaqueColorValue | string;
+  }) {
+  return <Text {...props} />;
+}
+
+if (__DEV__) DatePicker.displayName = "FormDatePicker";
+
 export function Link({
   bold,
   children,
@@ -564,6 +586,7 @@ export function Section({
       ...child.props,
     };
 
+    const isDatePicker = child.type === DatePicker;
     const isToggle = child.type === Toggle;
 
     if (isToggle) {
@@ -571,6 +594,22 @@ export function Section({
         <Switch
           value={resolvedProps.value}
           onValueChange={resolvedProps.onValueChange}
+        />
+      );
+    } else if (isDatePicker) {
+      resolvedProps.hint = (
+        // TODO: Add more props
+        <DateTimePicker
+          locale={resolvedProps.locale}
+          minuteInterval={resolvedProps.minuteInterval}
+          mode={resolvedProps.mode}
+          timeZoneOffsetInMinutes={resolvedProps.timeZoneOffsetInMinutes}
+          textColor={resolvedProps.textColor}
+          disabled={resolvedProps.disabled}
+          accentColor={resolvedProps.accentColor}
+          value={resolvedProps.value}
+          display={resolvedProps.display}
+          onChange={resolvedProps.onChange}
         />
       );
     }
@@ -606,7 +645,8 @@ export function Section({
       // If child is type of Text, add default props
       child.type === RNText ||
       child.type === Text ||
-      isToggle
+      isToggle ||
+      isDatePicker
     ) {
       child = React.cloneElement(child, {
         dynamicTypeRamp: "body",
@@ -766,11 +806,12 @@ export function Section({
     // Ensure child is a FormItem otherwise wrap it in a FormItem
     if (!wrapsFormItem && !child.props.custom && child.type !== FormItem) {
       // Toggle needs reduced padding to account for the larger element.
-      const reducedPadding = isToggle
-        ? {
-            paddingVertical: 8,
-          }
-        : undefined;
+      const reducedPadding =
+        isToggle || isDatePicker
+          ? {
+              paddingVertical: 8,
+            }
+          : undefined;
 
       child = (
         <FormItem

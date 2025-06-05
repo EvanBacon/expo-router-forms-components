@@ -166,6 +166,27 @@ export default function Page() {
           <Form.TextField placeholder="Last Name" />
         </Form.Section>
 
+        <Form.Section title="Date">
+          <Form.DatePicker value={new Date()} accentColor={AC.label}>
+            Birthday
+          </Form.DatePicker>
+          <Form.DatePicker value={new Date()} mode="time">
+            Birthday Minute
+          </Form.DatePicker>
+
+          <Form.Text
+            hint={
+              <DateTimePicker
+                mode="datetime"
+                accentColor="blue"
+                value={new Date()}
+              />
+            }
+          >
+            Manual
+          </Form.Text>
+        </Form.Section>
+
         <Form.Section title="Features">
           <Form.Text
             onPress={() => {
