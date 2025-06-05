@@ -795,6 +795,12 @@ export function Section({
             onLongPress: undefined,
             style: mergedStyleProp(
               FormFont.default,
+              {
+                outline: "none",
+                // outlineWidth: 1,
+                // outlineStyle: "auto",
+                // outlineColor: AppleColors.systemGray4,
+              },
               styles.itemPadding,
               resolvedProps.style
             ),
