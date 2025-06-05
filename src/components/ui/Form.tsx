@@ -31,12 +31,52 @@ type ListStyle = "grouped" | "auto";
 
 const ListStyleContext = React.createContext<ListStyle>("auto");
 
+const minItemHeight = 20;
+
+const Colors = {
+  systemGray4: AppleColors.systemGray4, // "rgba(209, 209, 214, 1)",
+  secondarySystemGroupedBackground:
+    AppleColors.secondarySystemGroupedBackground, // "rgba(255, 255, 255, 1)",
+};
+
 const styles = StyleSheet.create({
   itemPadding: {
     paddingVertical: 11,
     paddingHorizontal: 20,
   },
+  hstack: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  spacer: { flex: 1 },
+  separator: {
+    marginStart: 60,
+    borderBottomWidth: 0.5, //StyleSheet.hairlineWidth,
+    marginTop: -0.5, // -StyleSheet.hairlineWidth,
+    borderBottomColor: AppleColors.separator,
+  },
+  groupedList: {
+    backgroundColor: Colors.secondarySystemGroupedBackground,
+    borderTopWidth: 0.5,
+    borderBottomWidth: 0.5,
+    borderColor: AppleColors.separator,
+  },
+  standardList: {
+    borderCurve: "continuous",
+    overflow: "hidden",
+    borderRadius: 10,
+    backgroundColor: Colors.secondarySystemGroupedBackground,
+  },
+
+  hintText: {
+    color: AppleColors.secondaryLabel,
+    paddingVertical: 8,
+    fontSize: 14,
+  },
 });
+
 const SectionStyleContext = React.createContext<{
   style: StyleProp<ViewStyle>;
 }>({
@@ -125,6 +165,7 @@ type ListProps = ScrollViewProps & {
   navigationTitle?: string;
   listStyle?: ListStyle;
 };
+
 export function List(props: ListProps) {
   return (
     <RefreshContextProvider>
@@ -132,6 +173,7 @@ export function List(props: ListProps) {
     </RefreshContextProvider>
   );
 }
+
 if (__DEV__) List.displayName = "FormList";
 
 function InnerList({ contentContainerStyle, ...props }: ListProps) {
@@ -168,27 +210,6 @@ function InnerList({ contentContainerStyle, ...props }: ListProps) {
     </>
   );
 }
-
-export function HStack(props: ViewProps) {
-  return (
-    <View
-      {...props}
-      style={mergedStyles(
-        {
-          flex: 1,
-          flexDirection: "row",
-          alignItems: "center",
-          gap: 8,
-          wordWrap: "break-word",
-          // flexWrap: "wrap",
-        },
-        props
-      )}
-    />
-  );
-}
-
-const minItemHeight = 20;
 
 export function FormItem({
   children,
@@ -238,13 +259,6 @@ export function FormItem({
     </Link>
   );
 }
-
-const Colors = {
-  systemGray4: AppleColors.systemGray4, // "rgba(209, 209, 214, 1)",
-  secondarySystemGroupedBackground:
-    AppleColors.secondarySystemGroupedBackground, // "rgba(255, 255, 255, 1)",
-  separator: AppleColors.separator, // "rgba(61.2, 61.2, 66, 0.29)",
-};
 
 type SystemImageCustomProps = {
   name: IconSymbolName;
@@ -568,7 +582,7 @@ export function Section({
             return (
               <RNText
                 dynamicTypeRamp="body"
-                style={mergedStyles(FormFont.default, resolvedProps)}
+                style={mergedStyleProp(FormFont.default, resolvedProps?.style)}
               >
                 {linkChild}
               </RNText>
@@ -662,19 +676,7 @@ export function Section({
       <Animated.View
         {...props}
         style={[
-          listStyle === "grouped"
-            ? {
-                backgroundColor: Colors.secondarySystemGroupedBackground,
-                borderTopWidth: 0.5,
-                borderBottomWidth: 0.5,
-                borderColor: Colors.separator,
-              }
-            : {
-                borderCurve: "continuous",
-                overflow: "hidden",
-                borderRadius: 10,
-                backgroundColor: Colors.secondarySystemGroupedBackground,
-              },
+          listStyle === "grouped" ? styles.groupedList : styles.standardList,
           props.style,
         ]}
       >
@@ -704,14 +706,7 @@ export function Section({
 
     if (isStringishNode(titleHint)) {
       return (
-        <RNText
-          dynamicTypeRamp="footnote"
-          style={{
-            color: AppleColors.secondaryLabel,
-            paddingVertical: 8,
-            fontSize: 14,
-          }}
-        >
+        <RNText dynamicTypeRamp="footnote" style={styles.hintText}>
           {titleHint}
         </RNText>
       );
@@ -740,7 +735,6 @@ export function Section({
             style={{
               textTransform: "uppercase",
               color: AppleColors.secondaryLabel,
-
               paddingVertical: 8,
               fontSize: 14,
               // use Apple condensed font
@@ -772,29 +766,6 @@ export function Section({
   );
 }
 
-function Spacer(props: ViewProps) {
-  return <View {...props} style={[{ flex: 1 }, props.style]} />;
-}
-
-/** @return true if the node should be wrapped in text. */
-function isStringishNode(node: React.ReactNode): boolean {
-  let containsStringChildren = typeof node === "string";
-
-  React.Children.forEach(node, (child) => {
-    if (typeof child === "string") {
-      containsStringChildren = true;
-    } else if (
-      React.isValidElement(child) &&
-      "props" in child &&
-      typeof child.props === "object" &&
-      child.props !== null
-    ) {
-      containsStringChildren = isStringishNode(child.props.children as any);
-    }
-  });
-  return containsStringChildren;
-}
-
 function SymbolView({
   systemImage,
   style,
@@ -815,15 +786,19 @@ function SymbolView({
       ? systemImage
       : { name: systemImage as unknown as string };
 
+  let color: string | OpaqueColorValue | undefined = symbolProps.color;
+  if (color == null) {
+    const flatStyle = StyleSheet.flatten(style);
+    color = extractStyle(flatStyle, "color");
+  }
+
   return (
     <IconSymbol
       name={symbolProps.name}
       size={symbolProps.size ?? 20}
       style={[{ marginRight: 8 }, symbolProps.style]}
       weight={symbolProps.weight}
-      color={
-        symbolProps.color ?? extractStyle(style, "color") ?? AppleColors.label
-      }
+      color={color ?? AppleColors.label}
     />
   );
 }
@@ -875,21 +850,21 @@ function LinkChevronIcon({
   );
 }
 
-function Separator() {
+export function HStack(props: ViewProps) {
   return (
     <View
-      style={{
-        marginStart: 60,
-        borderBottomWidth: 0.5, //StyleSheet.hairlineWidth,
-        marginTop: -0.5, // -StyleSheet.hairlineWidth,
-        borderBottomColor: Colors.separator,
-      }}
+      {...props}
+      style={mergedStyleProp<ViewStyle>(styles.hstack, props.style)}
     />
   );
 }
 
-function mergedStyles(style: ViewStyle | TextStyle, props: any) {
-  return mergedStyleProp(style, props.style);
+function Spacer(props: ViewProps) {
+  return <View {...props} style={[styles.spacer, props.style]} />;
+}
+
+function Separator(props: ViewProps) {
+  return <View {...props} style={[styles.separator, props.style]} />;
 }
 
 export function mergedStyleProp<TStyle extends ViewStyle | TextStyle>(
@@ -908,7 +883,10 @@ export function mergedStyleProp<TStyle extends ViewStyle | TextStyle>(
     .filter(Boolean);
 }
 
-function extractStyle(styleProp: any, key: string) {
+function extractStyle<TStyle extends ViewStyle | TextStyle>(
+  styleProp: TStyle,
+  key: keyof TStyle
+) {
   if (styleProp == null) {
     return undefined;
   } else if (Array.isArray(styleProp)) {
@@ -919,4 +897,24 @@ function extractStyle(styleProp: any, key: string) {
     return styleProp?.[key];
   }
   return null;
+}
+
+/** @return true if the node should be wrapped in text. */
+function isStringishNode(node: React.ReactNode): boolean {
+  let containsStringChildren = typeof node === "string";
+
+  React.Children.forEach(node, (child) => {
+    if (typeof child === "string") {
+      containsStringChildren = true;
+    } else if (
+      React.isValidElement(child) &&
+      "props" in child &&
+      typeof child.props === "object" &&
+      child.props !== null &&
+      "children" in child.props
+    ) {
+      containsStringChildren = isStringishNode(child.props.children as any);
+    }
+  });
+  return containsStringChildren;
 }
