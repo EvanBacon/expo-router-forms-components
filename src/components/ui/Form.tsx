@@ -9,6 +9,7 @@ import {
   Button,
   GestureResponderEvent,
   OpaqueColorValue,
+  Platform,
   RefreshControl,
   Text as RNText,
   ScrollViewProps,
@@ -592,6 +593,20 @@ export function Section({
     if (isToggle) {
       resolvedProps.hint = (
         <Switch
+          thumbColor={resolvedProps.thumbColor}
+          trackColor={resolvedProps.trackColor}
+          ios_backgroundColor={resolvedProps.ios_backgroundColor}
+          {...Platform.select({
+            web: {
+              activeThumbColor: AppleColors.label,
+              activeTrackColor: AppleColors.systemGreen,
+              thumbColor: resolvedProps.thumbColor ?? AppleColors.label,
+              trackColor: resolvedProps.trackColor ?? AppleColors.systemGray4,
+            },
+            default: {},
+          })}
+          onChange={resolvedProps.onChange}
+          disabled={resolvedProps.disabled}
           value={resolvedProps.value}
           onValueChange={resolvedProps.onValueChange}
         />
