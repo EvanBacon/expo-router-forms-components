@@ -4,7 +4,7 @@ import { IconSymbol, IconSymbolName } from "@/components/ui/IconSymbol";
 import * as AppleColors from "@bacons/apple-colors";
 import { Href, LinkProps, Link as RouterLink, Stack } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
-import React from "react";
+import React, { use } from "react";
 import {
   Button,
   GestureResponderEvent,
@@ -30,6 +30,18 @@ import { SymbolWeight } from "expo-symbols";
 type ListStyle = "grouped" | "auto";
 
 const ListStyleContext = React.createContext<ListStyle>("auto");
+
+const styles = StyleSheet.create({
+  itemPadding: {
+    paddingVertical: 11,
+    paddingHorizontal: 20,
+  },
+});
+const SectionStyleContext = React.createContext<{
+  style: StyleProp<ViewStyle>;
+}>({
+  style: styles.itemPadding,
+});
 
 type RefreshCallback = () => Promise<void>;
 
@@ -178,13 +190,6 @@ export function HStack(props: ViewProps) {
 
 const minItemHeight = 20;
 
-const styles = StyleSheet.create({
-  itemPadding: {
-    paddingVertical: 11,
-    paddingHorizontal: 20,
-  },
-});
-
 export function FormItem({
   children,
   href,
@@ -199,10 +204,12 @@ export function FormItem({
   style?: ViewStyle;
   ref?: React.Ref<View>;
 }) {
+  const itemStyle = use(SectionStyleContext)?.style ?? styles.itemPadding;
+  const resolvedStyle = [itemStyle, style];
   if (href == null) {
     if (onPress == null && onLongPress == null) {
       return (
-        <View style={[styles.itemPadding, style]}>
+        <View style={resolvedStyle}>
           <HStack style={{ minHeight: minItemHeight }}>{children}</HStack>
         </View>
       );
@@ -214,7 +221,7 @@ export function FormItem({
         onPress={onPress}
         onLongPress={onLongPress}
       >
-        <View style={styles.itemPadding}>
+        <View style={resolvedStyle}>
           <HStack style={{ minHeight: minItemHeight }}>{children}</HStack>
         </View>
       </TouchableHighlight>
@@ -224,7 +231,7 @@ export function FormItem({
   return (
     <Link asChild href={href} onPress={onPress} onLongPress={onLongPress}>
       <TouchableHighlight ref={ref} underlayColor={AppleColors.systemGray4}>
-        <View style={styles.itemPadding}>
+        <View style={resolvedStyle}>
           <HStack style={{ minHeight: minItemHeight }}>{children}</HStack>
         </View>
       </TouchableHighlight>
@@ -259,7 +266,7 @@ export function Text({
   /** A true/false value for the hint. */
   hintBoolean?: React.ReactNode;
   /** Adds a prefix SF Symbol image to the left of the text */
-  systemImage?: SystemImageProps;
+  systemImage?: SystemImageProps | React.ReactNode;
 
   bold?: boolean;
 }) {
@@ -422,11 +429,13 @@ export function Section({
   title,
   titleHint,
   footer,
+  itemStyle,
   ...props
 }: ViewProps & {
   title?: string | React.ReactNode;
   titleHint?: string | React.ReactNode;
   footer?: string | React.ReactNode;
+  itemStyle?: ViewStyle;
 }) {
   const listStyle = React.use(ListStyleContext) ?? "auto";
 
@@ -540,7 +549,7 @@ export function Section({
               style={resolvedProps.style}
             />
             {child}
-            {hintView && <View style={{ flex: 1 }} />}
+            {hintView && <Spacer />}
             {hintView}
           </HStack>
         );
@@ -613,9 +622,9 @@ export function Section({
                 style={resolvedProps.style}
               />
               {wrappedTextChildren}
-              <View style={{ flex: 1 }} />
+              <Spacer />
               {hintView}
-              <View style={{ paddingLeft: 12 }}>
+              <View style={{}}>
                 <LinkChevronIcon
                   href={resolvedProps.href}
                   systemImage={resolvedProps.hintImage}
@@ -645,27 +654,33 @@ export function Section({
   });
 
   const contents = (
-    <Animated.View
-      {...props}
-      style={[
-        listStyle === "grouped"
-          ? {
-              backgroundColor: Colors.secondarySystemGroupedBackground,
-              borderTopWidth: 0.5,
-              borderBottomWidth: 0.5,
-              borderColor: Colors.separator,
-            }
-          : {
-              borderCurve: "continuous",
-              overflow: "hidden",
-              borderRadius: 10,
-              backgroundColor: Colors.secondarySystemGroupedBackground,
-            },
-        props.style,
-      ]}
+    <SectionStyleContext
+      value={{
+        style: mergedStyleProp<ViewStyle>(styles.itemPadding, itemStyle),
+      }}
     >
-      {childrenWithSeparator}
-    </Animated.View>
+      <Animated.View
+        {...props}
+        style={[
+          listStyle === "grouped"
+            ? {
+                backgroundColor: Colors.secondarySystemGroupedBackground,
+                borderTopWidth: 0.5,
+                borderBottomWidth: 0.5,
+                borderColor: Colors.separator,
+              }
+            : {
+                borderCurve: "continuous",
+                overflow: "hidden",
+                borderRadius: 10,
+                backgroundColor: Colors.secondarySystemGroupedBackground,
+              },
+          props.style,
+        ]}
+      >
+        {childrenWithSeparator}
+      </Animated.View>
+    </SectionStyleContext>
   );
 
   const padding = listStyle === "grouped" ? 0 : 16;
@@ -737,7 +752,9 @@ export function Section({
         )}
         {titleHintJsx}
       </View>
+
       {contents}
+
       {footer && (
         <RNText
           dynamicTypeRamp="footnote"
@@ -753,6 +770,10 @@ export function Section({
       )}
     </View>
   );
+}
+
+function Spacer(props: ViewProps) {
+  return <View {...props} style={[{ flex: 1 }, props.style]} />;
 }
 
 /** @return true if the node should be wrapped in text. */
@@ -872,15 +893,19 @@ function mergedStyles(style: ViewStyle | TextStyle, props: any) {
 }
 
 export function mergedStyleProp<TStyle extends ViewStyle | TextStyle>(
-  style: TStyle,
-  styleProps?: StyleProp<TStyle> | null
+  ...styleProps: (StyleProp<TStyle> | null | undefined)[]
 ): StyleProp<TStyle> {
-  if (styleProps == null) {
-    return style;
-  } else if (Array.isArray(styleProps)) {
-    return [style, ...styleProps];
-  }
-  return [style, styleProps];
+  if (!styleProps.length) return undefined;
+
+  return styleProps
+    .map((style) => {
+      if (Array.isArray(style)) {
+        return mergedStyleProp(...style);
+      } else {
+        return style;
+      }
+    })
+    .filter(Boolean);
 }
 
 function extractStyle(styleProp: any, key: string) {
