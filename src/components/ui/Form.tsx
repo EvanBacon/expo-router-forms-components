@@ -438,6 +438,37 @@ export const FormFont = {
   },
 };
 
+function getFlatChildren(children: React.ReactNode) {
+  const allChildren: React.ReactNode[] = [];
+
+  React.Children.map(children, (child, index) => {
+    if (!React.isValidElement(child)) {
+      return child;
+    }
+
+    // If the child is a fragment, unwrap it and add the children to the list
+    if (
+      child.type === React.Fragment &&
+      typeof child.props === "object" &&
+      child.props != null &&
+      "key" in child.props &&
+      child.props?.key == null &&
+      "children" in child.props
+    ) {
+      React.Children.forEach(child.props?.children, (child) => {
+        if (!React.isValidElement(child)) {
+          return child;
+        }
+        allChildren.push(child);
+      });
+      return;
+    }
+
+    allChildren.push(child);
+  });
+  return allChildren;
+}
+
 export function Section({
   children,
   title,
@@ -453,26 +484,7 @@ export function Section({
 }) {
   const listStyle = React.use(ListStyleContext) ?? "auto";
 
-  const allChildren: React.ReactNode[] = [];
-
-  React.Children.map(children, (child, index) => {
-    if (!React.isValidElement(child)) {
-      return child;
-    }
-
-    // If the child is a fragment, unwrap it and add the children to the list
-    if (child.type === React.Fragment && child.props?.key == null) {
-      React.Children.forEach(child.props?.children, (child) => {
-        if (!React.isValidElement(child)) {
-          return child;
-        }
-        allChildren.push(child);
-      });
-      return;
-    }
-
-    allChildren.push(child);
-  });
+  const allChildren = getFlatChildren(children);
 
   const childrenWithSeparator = allChildren.map((child, index) => {
     if (!React.isValidElement(child)) {
