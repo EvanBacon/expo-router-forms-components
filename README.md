@@ -360,6 +360,17 @@ This is similar to using the `Switch` component as a `hint` on text but with red
 </Form.Section>
 ```
 
+## Text Input
+
+Both of the following yield similar results. Dark/light theme, correct padding and font sizes for text inputs.
+
+```tsx
+<Form.Section>
+  <TextInput placeholder="First name" />
+  <Form.TextField placeholder="Last name" />
+</Form.Section>
+```
+
 ## List Style
 
 The default `listStyle` is `"auto"` but you can access the old-style with `"grouped"`:

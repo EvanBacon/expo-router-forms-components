@@ -17,6 +17,8 @@ import {
   StyleSheet,
   Switch,
   SwitchProps,
+  TextInput,
+  TextInputProps,
   TextProps,
   TextStyle,
   TouchableHighlight,
@@ -271,6 +273,17 @@ export function FormItem({
   const resolvedStyle = [itemStyle, style];
   if (href == null) {
     if (onPress == null && onLongPress == null) {
+      const childrenCount = getFlatChildren(children).length;
+
+      // If there's only one child, avoid the HStack. This ensures that TextInput doesn't jitter horizontally when typing.
+      if (childrenCount === 1) {
+        return (
+          <View style={resolvedStyle}>
+            <View style={{ minHeight: minItemHeight }}>{children}</View>
+          </View>
+        );
+      }
+
       return (
         <View style={resolvedStyle}>
           <HStack style={{ minHeight: minItemHeight }}>{children}</HStack>
@@ -330,7 +343,21 @@ export function Text({ bold, ...props }: FormTextProps) {
   );
 }
 
-if (__DEV__) Text.displayName = "FormText";
+export function TextField({ ...props }: TextInputProps) {
+  const font: TextStyle = {
+    ...FormFont.default,
+  };
+
+  return (
+    <TextInput
+      placeholderTextColor={AppleColors.placeholderText}
+      {...props}
+      style={mergedStyleProp(font, props.style)}
+    />
+  );
+}
+
+if (__DEV__) TextField.displayName = "FormTextField";
 
 export function Toggle({
   value,
@@ -713,6 +740,27 @@ export function Section({
           </FormItem>
         ),
       });
+    } else if (child.type === TextInput || child.type === TextField) {
+      wrapsFormItem = true;
+      child = (
+        <FormItem
+          onPress={originalOnPress}
+          onLongPress={originalOnLongPress}
+          style={{ paddingVertical: 0, paddingHorizontal: 0 }}
+        >
+          {React.cloneElement(child, {
+            placeholderTextColor: AppleColors.placeholderText,
+            ...resolvedProps,
+            onPress: undefined,
+            onLongPress: undefined,
+            style: mergedStyleProp(
+              FormFont.default,
+              styles.itemPadding,
+              resolvedProps.style
+            ),
+          })}
+        </FormItem>
+      );
     }
 
     // Ensure child is a FormItem otherwise wrap it in a FormItem
