@@ -31,20 +31,18 @@ function Switches() {
 
   return (
     <Form.Section title="Toggle">
+      <Form.Toggle systemImage="star" value={on} onValueChange={setOn}>
+        Built-in
+      </Form.Toggle>
+      <Form.Text bold hint={<Switch value={on} onValueChange={setOn} />}>
+        Hint
+      </Form.Text>
+
       <Form.HStack>
         <Form.Text>Manual</Form.Text>
         <View style={{ flex: 1 }} />
         <Switch value={on} onValueChange={setOn} />
       </Form.HStack>
-      <Form.Text bold hint={<Switch value={on} onValueChange={setOn} />}>
-        Hint
-      </Form.Text>
-      <Form.Text
-        systemImage={"light.beacon.min"}
-        hint={<Switch value={on} onValueChange={setOn} />}
-      >
-        System Image
-      </Form.Text>
     </Form.Section>
   );
 }

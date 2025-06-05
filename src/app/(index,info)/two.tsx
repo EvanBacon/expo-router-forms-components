@@ -7,6 +7,7 @@ import Skeleton from "@/components/ui/Skeleton";
 import TouchableBounce from "@/components/ui/TouchableBounce";
 import * as AC from "@bacons/apple-colors";
 import { useState } from "react";
+
 export default function Page() {
   return (
     <BodyScrollView>

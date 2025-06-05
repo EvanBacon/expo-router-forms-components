@@ -336,6 +336,30 @@ Create a linkable version like this:
 </Form.Link>
 ```
 
+## Toggle
+
+You can add a toggle/switch item using the `Form.Toggle` component (extends `Form.Text`):
+
+```tsx
+const [on, setOn] = useState(false);
+
+return (
+  <Form.Toggle value={on} onValueChange={setOn}>
+    Wi-Fi
+  </Form.Toggle>
+);
+```
+
+This is similar to using the `Switch` component as a `hint` on text but with reduced padding:
+
+```tsx
+<Form.Section itemStyle={{ paddingVertical: 8 }}>
+  <Form.Text hint={<Switch value={on} onValueChange={setOn} />}>
+    Wi-Fi
+  </Form.Text>
+</Form.Section>
+```
+
 ## List Style
 
 The default `listStyle` is `"auto"` but you can access the old-style with `"grouped"`:

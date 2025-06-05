@@ -15,6 +15,8 @@ import {
   Share,
   StyleProp,
   StyleSheet,
+  Switch,
+  SwitchProps,
   TextProps,
   TextStyle,
   TouchableHighlight,
@@ -22,12 +24,27 @@ import {
   ViewProps,
   ViewStyle,
 } from "react-native";
-import { BodyScrollView } from "./BodyScrollView";
+
 import { HeaderButton } from "./Header";
 import Animated from "react-native-reanimated";
 import { SymbolWeight } from "expo-symbols";
 
+import { useScrollToTop } from "@/hooks/useTabToTop";
+import * as AC from "@bacons/apple-colors";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useBottomTabOverflow } from "./TabBarBackground";
+
 type ListStyle = "grouped" | "auto";
+
+type SystemImageCustomProps = {
+  name: IconSymbolName;
+  color?: OpaqueColorValue;
+  size?: number;
+  weight?: SymbolWeight;
+  style?: StyleProp<TextStyle>;
+};
+
+type SystemImageProps = IconSymbolName | SystemImageCustomProps;
 
 const ListStyleContext = React.createContext<ListStyle>("auto");
 
@@ -165,7 +182,6 @@ type ListProps = ScrollViewProps & {
   navigationTitle?: string;
   listStyle?: ListStyle;
 };
-
 export function List(props: ListProps) {
   return (
     <RefreshContextProvider>
@@ -176,6 +192,32 @@ export function List(props: ListProps) {
 
 if (__DEV__) List.displayName = "FormList";
 
+export function ScrollView(
+  props: ScrollViewProps & { ref?: React.Ref<Animated.ScrollView> }
+) {
+  const paddingBottom = useBottomTabOverflow();
+
+  const { top: statusBarInset, bottom } = useSafeAreaInsets(); // inset of the status bar
+
+  const largeHeaderInset = statusBarInset + 92; // inset to use for a large header since it's frame is equal to 96 + the frame of status bar
+
+  useScrollToTop(props.ref!, -largeHeaderInset);
+
+  return (
+    <Animated.ScrollView
+      scrollToOverflowEnabled
+      automaticallyAdjustsScrollIndicatorInsets
+      contentInsetAdjustmentBehavior="automatic"
+      contentInset={{ bottom: paddingBottom }}
+      scrollIndicatorInsets={{
+        bottom: paddingBottom - (process.env.EXPO_OS === "ios" ? bottom : 0),
+      }}
+      {...props}
+      style={[{ backgroundColor: AC.systemGroupedBackground }, props.style]}
+    />
+  );
+}
+
 function InnerList({ contentContainerStyle, ...props }: ListProps) {
   const { hasSubscribers, refreshing, refresh } = React.use(RefreshContext);
 
@@ -185,7 +227,7 @@ function InnerList({ contentContainerStyle, ...props }: ListProps) {
         <Stack.Screen options={{ title: props.navigationTitle }} />
       )}
       <ListStyleContext value={props.listStyle ?? "auto"}>
-        <BodyScrollView
+        <ScrollView
           contentContainerStyle={mergedStyleProp(
             {
               paddingVertical: 16,
@@ -260,21 +302,7 @@ export function FormItem({
   );
 }
 
-type SystemImageCustomProps = {
-  name: IconSymbolName;
-  color?: OpaqueColorValue;
-  size?: number;
-  weight?: SymbolWeight;
-  style?: StyleProp<TextStyle>;
-};
-
-type SystemImageProps = IconSymbolName | SystemImageCustomProps;
-
-/** Text but with iOS default color and sizes. */
-export function Text({
-  bold,
-  ...props
-}: TextProps & {
+type FormTextProps = TextProps & {
   /** Value displayed on the right side of the form item. */
   hint?: React.ReactNode;
   /** A true/false value for the hint. */
@@ -283,7 +311,10 @@ export function Text({
   systemImage?: SystemImageProps | React.ReactNode;
 
   bold?: boolean;
-}) {
+};
+
+/** Text but with iOS default color and sizes. */
+export function Text({ bold, ...props }: FormTextProps) {
   const font: TextStyle = {
     ...FormFont.default,
     flexShrink: 0,
@@ -300,6 +331,16 @@ export function Text({
 }
 
 if (__DEV__) Text.displayName = "FormText";
+
+export function Toggle({
+  value,
+  onValueChange,
+  ...props
+}: FormTextProps & Required<Pick<SwitchProps, "value" | "onValueChange">>) {
+  return <Text {...props} />;
+}
+
+if (__DEV__) Toggle.displayName = "FormToggle";
 
 export function Link({
   bold,
@@ -496,6 +537,17 @@ export function Section({
       ...child.props,
     };
 
+    const isToggle = child.type === Toggle;
+
+    if (isToggle) {
+      resolvedProps.hint = (
+        <Switch
+          value={resolvedProps.value}
+          onValueChange={resolvedProps.onValueChange}
+        />
+      );
+    }
+
     // Set the hint for the hintBoolean prop.
     if (resolvedProps.hintBoolean != null) {
       resolvedProps.hint ??= resolvedProps.hintBoolean ? (
@@ -526,7 +578,8 @@ export function Section({
     if (
       // If child is type of Text, add default props
       child.type === RNText ||
-      child.type === Text
+      child.type === Text ||
+      isToggle
     ) {
       child = React.cloneElement(child, {
         dynamicTypeRamp: "body",
@@ -664,8 +717,19 @@ export function Section({
 
     // Ensure child is a FormItem otherwise wrap it in a FormItem
     if (!wrapsFormItem && !child.props.custom && child.type !== FormItem) {
+      // Toggle needs reduced padding to account for the larger element.
+      const reducedPadding = isToggle
+        ? {
+            paddingVertical: 8,
+          }
+        : undefined;
+
       child = (
-        <FormItem onPress={originalOnPress} onLongPress={originalOnLongPress}>
+        <FormItem
+          onPress={originalOnPress}
+          onLongPress={originalOnLongPress}
+          style={reducedPadding}
+        >
           {child}
         </FormItem>
       );

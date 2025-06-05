@@ -12,7 +12,6 @@ import {
 import * as Application from "expo-application";
 import { useHeaderSearch } from "@/hooks/useHeaderSearch";
 import { useState } from "react";
-import { ViewProps } from "react-native-svg/lib/typescript/fabric/utils";
 
 function BadgeLabel({
   color,
@@ -108,6 +107,15 @@ function SystemSection() {
       >
         Wi-Fi
       </Form.Text>
+      <Form.Toggle
+        systemImage={
+          <BadgeLabel image="paperplane.fill" color={AC.systemOrange} />
+        }
+        value={on}
+        onValueChange={setOn}
+      >
+        Wi-Fi
+      </Form.Toggle>
 
       <Form.Link
         systemImage={<BadgeLabel image="wifi" color={AC.systemBlue} />}
