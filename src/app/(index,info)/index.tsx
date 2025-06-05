@@ -54,6 +54,8 @@ function Switches() {
   );
 }
 
+import DateTimePicker from "@react-native-community/datetimepicker";
+
 export default function Page() {
   const ref = useAnimatedRef();
   const scroll = useScrollViewOffset(ref);
@@ -159,23 +161,12 @@ export default function Page() {
           </View>
         </Form.Section>
 
-        <Form.Section>
-          <TextInput placeholder="Hello" />
-          <Form.TextField placeholder="Given Name" />
+        <Form.Section title="Details">
+          <TextInput placeholder="First Name" />
+          <Form.TextField placeholder="Last Name" />
         </Form.Section>
 
         <Form.Section title="Features">
-          <Form.FormItem>
-            <TextInput
-              placeholder="Given Name"
-              style={{
-                fontSize: 16,
-                color: AC.label,
-              }}
-              multiline
-              placeholderTextColor={AC.secondaryLabel}
-            />
-          </Form.FormItem>
           <Form.Text
             onPress={() => {
               setShow(true);
