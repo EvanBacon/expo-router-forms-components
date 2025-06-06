@@ -13,4 +13,5 @@ module.exports = ({ config }) => {
     }
     config.extra.eas.projectId = process.env.LOCAL_EAS_PROJECT_ID;
   }
+  return config;
 };
