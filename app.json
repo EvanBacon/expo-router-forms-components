@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "bacomponents",
-    "slug": "bacomponents",
+    "name": "Crispy",
+    "slug": "crispy",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "acme",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -48,9 +48,6 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    },
-    "extra": {
-      "eas": {}
     }
   }
 }
