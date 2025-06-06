@@ -28,6 +28,7 @@ import Animated, {
   useAnimatedStyle,
   useScrollViewOffset,
 } from "react-native-reanimated";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 import { GlurryList } from "@/components/example/glurry-modal";
 import ExpoSvg from "@/svg/expo.svg";
@@ -53,8 +54,6 @@ function Switches() {
     </Form.Section>
   );
 }
-
-import DateTimePicker from "@react-native-community/datetimepicker";
 
 export default function Page() {
   const ref = useAnimatedRef();
@@ -185,20 +184,6 @@ export default function Page() {
           >
             Manual
           </Form.Text>
-        </Form.Section>
-
-        <Form.Section title="Features">
-          <Form.Text
-            onPress={() => {
-              setShow(true);
-            }}
-          >
-            Open Blur Modal
-          </Form.Text>
-          <Form.Link href="/settings">Apple Settings</Form.Link>
-          <Form.Link href="/icon">Change App Icon</Form.Link>
-          <Form.Link href="/_debug">Debug menu</Form.Link>
-          <Form.Link href="/privacy">Privacy Policy</Form.Link>
         </Form.Section>
 
         <Form.Section title="Features">
