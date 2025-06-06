@@ -22,7 +22,6 @@ import {
   Appearance,
   TextInput,
   View,
-  useColorScheme,
 } from "react-native";
 import Animated, {
   interpolate,
