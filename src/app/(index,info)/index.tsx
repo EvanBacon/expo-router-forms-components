@@ -19,8 +19,10 @@ import {
   OpaqueColorValue,
   Switch,
   Text,
+  Appearance,
   TextInput,
   View,
+  useColorScheme,
 } from "react-native";
 import Animated, {
   interpolate,
@@ -34,11 +36,39 @@ import { GlurryList } from "@/components/example/glurry-modal";
 import ExpoSvg from "@/svg/expo.svg";
 import GithubSvg from "@/svg/github.svg";
 
+function useOptimisticDarkMode() {
+  const [darkMode, setDarkMode] = React.useState(() => {
+    return Appearance.getColorScheme() === "dark";
+  });
+
+  return [
+    darkMode,
+    (value: Parameters<typeof Appearance.setColorScheme>[0]) => {
+      setDarkMode(value === "dark");
+      if (process.env.EXPO_OS === "ios") {
+        setTimeout(() => {
+          Appearance.setColorScheme(value);
+          // Add some time for the iOS switch animation to complete
+        }, 100);
+      } else {
+        Appearance.setColorScheme(value);
+      }
+    },
+  ] as const;
+}
+
 function Switches() {
   const [on, setOn] = React.useState(false);
-
+  const [darkMode, setDarkMode] = useOptimisticDarkMode();
   return (
     <Form.Section title="Toggle">
+      <Form.Toggle
+        systemImage={{ name: "drop.keypad.rectangle" }}
+        value={darkMode}
+        onValueChange={(value) => setDarkMode(value ? "dark" : undefined)}
+      >
+        Always Dark
+      </Form.Toggle>
       <Form.Toggle systemImage="star" value={on} onValueChange={setOn}>
         Built-in
       </Form.Toggle>
