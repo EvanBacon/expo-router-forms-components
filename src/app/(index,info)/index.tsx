@@ -49,8 +49,13 @@ function useOptimisticDarkMode() {
           Appearance.setColorScheme(value);
           // Add some time for the iOS switch animation to complete
         }, 100);
-      } else {
+      } else if (process.env.EXPO_OS === "android") {
         Appearance.setColorScheme(value);
+      } else if (process.env.EXPO_OS === "web") {
+        // Web doesn't support setting the color scheme, so we just log it
+        console.log("Setting color scheme to:", value);
+        // Add class= "dark" to the body element
+        document.body.classList.toggle("dark", value === "dark");
       }
     },
   ] as const;

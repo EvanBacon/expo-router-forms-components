@@ -360,6 +360,12 @@ This is similar to using the `Switch` component as a `hint` on text but with red
 </Form.Section>
 ```
 
+I've added a fork of React Native Web's `Switch` which looks more like iOS than the old Material design. This makes it a bit easier to change the theme.
+
+```tsx
+import { Switch } from "@components/ui/Switch";
+```
+
 ## Date picker
 
 > Web not supported.

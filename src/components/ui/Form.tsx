@@ -16,8 +16,6 @@ import {
   Share,
   StyleProp,
   StyleSheet,
-  Switch,
-  SwitchProps,
   TextInput,
   TextInputProps,
   TextProps,
@@ -29,9 +27,10 @@ import {
 } from "react-native";
 import DateTimePicker, {
   AndroidNativeProps,
-  DatePickerOptions,
   IOSNativeProps,
 } from "@react-native-community/datetimepicker";
+
+import { Switch, SwitchProps } from "@/components/ui/Switch";
 
 import { HeaderButton } from "./Header";
 import Animated from "react-native-reanimated";
@@ -596,15 +595,6 @@ export function Section({
           thumbColor={resolvedProps.thumbColor}
           trackColor={resolvedProps.trackColor}
           ios_backgroundColor={resolvedProps.ios_backgroundColor}
-          {...Platform.select({
-            web: {
-              activeThumbColor: AppleColors.label,
-              activeTrackColor: AppleColors.systemGreen,
-              thumbColor: resolvedProps.thumbColor ?? AppleColors.label,
-              trackColor: resolvedProps.trackColor ?? AppleColors.systemGray4,
-            },
-            default: {},
-          })}
           onChange={resolvedProps.onChange}
           disabled={resolvedProps.disabled}
           value={resolvedProps.value}
