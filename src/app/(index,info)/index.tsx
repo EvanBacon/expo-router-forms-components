@@ -63,7 +63,7 @@ function Switches() {
   return (
     <Form.Section title="Toggle">
       <Form.Toggle
-        systemImage={{ name: "drop.keypad.rectangle" }}
+        systemImage={{ name: "moon" }}
         value={darkMode}
         onValueChange={(value) => setDarkMode(value ? "dark" : undefined)}
       >
