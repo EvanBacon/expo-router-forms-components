@@ -9,6 +9,7 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
+      "bundleIdentifier": "com.bacon.crispy",
       "supportsTablet": false,
       "infoPlist": {
         "UIViewControllerBasedStatusBarAppearance": true,
@@ -48,6 +49,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "6d57ca78-f051-45fb-b38f-84aac37c746d"
+      }
     }
   }
 }
