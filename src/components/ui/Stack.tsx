@@ -37,7 +37,7 @@ export default function Stack({
   ...props
 }: React.ComponentProps<typeof NativeStack>) {
   const processedChildren = React.Children.map(children, (child) => {
-    if (React.isValidElement(child)) {
+    if (React.isValidElement<StackScreenProps>(child)) {
       const { sheet, modal, ...props } = child.props;
       if (sheet) {
         return React.cloneElement(child, {
@@ -72,11 +72,11 @@ export default function Stack({
   );
 }
 
-Stack.Screen = NativeStack.Screen as React.FC<
-  React.ComponentProps<typeof NativeStack.Screen> & {
-    /** Make the sheet open as a bottom sheet with default options on iOS. */
-    sheet?: boolean;
-    /** Make the screen open as a modal. */
-    modal?: boolean;
-  }
->;
+type StackScreenProps = React.ComponentProps<typeof NativeStack.Screen> & {
+  /** Make the sheet open as a bottom sheet with default options on iOS. */
+  sheet?: boolean;
+  /** Make the screen open as a modal. */
+  modal?: boolean;
+};
+
+Stack.Screen = NativeStack.Screen as StackScreenProps;
