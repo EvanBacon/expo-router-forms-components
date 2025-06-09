@@ -1,10 +1,5 @@
 {
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit",
-    "source.fixAll": "explicit",
-    "source.organizeImports": "never",
-    "source.sortMembers": "explicit"
-  },
+  "editor.codeActionsOnSave": {},
   "typescript.preferences.autoImportSpecifierExcludeRegexes": [
     "^react-native-reanimated/lib/*",
     "^expo-router/build/*"

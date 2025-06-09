@@ -73,6 +73,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 8,
   },
+  vstack: {
+    flex: 1,
+    flexDirection: "column",
+    // alignItems: "center",
+    // gap: 8,
+  },
   spacer: { flex: 1 },
   separator: {
     marginStart: 60,
@@ -1033,8 +1039,16 @@ export function HStack(props: ViewProps) {
     />
   );
 }
+export function VStack(props: ViewProps) {
+  return (
+    <View
+      {...props}
+      style={mergedStyleProp<ViewStyle>(styles.vstack, props.style)}
+    />
+  );
+}
 
-function Spacer(props: ViewProps) {
+export function Spacer(props: ViewProps) {
   return <View {...props} style={[styles.spacer, props.style]} />;
 }
 
