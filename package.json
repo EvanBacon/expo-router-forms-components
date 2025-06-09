@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@bacons/apple-colors": "^0.0.8",
+    "@bottom-tabs/react-navigation": "^0.9.1",
     "@expo-google-fonts/source-code-pro": "^0.3.0",
     "@expo/vector-icons": "^14.1.0",
     "@react-native-community/datetimepicker": "^8.4.1",
@@ -44,7 +45,10 @@
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-native": "0.79.3",
+    "react-native-bottom-tabs": "^0.9.1",
     "react-native-gesture-handler": "~2.24.0",
+    "react-native-ios-context-menu": "^3.1.2",
+    "react-native-ios-utilities": "^5.1.5",
     "react-native-reanimated": "~3.17.3",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",

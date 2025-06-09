@@ -81,7 +81,7 @@ function Switches() {
   const [on, setOn] = React.useState(false);
   const [darkMode, setDarkMode] = useOptimisticDarkMode();
   return (
-    <Form.Section title="Toggle">
+    <Form.Section>
       <Form.Toggle
         systemImage={{ name: "moon" }}
         value={darkMode}
@@ -89,10 +89,8 @@ function Switches() {
       >
         Always Dark
       </Form.Toggle>
-      <Form.Toggle systemImage="star" value={on} onValueChange={setOn}>
-        Built-in
-      </Form.Toggle>
-      <Form.Text bold hint={<Switch value={on} onValueChange={setOn} />}>
+
+      {/* <Form.Text bold hint={<Switch value={on} onValueChange={setOn} />}>
         Hint
       </Form.Text>
 
@@ -100,10 +98,12 @@ function Switches() {
         <Form.Text>Manual</Form.Text>
         <View style={{ flex: 1 }} />
         <Switch value={on} onValueChange={setOn} />
-      </Form.HStack>
+      </Form.HStack> */}
     </Form.Section>
   );
 }
+
+import { ContextMenuView } from "react-native-ios-context-menu";
 
 function FontSection() {
   const [bold, setBold] = React.useState(false);
@@ -169,7 +169,7 @@ export default function Page() {
                   ]}
                 >
                   <Image
-                    source={{ uri: "https://github.com/evanbacon.png" }}
+                    source={{ uri: "https://github.com/expo.png" }}
                     style={[
                       {
                         aspectRatio: 1,
@@ -194,7 +194,7 @@ export default function Page() {
             }
             return (
               <Animated.Image
-                source={{ uri: "https://github.com/evanbacon.png" }}
+                source={{ uri: "https://github.com/expo.png" }}
                 style={[
                   style,
                   {
@@ -214,7 +214,7 @@ export default function Page() {
         <Form.Section>
           <Rounded padding style={{ alignItems: "center", gap: 8, flex: 1 }}>
             <Image
-              source={{ uri: "https://github.com/evanbacon.png" }}
+              source={{ uri: "https://github.com/expo.png" }}
               style={{
                 aspectRatio: 1,
                 height: 64,
@@ -229,10 +229,10 @@ export default function Page() {
                 fontWeight: "600",
               }}
             >
-              Bacon Components
+              Expo Crispy UI
             </Form.Text>
             <Form.Text style={{ textAlign: "center", fontSize: 14 }}>
-              Copy/paste components for universal Expo Router apps.{" "}
+              Beautiful Expo Router app with liquid glass.{" "}
               <Form.Link
                 style={{
                   color: AC.link,
@@ -246,65 +246,81 @@ export default function Page() {
           </Rounded>
         </Form.Section>
 
-        <FontSection />
         <Form.Section title="Details">
-          <TextInput placeholder="First Name" />
-          <Form.TextField placeholder="Last Name" />
+          <TextInput placeholder="What does your app do..." />
+        </Form.Section>
+        <Form.Section>
+          <Form.DatePicker value={new Date()} mode="datetime">
+            Schedule Task
+          </Form.DatePicker>
         </Form.Section>
 
-        {process.env.EXPO_OS === "ios" && (
-          <Form.Section title="Date">
-            <Form.DatePicker value={new Date()} accentColor={AC.label}>
-              Birthday
-            </Form.DatePicker>
-            <Form.DatePicker value={new Date()} mode="time">
-              Birthday Minute
-            </Form.DatePicker>
-
+        <Form.Section>
+          <ContextMenuView
+            custom
+            style={{ paddingVertical: 11, paddingHorizontal: 20 }}
+            menuConfig={{
+              menuTitle: "Liquid Glass",
+              menuItems: [
+                {
+                  actionKey: "key-02",
+                  actionTitle: "Submit to Apple",
+                  icon: {
+                    type: "IMAGE_SYSTEM",
+                    imageValue: {
+                      systemName: "apple.logo",
+                    },
+                  },
+                },
+                {
+                  actionKey: "key-03",
+                  actionTitle: "Deploy to Expo",
+                  icon: {
+                    type: "IMAGE_SYSTEM",
+                    imageValue: {
+                      systemName: "cloud.fill",
+                    },
+                  },
+                },
+                {
+                  actionKey: "key-03",
+                  menuTitle: "TestFlight",
+                  menuItems: [
+                    {
+                      actionKey: "key-01-01",
+                      actionTitle: "Internal Testing",
+                      icon: {
+                        type: "IMAGE_SYSTEM",
+                        imageValue: {
+                          systemName: "message.fill",
+                        },
+                      },
+                    },
+                    {
+                      actionKey: "key-01-02",
+                      actionTitle: "Public Beta",
+                      icon: {
+                        type: "IMAGE_SYSTEM",
+                        imageValue: {
+                          systemName: "person.2.fill",
+                        },
+                      },
+                    },
+                  ],
+                },
+              ],
+            }}
+          >
             <Form.Text
-              hint={
-                <DateTimePicker
-                  mode="datetime"
-                  accentColor={AC.systemTeal}
-                  value={new Date()}
-                />
-              }
+              systemImage="terminal"
+              style={{
+                letterSpacing: 0.5,
+              }}
             >
-              Manual
+              <Text style={{ color: AC.secondaryLabel }}>{`~ / `}</Text>
+              npx testflight
             </Form.Text>
-          </Form.Section>
-        )}
-
-        <Form.Section title="Features">
-          <Form.Text
-            onPress={() => {
-              setShow(true);
-            }}
-          >
-            Open Blur Modal
-          </Form.Text>
-          <Form.Link href="/settings">Apple Settings</Form.Link>
-          <Form.Link href="/icon">Change App Icon</Form.Link>
-          <Form.Link href="/_debug">Debug menu</Form.Link>
-          <Form.Link href="/privacy">Privacy Policy</Form.Link>
-        </Form.Section>
-
-        <Form.Section>
-          <Form.HStack style={{ alignItems: "stretch", gap: 12 }}>
-            <TripleItemTest />
-          </Form.HStack>
-        </Form.Section>
-
-        <Form.Section>
-          <Form.Text
-            systemImage="terminal"
-            style={{
-              letterSpacing: 0.5,
-            }}
-          >
-            <Text style={{ color: AC.secondaryLabel }}>{`~ / `}</Text>
-            npx testflight
-          </Form.Text>
+          </ContextMenuView>
 
           <Form.Link
             href="https://expo.dev/eas"
@@ -321,49 +337,35 @@ export default function Page() {
           </Form.Link>
         </Form.Section>
 
-        <Form.Section>
-          <Form.Link
-            href="https://github.com/EvanBacon/expo-router-forms-components"
-            target="_blank"
-            systemImage={
-              <GithubSvg
-                fill={AC.label}
-                style={{ width: 18, height: 18, marginRight: 8 }}
-              />
-            }
-            style={{ color: AC.systemBlue, fontWeight: "400" }}
-          >
-            Clone on GitHub
-          </Form.Link>
-        </Form.Section>
-        <Form.Section title="Hints">
-          <Form.Text hint="Long hint with extra content that should float below the content">
-            Normal
-          </Form.Text>
-
-          {/* Custom with wrap-below */}
-          <Form.HStack style={{ flexWrap: "wrap" }}>
-            <Form.Text>Wrap Below</Form.Text>
-            {/* Spacer */}
-            <View style={{ flex: 1 }} />
-            {/* Right */}
-            <Form.Text style={{ flexShrink: 1, color: AC.secondaryLabel }}>
-              Long list of text that should wrap around when it gets too long
-            </Form.Text>
-          </Form.HStack>
-        </Form.Section>
-
         <Switches />
+
+        <Form.Section title="Features">
+          <Form.Text
+            onPress={() => {
+              setShow(true);
+            }}
+          >
+            Open Blur Modal
+          </Form.Text>
+        </Form.Section>
+
         <Form.Section
-          title="Segments"
-          footer="Render tabbed content declaratively"
+          title="Choose model"
+          footer="Pick a model to generate components."
         >
           <SegmentsTest />
         </Form.Section>
+
+        <Form.Section>
+          <Form.HStack style={{ alignItems: "stretch", gap: 12 }}>
+            <TripleItemTest />
+          </Form.HStack>
+        </Form.Section>
+
         <Form.Section>
           <Form.HStack style={{ gap: 16 }}>
             <Image
-              source={{ uri: "https://github.com/evanbacon.png" }}
+              source={{ uri: "https://github.com/expo.png" }}
               style={{
                 aspectRatio: 1,
                 height: 48,
@@ -392,71 +394,7 @@ export default function Page() {
             />
           </Form.HStack>
         </Form.Section>
-        <Form.Section
-          title="Links"
-          footer={
-            <Text>
-              Help improve Search by allowing Apple to store the searches you
-              enter into Safari, Siri, and Spotlight in a way that is not linked
-              to you.{"\n\n"}Searches include lookups of general knowledge, and
-              requests to do things like play music and get directions.{"\n"}
-              <Link style={{ color: AC.link }} href="/two">
-                About Search & Privacy...
-              </Link>
-            </Text>
-          }
-        >
-          {/* Table style: | A   B |*/}
-          <Link href="/two">Next</Link>
 
-          <Form.Link target="_blank" href="https://evanbacon.dev">
-            Target _blank
-          </Form.Link>
-
-          <Link href="/two">
-            <View style={{ gap: 4 }}>
-              <Form.Text>Evan's iPhone</Form.Text>
-              <Text style={Form.FormFont.caption}>This iPhone 16 Pro Max</Text>
-            </View>
-          </Link>
-
-          <Link href="https://expo.dev">Expo</Link>
-
-          <Form.Link href="/two" hint="Normal">
-            Hint + Link
-          </Form.Link>
-        </Form.Section>
-        <Form.Section title="Icons">
-          <Form.Link href="/two" systemImage="star">
-            Link + Icon
-          </Form.Link>
-          <Form.Link
-            href="/two"
-            systemImage={{ name: "car.fill", color: AC.systemPurple }}
-          >
-            Custom color in link
-          </Form.Link>
-          <Form.Text systemImage="airpodspro.chargingcase.wireless.fill">
-            Item
-          </Form.Text>
-          <FormLabel
-            onPress={() => {
-              console.log("hey");
-            }}
-            systemImage="photo.on.rectangle"
-          >
-            Custom Icon
-          </FormLabel>
-          <Form.Link
-            style={{
-              color: AC.systemGreen,
-            }}
-            href="/two"
-            systemImage="photo.on.rectangle"
-          >
-            Icon inherits link color
-          </Form.Link>
-        </Form.Section>
         <Form.Section title="Unavailable">
           <ContentUnavailable internet actions={<Button title="Refresh" />} />
 
@@ -548,7 +486,7 @@ export default function Page() {
           }
         >
           <Form.Link
-            href="https://github.com/evanbacon"
+            href="https://github.com/expo"
             target="_blank"
             hintImage={{
               name: "hand.raised.fill",
@@ -662,17 +600,15 @@ function SegmentsTest() {
     <View style={{ flex: 1 }}>
       <Segments defaultValue="account">
         <SegmentsList>
-          <SegmentsTrigger value="account">Account</SegmentsTrigger>
-          <SegmentsTrigger value="password">Password</SegmentsTrigger>
+          <SegmentsTrigger value="account">Client</SegmentsTrigger>
+          <SegmentsTrigger value="password">Server</SegmentsTrigger>
         </SegmentsList>
 
         <SegmentsContent value="account">
-          <Form.Text style={{ paddingVertical: 12 }}>Account Section</Form.Text>
+          <Form.Text style={{ paddingVertical: 12 }}>Runs locally</Form.Text>
         </SegmentsContent>
         <SegmentsContent value="password">
-          <Form.Text style={{ paddingVertical: 12 }}>
-            Password Section
-          </Form.Text>
+          <Form.Text style={{ paddingVertical: 12 }}>Faster models</Form.Text>
         </SegmentsContent>
       </Segments>
     </View>

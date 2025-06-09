@@ -1,0 +1,45 @@
+diff --git a/node_modules/expo-router/build/getRoutesCore.js b/node_modules/expo-router/build/getRoutesCore.js
+index 769b741..c39f172 100644
+--- a/node_modules/expo-router/build/getRoutesCore.js
++++ b/node_modules/expo-router/build/getRoutesCore.js
+@@ -498,24 +498,24 @@ function generateDynamic(path) {
+     return dynamic.length === 0 ? null : dynamic;
+ }
+ function appendSitemapRoute(directory, options) {
+-    if (!directory.files.has('_sitemap') && options.getSystemRoute) {
+-        directory.files.set('_sitemap', [
+-            options.getSystemRoute({
+-                type: 'route',
+-                route: '_sitemap',
+-            }),
+-        ]);
+-    }
++    // if (!directory.files.has('_sitemap') && options.getSystemRoute) {
++    //     directory.files.set('_sitemap', [
++    //         options.getSystemRoute({
++    //             type: 'route',
++    //             route: '_sitemap',
++    //         }),
++    //     ]);
++    // }
+ }
+ function appendNotFoundRoute(directory, options) {
+-    if (!directory.files.has('+not-found') && options.getSystemRoute) {
+-        directory.files.set('+not-found', [
+-            options.getSystemRoute({
+-                type: 'route',
+-                route: '+not-found',
+-            }),
+-        ]);
+-    }
++    // if (!directory.files.has('+not-found') && options.getSystemRoute) {
++    //     directory.files.set('+not-found', [
++    //         options.getSystemRoute({
++    //             type: 'route',
++    //             route: '+not-found',
++    //         }),
++    //     ]);
++    // }
+ }
+ function getLayoutNode(node, options) {
+     /**

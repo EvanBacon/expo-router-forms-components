@@ -822,12 +822,16 @@ export function Section({
     // Ensure child is a FormItem otherwise wrap it in a FormItem
     if (!wrapsFormItem && !child.props.custom && child.type !== FormItem) {
       // Toggle needs reduced padding to account for the larger element.
-      const reducedPadding =
-        isToggle || isDatePicker
-          ? {
-              paddingVertical: 8,
-            }
-          : undefined;
+      const reducedPadding = isToggle
+        ? {
+            paddingVertical: 8,
+            paddingRight: 36,
+          }
+        : isDatePicker
+        ? {
+            paddingVertical: 8,
+          }
+        : undefined;
 
       child = (
         <FormItem

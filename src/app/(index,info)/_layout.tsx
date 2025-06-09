@@ -23,13 +23,15 @@ export default function Layout({ segment }: { segment: string }) {
       return (
         <Stack.Screen
           name="index"
-          options={{
-            headerRight: () => (
-              <Form.Link headerRight href="/account">
-                <Avatar />
-              </Form.Link>
-            ),
-          }}
+          options={
+            {
+              // headerRight: () => (
+              //   <Form.Link headerRight href="/account">
+              //     <Avatar />
+              //   </Form.Link>
+              // ),
+            }
+          }
         />
       );
     } else {
