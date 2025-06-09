@@ -35,6 +35,8 @@ import { GlurryList } from "@/components/example/glurry-modal";
 import ExpoSvg from "@/svg/expo.svg";
 import GithubSvg from "@/svg/github.svg";
 
+import * as Fonts from "@/constants/fonts";
+
 function useOptimisticDarkMode() {
   const [darkMode, setDarkMode] = React.useState(() => {
     return Appearance.getColorScheme() === "dark";
@@ -86,6 +88,40 @@ function Switches() {
         <Switch value={on} onValueChange={setOn} />
       </Form.HStack>
     </Form.Section>
+  );
+}
+
+function FontSection() {
+  const [bold, setBold] = React.useState(false);
+  const fontWeight = bold ? "bold" : "normal";
+  return (
+    <>
+      <Form.Section
+        title="Fonts"
+        titleHint={process.env.EXPO_OS === "ios" ? "San Francisco" : "Roboto"}
+      >
+        <Form.Text style={{ fontFamily: Fonts.system, fontWeight }}>
+          system
+        </Form.Text>
+        <Form.Text
+          style={{ fontFamily: Fonts.rounded, fontWeight }}
+          hintBoolean={process.env.EXPO_OS === "ios"}
+        >
+          rounded
+        </Form.Text>
+        <Form.Text style={{ fontFamily: Fonts.monospace, fontWeight }}>
+          monospace
+        </Form.Text>
+        <Form.Text style={{ fontFamily: Fonts.serif, fontWeight }}>
+          serif
+        </Form.Text>
+      </Form.Section>
+      <Form.Section>
+        <Form.Toggle value={bold} onValueChange={setBold}>
+          Bold fonts
+        </Form.Toggle>
+      </Form.Section>
+    </>
   );
 }
 
@@ -174,6 +210,8 @@ export default function Page() {
             <Form.Text
               style={{
                 fontSize: 20,
+                fontFamily:
+                  process.env.EXPO_OS === "ios" ? "ui-rounded" : undefined,
                 fontWeight: "600",
               }}
             >
@@ -194,31 +232,34 @@ export default function Page() {
           </View>
         </Form.Section>
 
+        <FontSection />
         <Form.Section title="Details">
           <TextInput placeholder="First Name" />
           <Form.TextField placeholder="Last Name" />
         </Form.Section>
 
-        <Form.Section title="Date">
-          <Form.DatePicker value={new Date()} accentColor={AC.label}>
-            Birthday
-          </Form.DatePicker>
-          <Form.DatePicker value={new Date()} mode="time">
-            Birthday Minute
-          </Form.DatePicker>
+        {process.env.EXPO_OS === "ios" && (
+          <Form.Section title="Date">
+            <Form.DatePicker value={new Date()} accentColor={AC.label}>
+              Birthday
+            </Form.DatePicker>
+            <Form.DatePicker value={new Date()} mode="time">
+              Birthday Minute
+            </Form.DatePicker>
 
-          <Form.Text
-            hint={
-              <DateTimePicker
-                mode="datetime"
-                accentColor={AC.systemTeal}
-                value={new Date()}
-              />
-            }
-          >
-            Manual
-          </Form.Text>
-        </Form.Section>
+            <Form.Text
+              hint={
+                <DateTimePicker
+                  mode="datetime"
+                  accentColor={AC.systemTeal}
+                  value={new Date()}
+                />
+              }
+            >
+              Manual
+            </Form.Text>
+          </Form.Section>
+        )}
 
         <Form.Section title="Features">
           <Form.Text
