@@ -9,7 +9,6 @@ import {
   Button,
   GestureResponderEvent,
   OpaqueColorValue,
-  Platform,
   RefreshControl,
   Text as RNText,
   ScrollViewProps,
