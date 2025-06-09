@@ -7,5 +7,5 @@ export const serif = "Georgia, 'Times New Roman', serif";
 export const rounded =
   "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif";
 /** Monospace font */
-export const monospace =
+export const monospaced =
   "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace";

@@ -5,4 +5,4 @@ export const serif = "ui-serif";
 /** iOS `UIFontDescriptorSystemDesignRounded` */
 export const rounded = "ui-rounded";
 /** iOS `UIFontDescriptorSystemDesignMonospaced` */
-export const monospace = "ui-monospace";
+export const monospaced = "ui-monospace";

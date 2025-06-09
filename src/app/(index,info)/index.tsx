@@ -36,6 +36,20 @@ import ExpoSvg from "@/svg/expo.svg";
 import GithubSvg from "@/svg/github.svg";
 
 import * as Fonts from "@/constants/fonts";
+import {
+  Body,
+  Callout,
+  Caption,
+  Caption2,
+  Footnote,
+  Headline,
+  LargeTitle,
+  Subheadline,
+  Title,
+  Title2,
+  Title3,
+} from "@/components/ui/title";
+import { Rounded } from "@/components/ui/rounded";
 
 function useOptimisticDarkMode() {
   const [darkMode, setDarkMode] = React.useState(() => {
@@ -109,8 +123,8 @@ function FontSection() {
         >
           rounded
         </Form.Text>
-        <Form.Text style={{ fontFamily: Fonts.monospace, fontWeight }}>
-          monospace
+        <Form.Text style={{ fontFamily: Fonts.monospaced, fontWeight }}>
+          monospaced
         </Form.Text>
         <Form.Text style={{ fontFamily: Fonts.serif, fontWeight }}>
           serif
@@ -198,7 +212,7 @@ export default function Page() {
       />
       <Form.List ref={ref} navigationTitle="Components">
         <Form.Section>
-          <View style={{ alignItems: "center", gap: 8, padding: 16, flex: 1 }}>
+          <Rounded padding style={{ alignItems: "center", gap: 8, flex: 1 }}>
             <Image
               source={{ uri: "https://github.com/evanbacon.png" }}
               style={{
@@ -229,7 +243,7 @@ export default function Page() {
                 Learn more...
               </Form.Link>
             </Form.Text>
-          </View>
+          </Rounded>
         </Form.Section>
 
         <FontSection />
@@ -551,6 +565,31 @@ export default function Page() {
             onPress={() => {}}
           />
         </Form.Section>
+
+        <Rounded
+          padding
+          style={{
+            margin: 16,
+            gap: 8,
+            backgroundColor: AC.secondarySystemGroupedBackground,
+          }}
+        >
+          <LargeTitle>LargeTitle</LargeTitle>
+          <Title>Title 1</Title>
+          <Title2>Title 2</Title2>
+          <Title3>Title 3</Title3>
+          <Headline>Headline</Headline>
+          <Subheadline>Subheadline</Subheadline>
+          <Body>Body</Body>
+          <Callout>Callout</Callout>
+          <Footnote>Footnote</Footnote>
+          <Caption>Caption 1</Caption>
+          <Caption2>Caption 2</Caption2>
+          {/* Example with rounded font */}
+          <Title rounded>Rounded Title 1</Title>
+          {/* Example with monospaced font */}
+          <Body monospaced>Monospaced Body</Body>
+        </Rounded>
       </Form.List>
     </View>
   );
