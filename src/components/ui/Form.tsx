@@ -1,5 +1,6 @@
 "use client";
 
+import { Image, SFSymbolSource } from "@/components/ui/img";
 import { IconSymbol, IconSymbolName } from "@/components/ui/IconSymbol";
 import * as AppleColors from "@bacons/apple-colors";
 import { Href, LinkProps, Link as RouterLink, Stack } from "expo-router";
@@ -627,12 +628,12 @@ export function Section({
     // Set the hint for the hintBoolean prop.
     if (resolvedProps.hintBoolean != null) {
       resolvedProps.hint ??= resolvedProps.hintBoolean ? (
-        <IconSymbol
-          name="checkmark.circle.fill"
-          color={AppleColors.systemGreen}
+        <Image
+          source="sf:checkmark.circle.fill"
+          tintColor={AppleColors.systemGreen}
         />
       ) : (
-        <IconSymbol name="slash.circle" color={AppleColors.systemGray} />
+        <Image source="sf:slash.circle" tintColor={AppleColors.systemGray} />
       );
     }
 
@@ -1019,14 +1020,14 @@ function LinkChevronIcon({
       : "chevron.right";
 
   return (
-    <IconSymbol
-      name={resolvedName}
+    <Image
+      source={"sf:" + resolvedName}
       size={size}
       weight="bold"
       // from xcode, not sure which color is the exact match
       // #BFBFBF
       // #9D9DA0
-      color={AppleColors.tertiaryLabel}
+      tintColor={AppleColors.tertiaryLabel}
     />
   );
 }

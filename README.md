@@ -321,7 +321,7 @@ Add a list item with an image and text + description combo:
   {/* Spacer */}
   <View style={{ flex: 1 }} />
 
-  <IconSymbol color={AC.systemBlue} name="person.fill.badge.plus" size={24} />
+  <Image source="sf:person.fill.badge.plus" size={24} />
 </Form.HStack>
 ```
 
@@ -479,7 +479,15 @@ Be sure to use `@bacons/apple-colors` for high-quality P3 colors.
 
 ## Icons
 
-Use the `IconSymbol` component to use Apple's SF Symbols.
+Use the `Image` component to use Apple's SF Symbols.
+
+```tsx
+import { Image } from "@/components/ui/img";
+
+<Image source="sf:star" size={24} tintColor={AC.systemBlue} />;
+```
+
+The `<Image />` component is a wrapper around the `expo-image` package which supports SF Symbols and SVGs. The SF symbols must be prefixed with `sf:` to load them correctly. Use `size` to set the font size of the symbol, and `tintColor` to set the color of the symbol.
 
 ## Status Bar
 

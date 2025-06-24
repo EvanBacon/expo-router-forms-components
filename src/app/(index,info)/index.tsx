@@ -11,7 +11,8 @@ import {
 } from "@/components/ui/Segments";
 import Stack from "@/components/ui/Stack";
 import * as AC from "@bacons/apple-colors";
-import { Image } from "expo-image";
+// import { Image } from "expo-image";
+import { Image } from "@/components/ui/img";
 import { Link } from "expo-router";
 import { ComponentProps } from "react";
 import {
@@ -379,9 +380,9 @@ export default function Page() {
 
             <View style={{ flex: 1 }} />
 
-            <IconSymbol
-              color={AC.systemBlue}
-              name="person.fill.badge.plus"
+            <Image
+              source="sf:person.fill.badge.plus"
+              tintColor={AC.systemBlue}
               size={24}
               animationSpec={{
                 effect: {
@@ -443,7 +444,7 @@ export default function Page() {
             onPress={() => {
               console.log("hey");
             }}
-            systemImage="photo.on.rectangle"
+            systemImage="sf:photo.on.rectangle"
           >
             Custom Icon
           </FormLabel>
@@ -470,7 +471,7 @@ export default function Page() {
           <ContentUnavailable
             title="Custom Unavailable"
             systemImage={
-              <IconSymbol name="0.square" size={45} color={AC.systemPink} />
+              <Image source="sf:0.square" size={45} tintColor={AC.systemPink} />
             }
           />
         </Form.Section>
@@ -616,10 +617,10 @@ function FormExpandable({
         {/* Spacer */}
         <View style={{ flex: 1 }} />
         {open && (
-          <IconSymbol
-            name={open ? "chevron.up" : "chevron.down"}
+          <Image
+            source={open ? "chevron.up" : "chevron.down"}
             size={16}
-            color={AC.systemGray}
+            tintColor={AC.systemGray}
           />
         )}
         {/* Right */}
@@ -627,10 +628,10 @@ function FormExpandable({
           {open ? hint : preview}
         </Form.Text>
         {!open && (
-          <IconSymbol
-            name={open ? "chevron.up" : "chevron.down"}
+          <Image
+            source={open ? "sf:chevron.up" : "sf:chevron.down"}
             size={16}
-            color={AC.systemGray}
+            tintColor={AC.systemGray}
           />
         )}
       </Form.HStack>
@@ -651,7 +652,11 @@ function FormLabel({
 }) {
   return (
     <Form.HStack style={{ gap: 16 }}>
-      <IconSymbol name={systemImage} size={28} color={color ?? AC.systemBlue} />
+      <Image
+        source={systemImage}
+        size={28}
+        tintColor={color ?? AC.systemBlue}
+      />
       <Text style={Form.FormFont.default}>{children}</Text>
     </Form.HStack>
   );
@@ -697,8 +702,8 @@ function TripleItemTest() {
       <HorizontalItem
         title="Developer"
         badge={
-          <IconSymbol
-            name="person.text.rectangle"
+          <Image
+            name="sf:person.text.rectangle"
             size={28}
             weight="bold"
             animationSpec={{
@@ -707,7 +712,7 @@ function TripleItemTest() {
               },
               repeating: true,
             }}
-            color={AC.secondaryLabel}
+            tintColor={AC.secondaryLabel}
           />
         }
         subtitle="Evan Bacon"
