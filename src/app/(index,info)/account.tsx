@@ -1,7 +1,7 @@
 import * as Form from "@/components/ui/Form";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import * as AC from "@bacons/apple-colors";
-import { Image, Platform, View } from "react-native";
+import { Image, Platform, View } from "@/components/ui/react-native";
 import * as Application from "expo-application";
 
 export default function Page() {

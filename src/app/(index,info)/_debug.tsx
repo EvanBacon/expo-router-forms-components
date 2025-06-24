@@ -7,7 +7,7 @@ import * as Clipboard from "expo-clipboard";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import * as AC from "@bacons/apple-colors";
 import * as Updates from "expo-updates";
-import { ActivityIndicator, Linking, View } from "react-native";
+import { ActivityIndicator, Linking, View } from "@/components/ui/react-native";
 
 import * as Application from "expo-application";
 import { router } from "expo-router";

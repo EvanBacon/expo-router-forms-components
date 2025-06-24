@@ -1,5 +1,5 @@
 import { BodyScrollView } from "@/components/ui/BodyScrollView";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "@/components/ui/react-native";
 
 import { FadeIn } from "@/components/ui/FadeIn";
 import { IconSymbol } from "@/components/ui/IconSymbol";

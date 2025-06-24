@@ -8,7 +8,7 @@ import {
   Switch,
   Text,
   View,
-} from "react-native";
+} from "@/components/ui/react-native";
 import * as Application from "expo-application";
 import { useHeaderSearch } from "@/hooks/useHeaderSearch";
 import { useState } from "react";

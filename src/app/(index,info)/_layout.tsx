@@ -1,6 +1,6 @@
 import Stack from "@/components/ui/Stack";
 import * as AC from "@bacons/apple-colors";
-import { Text, View } from "react-native";
+import { Text, View } from "@/components/ui/react-native";
 
 import * as Form from "@/components/ui/Form";
 import { IconSymbol } from "@/components/ui/IconSymbol";

@@ -1,6 +1,6 @@
 import Stack from "@/components/ui/Stack";
 import TouchableBounce from "@/components/ui/TouchableBounce";
-import { ScrollView, View } from "react-native";
+import { ScrollView, View } from "@/components/ui/react-native";
 import { Image } from "expo-image";
 import * as AC from "@bacons/apple-colors";
 import MaskedView from "@react-native-masked-view/masked-view";

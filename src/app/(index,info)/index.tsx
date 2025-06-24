@@ -22,7 +22,7 @@ import {
   Appearance,
   TextInput,
   View,
-} from "react-native";
+} from "@/components/ui/react-native";
 import Animated, {
   interpolate,
   useAnimatedRef,
@@ -139,6 +139,8 @@ function FontSection() {
   );
 }
 
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+
 export default function Page() {
   const ref = useAnimatedRef();
   const scroll = useScrollViewOffset(ref);
@@ -211,6 +213,11 @@ export default function Page() {
         }}
       />
       <Form.List ref={ref} navigationTitle="Components">
+        <Card>
+          <CardHeader>
+            <CardTitle>Title</CardTitle>
+          </CardHeader>
+        </Card>
         <Form.Section>
           <Rounded padding style={{ alignItems: "center", gap: 8, flex: 1 }}>
             <Image
