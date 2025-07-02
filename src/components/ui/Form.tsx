@@ -8,6 +8,7 @@ import * as WebBrowser from "expo-web-browser";
 import React, { use } from "react";
 import {
   Button,
+  Dimensions,
   GestureResponderEvent,
   OpaqueColorValue,
   RefreshControl,
@@ -249,7 +250,7 @@ function InnerList({ contentContainerStyle, ...props }: ListProps) {
             contentContainerStyle
           )}
           style={{
-            maxWidth: 768,
+            maxWidth: Dimensions.get('window').width,
             width: process.env.EXPO_OS === "web" ? "100%" : undefined,
             marginHorizontal:
               process.env.EXPO_OS === "web" ? "auto" : undefined,
