@@ -3,7 +3,7 @@
     "name": "Crispy",
     "slug": "crispy",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "default",
     "icon": "./assets/images/icon.png",
     "scheme": "acme",
     "userInterfaceStyle": "automatic",

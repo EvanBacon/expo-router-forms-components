@@ -51,6 +51,7 @@ import {
   Title3,
 } from "@/components/ui/title";
 import { Rounded } from "@/components/ui/rounded";
+import { HTMLPictureExample } from "@/components/example/html-picture";
 
 function useOptimisticDarkMode() {
   const [darkMode, setDarkMode] = React.useState(() => {
@@ -248,6 +249,7 @@ export default function Page() {
         </Form.Section>
 
         <FontSection />
+
         <Form.Section title="Details">
           <TextInput placeholder="First Name" />
           <Form.TextField placeholder="Last Name" />
@@ -393,6 +395,9 @@ export default function Page() {
             />
           </Form.HStack>
         </Form.Section>
+
+        <HTMLPictureExample />
+
         <Form.Section
           title="Links"
           footer={
