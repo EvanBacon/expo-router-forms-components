@@ -8,10 +8,10 @@ import { useMemo } from "react";
 
 export const unstable_settings = {
   index: {
-    initialRouteName: "index",
+    anchor: "index",
   },
   info: {
-    initialRouteName: "info",
+    anchor: "info",
   },
 };
 

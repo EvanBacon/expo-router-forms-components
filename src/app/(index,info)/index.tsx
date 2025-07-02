@@ -52,6 +52,7 @@ import {
 } from "@/components/ui/title";
 import { Rounded } from "@/components/ui/rounded";
 import { HTMLPictureExample } from "@/components/example/html-picture";
+import { toast } from "@/utils/toast";
 
 function useOptimisticDarkMode() {
   const [darkMode, setDarkMode] = React.useState(() => {
@@ -290,6 +291,54 @@ export default function Page() {
           <Form.Link href="/icon">Change App Icon</Form.Link>
           <Form.Link href="/_debug">Debug menu</Form.Link>
           <Form.Link href="/privacy">Privacy Policy</Form.Link>
+        </Form.Section>
+
+        <Form.Section title="Toasts" footer="Powered by sonner-native">
+          <Form.Text
+            onPress={() => {
+              toast("Hello from sonner-native!");
+            }}
+          >
+            Basic Toast
+          </Form.Text>
+          <Form.Text
+            onPress={() => {
+              toast.success("Successfully completed the action!");
+            }}
+          >
+            Success Toast
+          </Form.Text>
+          <Form.Text
+            onPress={() => {
+              toast.error("Something went wrong!");
+            }}
+          >
+            Error Toast
+          </Form.Text>
+          <Form.Text
+            onPress={() => {
+              toast.warning("This is a warning message!");
+            }}
+          >
+            Warning Toast
+          </Form.Text>
+          <Form.Text
+            onPress={() => {
+              toast.info("Here's some helpful information");
+            }}
+          >
+            Info Toast
+          </Form.Text>
+          <Form.Text
+            onPress={() => {
+              toast("Custom toast with options", {
+                description: "This toast has a description and lasts longer",
+                duration: 5000,
+              });
+            }}
+          >
+            Custom Toast
+          </Form.Text>
         </Form.Section>
 
         <Form.Section>

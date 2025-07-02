@@ -4,7 +4,8 @@ import { AsyncFont } from "@/components/data/async-font";
 import Tabs from "@/components/ui/Tabs";
 import { SplashScreen } from "expo-router";
 import { Suspense, useEffect } from "react";
-
+import { Toaster } from "@/utils/toast";
+import { GestureHandlerRootView } from "@/utils/native-gesture-provider";
 import { SourceCodePro_400Regular } from "@expo-google-fonts/source-code-pro";
 
 SplashScreen.preventAutoHideAsync();
@@ -26,14 +27,17 @@ export default function Layout() {
       {/* Load fonts in suspense */}
       <AsyncFont src={SourceCodePro_400Regular} fontFamily="Source Code Pro" />
       <ThemeProvider>
-        <Tabs>
-          <Tabs.Screen name="(index)" systemImage="house.fill" title="Home" />
-          <Tabs.Screen
-            name="(info)"
-            systemImage="cursorarrow.rays"
-            title="Info"
-          />
-        </Tabs>
+        <GestureHandlerRootView style={{ flex: 1, display: "contents" }}>
+          <Tabs>
+            <Tabs.Screen name="(index)" systemImage="house.fill" title="Home" />
+            <Tabs.Screen
+              name="(info)"
+              systemImage="cursorarrow.rays"
+              title="Info"
+            />
+          </Tabs>
+          <Toaster />
+        </GestureHandlerRootView>
       </ThemeProvider>
     </Suspense>
   );

@@ -862,7 +862,9 @@ export function Section({
           props.style,
         ]}
       >
-        {childrenWithSeparator}
+        {childrenWithSeparator.map((child, index) => (
+          <React.Fragment key={index}>{child}</React.Fragment>
+        ))}
       </Animated.View>
     </SectionStyleContext>
   );
