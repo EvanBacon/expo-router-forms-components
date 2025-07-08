@@ -1,9 +1,9 @@
 import "@/components/runtime/local-storage";
+import "@/components/runtime/clipboard";
 
 import * as Form from "@/components/ui/form";
 import Constants, { ExecutionEnvironment } from "expo-constants";
 
-import * as Clipboard from "expo-clipboard";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import * as AC from "@bacons/apple-colors";
 import * as Updates from "expo-updates";
@@ -169,7 +169,7 @@ function ExpoSection() {
           target="_blank"
           style={{ color: AC.systemBlue }}
           onLongPress={() => {
-            Clipboard.setStringAsync(getDeploymentUrl());
+            navigator.clipboard.writeText(getDeploymentUrl());
             alert("Copied to clipboard");
           }}
           href={getDeploymentUrl()}
