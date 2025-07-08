@@ -1,4 +1,4 @@
-import { IconSymbol, IconSymbolName } from "@/components/ui/IconSymbol";
+import { IconSymbol, IconSymbolName } from "@/components/ui/icon-symbol";
 import {
   BottomTabBarButtonProps,
   BottomTabNavigationOptions,
@@ -8,7 +8,7 @@ import React from "react";
 // Better transitions on web, no changes on native.
 import { PlatformPressable } from "@react-navigation/elements";
 import { Tabs as NativeTabs } from "expo-router";
-import BlurTabBarBackground from "./TabBarBackground";
+import BlurTabBarBackground from "../ui/tab-bar-background";
 
 // These are the default tab options for iOS, they disable on other platforms.
 const DEFAULT_TABS: BottomTabNavigationOptions =

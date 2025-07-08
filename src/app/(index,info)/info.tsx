@@ -1,5 +1,5 @@
-import * as Form from "@/components/ui/Form";
-import Stack from "@/components/ui/Stack";
+import * as Form from "@/components/ui/form";
+import Stack from "@/components/layout/stack";
 import * as AC from "@bacons/apple-colors";
 import { Link } from "expo-router";
 import { Text, View } from "react-native";

@@ -1,9 +1,9 @@
-import Stack from "@/components/ui/Stack";
+import Stack from "@/components/layout/stack";
 import * as AC from "@bacons/apple-colors";
 import { Text, View } from "react-native";
 
-import * as Form from "@/components/ui/Form";
-import { IconSymbol } from "@/components/ui/IconSymbol";
+import * as Form from "@/components/ui/form";
+import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useMemo } from "react";
 
 export const unstable_settings = {

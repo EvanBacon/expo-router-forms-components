@@ -3,7 +3,7 @@ import { NativeStackNavigationOptions } from "@react-navigation/native-stack";
 import React from "react";
 
 // Better transitions on web, no changes on native.
-import NativeStack from "@/components/layout/modalNavigator";
+import NativeStack from "@/components/layout/modal-navigator";
 
 // These are the default stack options for iOS, they disable on other platforms.
 const DEFAULT_STACK_HEADER: NativeStackNavigationOptions =

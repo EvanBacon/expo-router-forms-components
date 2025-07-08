@@ -1,7 +1,7 @@
 // Similar to https://developer.apple.com/documentation/swiftui/contentunavailableview
 
 import { View, Text } from "react-native";
-import { IconSymbol, IconSymbolName } from "./IconSymbol";
+import { IconSymbol, IconSymbolName } from "./icon-symbol";
 import * as AC from "@bacons/apple-colors";
 
 type Props = {

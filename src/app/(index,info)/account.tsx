@@ -1,5 +1,5 @@
-import * as Form from "@/components/ui/Form";
-import { IconSymbol } from "@/components/ui/IconSymbol";
+import * as Form from "@/components/ui/form";
+import { IconSymbol } from "@/components/ui/icon-symbol";
 import * as AC from "@bacons/apple-colors";
 import { Image, Platform, View } from "react-native";
 import * as Application from "expo-application";

@@ -1,5 +1,5 @@
-import * as Form from "@/components/ui/Form";
-import { IconSymbol, IconSymbolName } from "@/components/ui/IconSymbol";
+import * as Form from "@/components/ui/form";
+import { IconSymbol, IconSymbolName } from "@/components/ui/icon-symbol";
 import * as AC from "@bacons/apple-colors";
 import {
   Image,
@@ -10,7 +10,7 @@ import {
   View,
 } from "react-native";
 import * as Application from "expo-application";
-import { useHeaderSearch } from "@/hooks/useHeaderSearch";
+import { useHeaderSearch } from "@/hooks/use-header-search";
 import { useState } from "react";
 
 function BadgeLabel({
