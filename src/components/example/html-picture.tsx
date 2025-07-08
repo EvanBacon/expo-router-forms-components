@@ -1,4 +1,4 @@
-import * as Form from "@/components/ui/Form";
+import * as Form from "@/components/ui/form";
 import { Picture } from "@/components/ui/picture";
 import { Image } from "expo-image";
 

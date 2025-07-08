@@ -1,15 +1,15 @@
 import React from "react";
 
-import { ContentUnavailable } from "@/components/ui/ContentUnavailable";
-import * as Form from "@/components/ui/Form";
-import { IconSymbol } from "@/components/ui/IconSymbol";
+import { ContentUnavailable } from "@/components/ui/content-unavailable";
+import * as Form from "@/components/ui/form";
+import { IconSymbol } from "@/components/ui/icon-symbol";
 import {
   Segments,
   SegmentsContent,
   SegmentsList,
   SegmentsTrigger,
-} from "@/components/ui/Segments";
-import Stack from "@/components/ui/Stack";
+} from "@/components/ui/segments";
+import Stack from "@/components/ui/stack";
 import * as AC from "@bacons/apple-colors";
 // import { Image } from "expo-image";
 import { Image } from "@/components/ui/img";

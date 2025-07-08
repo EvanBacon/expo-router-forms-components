@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
-import * as Form from "@/components/ui/Form";
-import { IconSymbol } from "@/components/ui/IconSymbol";
+import * as Form from "@/components/ui/form";
+import { IconSymbol } from "@/components/ui/icon-symbol";
 import * as AC from "@bacons/apple-colors";
 import { Image } from "expo-image";
 import {
@@ -25,7 +25,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-import TouchableBounce from "@/components/ui/TouchableBounce";
+import TouchableBounce from "@/components/ui/touchable-bounce";
 import Masked from "@react-native-masked-view/masked-view";
 import { BlurView } from "expo-blur";
 import { useSafeAreaInsets } from "react-native-safe-area-context";

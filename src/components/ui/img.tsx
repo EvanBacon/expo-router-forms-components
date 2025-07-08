@@ -1,6 +1,6 @@
 import Animated from "react-native-reanimated";
 import { Image as ExpoImage, ImageProps as ExpoImageProps } from "expo-image";
-import { IconSymbol } from "./IconSymbol";
+import { IconSymbol } from "./icon-symbol";
 import { SymbolViewProps } from "expo-symbols";
 import { ColorValue } from "react-native";
 

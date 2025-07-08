@@ -1,7 +1,7 @@
 "use client";
 
 import { Image, SFSymbolSource } from "@/components/ui/img";
-import { IconSymbol, IconSymbolName } from "@/components/ui/IconSymbol";
+import { IconSymbol, IconSymbolName } from "@/components/ui/icon-symbol";
 import * as AppleColors from "@bacons/apple-colors";
 import { Href, LinkProps, Link as RouterLink, Stack } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
@@ -30,16 +30,16 @@ import DateTimePicker, {
   IOSNativeProps,
 } from "@react-native-community/datetimepicker";
 
-import { Switch, SwitchProps } from "@/components/ui/Switch";
+import { Switch, SwitchProps } from "@/components/ui/switch";
 
-import { HeaderButton } from "./Header";
+import { HeaderButton } from "./header";
 import Animated from "react-native-reanimated";
 import { SymbolWeight } from "expo-symbols";
 
-import { useScrollToTop } from "@/hooks/useTabToTop";
+import { useScrollToTop } from "@/hooks/use-tab-to-top";
 import * as AC from "@bacons/apple-colors";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useBottomTabOverflow } from "./TabBarBackground";
+import { useBottomTabOverflow } from "./tab-bar-background";
 
 type ListStyle = "grouped" | "auto";
 

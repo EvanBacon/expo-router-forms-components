@@ -1,5 +1,5 @@
-import Stack from "@/components/ui/Stack";
-import TouchableBounce from "@/components/ui/TouchableBounce";
+import Stack from "@/components/ui/stack";
+import TouchableBounce from "@/components/ui/touchable-bounce";
 import { ScrollView, View } from "react-native";
 import { Image } from "expo-image";
 import * as AC from "@bacons/apple-colors";

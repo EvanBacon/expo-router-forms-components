@@ -1,10 +1,10 @@
 import "@/components/runtime/local-storage";
 
-import * as Form from "@/components/ui/Form";
+import * as Form from "@/components/ui/form";
 import Constants, { ExecutionEnvironment } from "expo-constants";
 
 import * as Clipboard from "expo-clipboard";
-import { IconSymbol } from "@/components/ui/IconSymbol";
+import { IconSymbol } from "@/components/ui/icon-symbol";
 import * as AC from "@bacons/apple-colors";
 import * as Updates from "expo-updates";
 import { ActivityIndicator, Linking, View } from "react-native";
