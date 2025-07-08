@@ -1,4 +1,4 @@
-import Stack from "@/components/ui/stack";
+import Stack from "@/components/layout/stack";
 import TouchableBounce from "@/components/ui/touchable-bounce";
 import { ScrollView, View } from "react-native";
 import { Image } from "expo-image";

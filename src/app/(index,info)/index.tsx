@@ -9,7 +9,7 @@ import {
   SegmentsList,
   SegmentsTrigger,
 } from "@/components/ui/segments";
-import Stack from "@/components/ui/stack";
+import Stack from "@/components/layout/stack";
 import * as AC from "@bacons/apple-colors";
 // import { Image } from "expo-image";
 import { Image } from "@/components/ui/img";

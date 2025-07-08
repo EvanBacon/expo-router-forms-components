@@ -1,7 +1,7 @@
 import ThemeProvider from "@/components/ui/theme-provider";
 
 import { AsyncFont } from "@/components/data/async-font";
-import Tabs from "@/components/ui/tabs";
+import Tabs from "@/components/layout/tabs";
 import { SplashScreen } from "expo-router";
 import { Suspense, useEffect } from "react";
 import { Toaster } from "@/utils/toast";
