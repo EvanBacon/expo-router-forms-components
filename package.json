@@ -56,12 +56,13 @@
     "vaul": "^1.1.2"
   },
   "devDependencies": {
-    "react-server-dom-webpack": "~19.1.4",
     "@babel/core": "^7.25.2",
     "@types/react": "~19.1.10",
+    "eas-cli": "^16.28.0",
     "eslint": "^9.0.0",
     "eslint-config-expo": "~10.0.0",
     "expo-atlas": "^0.4.0",
+    "react-server-dom-webpack": "~19.1.4",
     "typescript": "^5.3.3"
   },
   "private": true
