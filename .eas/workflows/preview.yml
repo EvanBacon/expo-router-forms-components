@@ -20,7 +20,7 @@ jobs:
       - name: 🚀 Publish update
         id: update
         run: |
-          OUTPUT=$(eas update --branch "pr-${{ github.event.pull_request.number }}" --message "${{ github.event.pull_request.title }}" --json --non-interactive)
+          OUTPUT=$(npx eas-cli update --branch "pr-${{ github.event.pull_request.number }}" --message "${{ github.event.pull_request.title }}" --json --non-interactive)
           set-output update_output "$OUTPUT"
 
   comment:
@@ -30,7 +30,6 @@ jobs:
       payload: |
         📱 **Preview is ready!**
 
-        Open in Expo Go:
-        **exp://u.expo.dev/update/${{ fromJSON(needs.publish.outputs.update_output)[0].group }}**
-
-        [View on Dashboard](${{ fromJSON(needs.publish.outputs.update_output)[0].manifestPermalink }})
+          [Open in Expo Go](https://302.expo.app/u?url=${{ replaceAll(fromJSON(needs.publish.outputs.update_output)[0].manifestPermalink, 'https://', 'exp://') }})
+          
+          ${{ replaceAll(fromJSON(needs.publish.outputs.update_output)[0].manifestPermalink, 'https://', 'exp://') }}

@@ -28,7 +28,10 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      ["expo-router", {}],
+      [
+        "expo-router",
+        {}
+      ],
       [
         "expo-splash-screen",
         {
@@ -44,17 +47,23 @@
       ],
       "expo-sqlite",
       "expo-font",
-      "expo-web-browser"
+      "expo-web-browser",
+      "@react-native-community/datetimepicker"
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
     },
     "extra": {
-      "router": {},
       "eas": {
         "projectId": "6d57ca78-f051-45fb-b38f-84aac37c746d"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/6d57ca78-f051-45fb-b38f-84aac37c746d"
     }
   }
 }
