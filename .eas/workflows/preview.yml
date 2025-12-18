@@ -31,6 +31,7 @@ jobs:
         📱 **Preview is ready!**
 
         Open in Expo Go:
-        **exp://u.expo.dev/update/${{ fromJSON(needs.publish.outputs.update_output)[0].group }}**
+        [**exp://u.expo.dev/update/${{ fromJSON(needs.publish.outputs.update_output)[0].group }}**](exp://u.expo.dev/update/${{ fromJSON(needs.publish.outputs.update_output)[0].group }})
+
 
         [View on Dashboard](${{ fromJSON(needs.publish.outputs.update_output)[0].manifestPermalink }})
