@@ -31,7 +31,6 @@ jobs:
         📱 **Preview is ready!**
 
         Open in Expo Go:
-        [**exp://u.expo.dev/update/${{ fromJSON(needs.publish.outputs.update_output)[0].group }}**](exp://u.expo.dev/update/${{ fromJSON(needs.publish.outputs.update_output)[0].group }})
-
+        [**exp://u.expo.dev/update/${{ fromJSON(needs.publish.outputs.update_output)[0].group }}**](${{ replace(fromJSON(needs.publish.outputs.update_output)[0].manifestPermalink, 'https://', 'exp://') }})
 
         [View on Dashboard](${{ fromJSON(needs.publish.outputs.update_output)[0].manifestPermalink }})
