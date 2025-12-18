@@ -30,7 +30,6 @@ jobs:
       payload: |
         📱 **Preview is ready!**
 
-        Open in Expo Go:
-        ${{ replaceAll(fromJSON(needs.publish.outputs.update_output)[0].manifestPermalink, 'https://', 'exp://') }}
-
-        [View on Dashboard](${{ fromJSON(needs.publish.outputs.update_output)[0].manifestPermalink }})
+          [Open in Expo Go](https://302.expo.app/u?url=${{ replaceAll(fromJSON(needs.publish.outputs.update_output)[0].manifestPermalink, 'https://', 'exp://') }})
+          
+          ${{ replaceAll(fromJSON(needs.publish.outputs.update_output)[0].manifestPermalink, 'https://', 'exp://') }}
