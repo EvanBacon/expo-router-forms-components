@@ -29,10 +29,14 @@ export default function Layout() {
       <ThemeProvider>
         <GestureHandlerRootView style={{ flex: 1, display: "contents" }}>
           <Tabs>
-            <Tabs.Screen name="(index)" systemImage="house.fill" title="Home" />
+            <Tabs.Screen
+              name="(index)"
+              sf={{ default: "house", selected: "house.fill" }}
+              title="Home"
+            />
             <Tabs.Screen
               name="(info)"
-              systemImage="cursorarrow.rays"
+              sf={{ default: "cursorarrow.rays", selected: "cursorarrow.rays" }}
               title="Info"
             />
           </Tabs>
