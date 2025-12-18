@@ -8,7 +8,6 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "lint": "expo lint",
-    "prepare": "npx patch-package",
     "deploy:ios": "npx testflight",
     "deploy:web": "expo export -p web && npx eas-cli@latest deploy"
   },
