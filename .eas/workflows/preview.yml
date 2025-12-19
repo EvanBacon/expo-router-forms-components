@@ -34,6 +34,6 @@ jobs:
       payload: |
         📱 **Preview is ready!**
 
-          [Open in Expo Go](https://302.expo.app/u?url=exp://u.expo.dev/${{ needs.publish.outputs.project_id }}/group/${{ fromJSON(needs.publish.outputs.update_output)[0].group }})
+          [Open in Expo Go](https://302.expo.app/u?url=exp://u.expo.dev/6d57ca78-f051-45fb-b38f-84aac37c746d/group/${{ fromJSON(needs.publish.outputs.update_output)[0].group }})
 
-          exp://u.expo.dev/${{ needs.publish.outputs.project_id }}/group/${{ fromJSON(needs.publish.outputs.update_output)[0].group }}
+          exp://u.expo.dev/6d57ca78-f051-45fb-b38f-84aac37c746d/group/${{ fromJSON(needs.publish.outputs.update_output)[0].group }}
