@@ -30,6 +30,6 @@ jobs:
       payload: |
         📱 **Preview is ready!**
 
-          [Open in Expo Go](https://302.expo.app/u?url=${{ replaceAll(fromJSON(needs.publish.outputs.update_output)[0].manifestPermalink, 'https://', 'exp://') }})
-          
-          ${{ replaceAll(fromJSON(needs.publish.outputs.update_output)[0].manifestPermalink, 'https://', 'exp://') }}
+          [Open in Expo Go](https://302.expo.app/u?url=exp://u.expo.dev/${{ eas.env.EAS_BUILD_PROJECT_ID }}/group/${{ fromJSON(needs.publish.outputs.update_output)[0].group }})
+
+          exp://u.expo.dev/${{ eas.env.EAS_BUILD_PROJECT_ID }}/group/${{ fromJSON(needs.publish.outputs.update_output)[0].group }}
