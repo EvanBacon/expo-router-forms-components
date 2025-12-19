@@ -21,9 +21,7 @@
     "@svgr/core": "^8.1.0",
     "@svgr/plugin-jsx": "^8.1.0",
     "@svgr/plugin-svgo": "^8.1.0",
-    "babel-plugin-react-compiler": "^19.0.0-beta-af1b7da-20250417",
-    "eslint-plugin-react-compiler": "^19.1.0-rc.1",
-    "expo": "54",
+    "expo": "^54.0.30",
     "expo-application": "~7.0.8",
     "expo-blur": "~15.0.8",
     "expo-clipboard": "~8.0.8",
@@ -56,13 +54,10 @@
     "vaul": "^1.1.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.25.2",
     "@types/react": "~19.1.10",
     "eas-cli": "^16.28.0",
     "eslint": "^9.0.0",
     "eslint-config-expo": "~10.0.0",
-    "expo-atlas": "^0.4.0",
-    "react-server-dom-webpack": "~19.1.4",
     "typescript": "^5.3.3"
   },
   "private": true
