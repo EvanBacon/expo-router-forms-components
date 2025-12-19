@@ -8,8 +8,6 @@ import { Toaster } from "@/utils/toast";
 import { GestureHandlerRootView } from "@/utils/native-gesture-provider";
 import { SourceCodePro_400Regular } from "@expo-google-fonts/source-code-pro";
 
-SplashScreen.preventAutoHideAsync();
-
 function SplashFallback() {
   useEffect(
     () => () => {
@@ -23,22 +21,8 @@ function SplashFallback() {
 export default function Layout() {
   // Keep the splash screen visible while we fetch resources
   return (
-    <Suspense fallback={<SplashFallback />}>
-      {/* Load fonts in suspense */}
-      <AsyncFont src={SourceCodePro_400Regular} fontFamily="Source Code Pro" />
-      <ThemeProvider>
-        <GestureHandlerRootView style={{ flex: 1, display: "contents" }}>
-          <Tabs>
-            <Tabs.Screen name="(index)" systemImage="house.fill" title="Home" />
-            <Tabs.Screen
-              name="(info)"
-              systemImage="cursorarrow.rays"
-              title="Info"
-            />
-          </Tabs>
-          <Toaster />
-        </GestureHandlerRootView>
-      </ThemeProvider>
-    </Suspense>
+    <Tabs>
+      <Tabs.Screen name="(index)" systemImage="house.fill" title="Home" />
+    </Tabs>
   );
 }
