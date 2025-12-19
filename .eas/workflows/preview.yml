@@ -19,7 +19,7 @@ jobs:
         uses: eas/install_node_modules
 
       - name: 👷 Preparing project
-        run: set-output id "${ env.EAS_BUILD_PROJECT_ID }"
+        run: set-output id "${ eas.env.EAS_BUILD_PROJECT_ID }"
 
       - name: 🚀 Publish update
         id: update
@@ -34,6 +34,6 @@ jobs:
       payload: |
         📱 **Preview is ready!**
 
-          [Open in Expo Go](https://302.expo.app/u?url=exp://u.expo.dev/${{ eas.env.EAS_BUILD_PROJECT_ID }}/group/${{ fromJSON(needs.publish.outputs.update_output)[0].group }})
+          [Open in Expo Go](https://302.expo.app/u?url=exp://u.expo.dev/${{ needs.publish.outputs.project_id }}/group/${{ fromJSON(needs.publish.outputs.update_output)[0].group }})
 
           exp://u.expo.dev/${{ needs.publish.outputs.project_id }}/group/${{ fromJSON(needs.publish.outputs.update_output)[0].group }}
