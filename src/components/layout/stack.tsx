@@ -4,7 +4,8 @@ import React from "react";
 
 // Better transitions on web, no changes on native.
 import NativeStack from "@/components/layout/modal-navigator";
-
+import { isLiquidGlassAvailable } from "expo-glass-effect";
+const GLASS = isLiquidGlassAvailable();
 // These are the default stack options for iOS, they disable on other platforms.
 const DEFAULT_STACK_HEADER: NativeStackNavigationOptions =
   process.env.EXPO_OS !== "ios"
@@ -24,6 +25,7 @@ const DEFAULT_STACK_HEADER: NativeStackNavigationOptions =
 export const BOTTOM_SHEET: NativeStackNavigationOptions = {
   // https://github.com/software-mansion/react-native-screens/blob/main/native-stack/README.md#sheetalloweddetents
   presentation: "formSheet",
+  contentStyle: GLASS ? { backgroundColor: "transparent" } : undefined,
   gestureDirection: "vertical",
   animation: "slide_from_bottom",
   sheetGrabberVisible: true,
