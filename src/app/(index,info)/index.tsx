@@ -14,7 +14,6 @@ import * as AC from "@bacons/apple-colors";
 import { cn } from "@/lib/utils";
 // import { Image } from "expo-image";
 import { Image } from "@/components/ui/img";
-import { Link } from "expo-router";
 import { ComponentProps } from "react";
 import {
   Button,
@@ -24,7 +23,7 @@ import {
   Appearance,
   TextInput,
 } from "react-native";
-import { View } from "@/tw";
+import { View, Link, Pressable } from "@/tw";
 import Animated, {
   interpolate,
   useAnimatedRef,
@@ -179,18 +178,27 @@ export default function Page() {
                     { flexDirection: "row", gap: 12, alignItems: "center" },
                   ]}
                 >
-                  <Image
-                    source={{ uri: "https://github.com/evanbacon.png" }}
-                    style={[
-                      {
-                        aspectRatio: 1,
-                        height: 30,
-                        borderRadius: 8,
-                        borderWidth: 0.5,
-                        borderColor: AC.separator,
-                      },
-                    ]}
-                  />
+                  <Link href="/">
+                    <Link.Trigger>
+                      <Image
+                        source={{ uri: "https://github.com/evanbacon.png" }}
+                        style={{
+                          aspectRatio: 1,
+                          height: 30,
+                          borderRadius: 8,
+                          borderWidth: 0.5,
+                          borderColor: AC.separator,
+                        }}
+                      />
+                    </Link.Trigger>
+                    <Link.Menu>
+                      <Link.MenuAction
+                        icon="star"
+                        title="Profile"
+                        onPress={() => {}}
+                      />
+                    </Link.Menu>
+                  </Link>
                   <Text className="font-bold text-xl text-sf-text">
                     Bacon Components
                   </Text>
@@ -276,7 +284,18 @@ export default function Page() {
           >
             Open Blur Modal
           </Form.Text>
-          <Form.Link href="/settings">Apple Settings</Form.Link>
+
+          <Link href="/settings" asChild custom>
+            <Link.Trigger>
+              <Pressable>
+                <Text>App Settings</Text>
+              </Pressable>
+            </Link.Trigger>
+            <Link.Menu>
+              <Link.MenuAction title="Share" onPress={() => {}} />
+            </Link.Menu>
+          </Link>
+
           <Form.Link href="/icon">Change App Icon</Form.Link>
           <Form.Link href="/_debug">Debug menu</Form.Link>
           <Form.Link href="/privacy">Privacy Policy</Form.Link>

@@ -3,7 +3,7 @@ import {
   useNativeVariable as useFunctionalVariable,
 } from "react-native-css";
 
-import { Link as RouterLink } from "expo-router";
+import { Link as RouterLink } from "@/components/ui/link";
 import Animated from "react-native-reanimated";
 
 import React from "react";

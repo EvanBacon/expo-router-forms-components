@@ -10,6 +10,20 @@ const GLASS = isLiquidGlassAvailable();
 const DEFAULT_STACK_HEADER: NativeStackNavigationOptions =
   process.env.EXPO_OS !== "ios"
     ? {}
+    : GLASS
+    ? {
+        // iOS 26 + liquid glass
+        headerTransparent: true,
+        headerShadowVisible: false,
+        headerLargeTitleShadowVisible: false,
+        headerLargeStyle: {
+          backgroundColor: "transparent",
+        },
+
+        headerLargeTitle: true,
+        headerBlurEffect: "none",
+        headerBackButtonDisplayMode: "minimal",
+      }
     : {
         headerTransparent: true,
         headerBlurEffect: "systemChromeMaterial",

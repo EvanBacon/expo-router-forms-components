@@ -10,6 +10,7 @@ import { Toaster } from "@/utils/toast";
 import { GestureHandlerRootView } from "@/utils/native-gesture-provider";
 import { SourceCodePro_400Regular } from "@expo-google-fonts/source-code-pro";
 import { Icon, Label, NativeTabs } from "expo-router/unstable-native-tabs";
+import { useCSSVariable } from "@/tw";
 SplashScreen.preventAutoHideAsync();
 
 function SplashFallback() {
@@ -23,6 +24,8 @@ function SplashFallback() {
 }
 
 export default function Layout() {
+  const label = useCSSVariable("--sf-text");
+
   // Keep the splash screen visible while we fetch resources
   return (
     <Suspense fallback={<SplashFallback />}>
@@ -44,7 +47,7 @@ export default function Layout() {
               />
             </Tabs>
           ) : (
-            <NativeTabs>
+            <NativeTabs tintColor={label}>
               <NativeTabs.Trigger name="(index)">
                 <Label>Home</Label>
                 <Icon
