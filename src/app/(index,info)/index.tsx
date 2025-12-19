@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/segments";
 import Stack from "@/components/layout/stack";
 import * as AC from "@bacons/apple-colors";
+import { cn } from "@/lib/utils";
 // import { Image } from "expo-image";
 import { Image } from "@/components/ui/img";
 import { Link } from "expo-router";
@@ -36,7 +37,6 @@ import { GlurryList } from "@/components/example/glurry-modal";
 import ExpoSvg from "@/svg/expo.svg";
 import GithubSvg from "@/svg/github.svg";
 
-import * as Fonts from "@/constants/fonts";
 import {
   Body,
   Callout,
@@ -119,19 +119,25 @@ function FontSection() {
         title="Fonts"
         titleHint={process.env.EXPO_OS === "ios" ? "San Francisco" : "Roboto"}
       >
-        <Form.Text style={{ fontFamily: Fonts.system, fontWeight }}>
+        <Form.Text
+          className={cn("font-sans", bold ? "font-bold" : "font-normal")}
+        >
           system
         </Form.Text>
         <Form.Text
-          style={{ fontFamily: Fonts.rounded, fontWeight }}
+          className={cn("font-rounded", bold ? "font-bold" : "font-normal")}
           hintBoolean={process.env.EXPO_OS === "ios"}
         >
           rounded
         </Form.Text>
-        <Form.Text style={{ fontFamily: Fonts.monospaced, fontWeight }}>
+        <Form.Text
+          className={cn("font-mono", bold ? "font-bold" : "font-normal")}
+        >
           monospaced
         </Form.Text>
-        <Form.Text style={{ fontFamily: Fonts.serif, fontWeight }}>
+        <Form.Text
+          className={cn("font-serif", bold ? "font-bold" : "font-normal")}
+        >
           serif
         </Form.Text>
       </Form.Section>
@@ -185,13 +191,7 @@ export default function Page() {
                       },
                     ]}
                   />
-                  <Text
-                    style={{
-                      fontSize: 20,
-                      color: AC.label,
-                      fontWeight: "bold",
-                    }}
-                  >
+                  <Text className="font-bold text-xl text-sf-text">
                     Bacon Components
                   </Text>
                 </Animated.View>
@@ -217,7 +217,7 @@ export default function Page() {
       />
       <Form.List ref={ref} navigationTitle="Components">
         <Form.Section>
-          <Rounded padding style={{ alignItems: "center", gap: 8, flex: 1 }}>
+          <Rounded padding className="items-center gap-2">
             <Image
               source={{ uri: "https://github.com/evanbacon.png" }}
               style={{
@@ -226,25 +226,12 @@ export default function Page() {
                 borderRadius: 8,
               }}
             />
-            <Form.Text
-              style={{
-                fontSize: 20,
-                fontFamily:
-                  process.env.EXPO_OS === "ios" ? "ui-rounded" : undefined,
-                fontWeight: "600",
-              }}
-            >
+            <Form.Text className="text-xl font-rounded font-semibold">
               Bacon Components
             </Form.Text>
-            <Form.Text style={{ textAlign: "center", fontSize: 14 }}>
+            <Form.Text className="text-center text-sm">
               Copy/paste components for universal Expo Router apps.{" "}
-              <Form.Link
-                style={{
-                  color: AC.link,
-                  fontSize: 14,
-                }}
-                href="/info"
-              >
+              <Form.Link className="text-sf-link text-sm" href="/info">
                 Learn more...
               </Form.Link>
             </Form.Text>
@@ -344,19 +331,14 @@ export default function Page() {
         </Form.Section>
 
         <Form.Section>
-          <Form.HStack style={{ alignItems: "stretch", gap: 12 }}>
+          <Form.HStack className="items-stretch gap-3">
             <TripleItemTest />
           </Form.HStack>
         </Form.Section>
 
         <Form.Section>
-          <Form.Text
-            systemImage="terminal"
-            style={{
-              letterSpacing: 0.5,
-            }}
-          >
-            <Text style={{ color: AC.secondaryLabel }}>{`~ / `}</Text>
+          <Form.Text systemImage="terminal" className="native:tracking-tight">
+            <Text className="text-sf-text-2">{`~ / `}</Text>
             npx testflight
           </Form.Text>
 
@@ -369,7 +351,7 @@ export default function Page() {
                 style={{ width: 18, height: 18, marginRight: 8 }}
               />
             }
-            style={{ color: AC.systemBlue, fontWeight: "400" }}
+            className="text-sf-blue font-normal"
           >
             Deploy on Expo
           </Form.Link>
@@ -385,7 +367,7 @@ export default function Page() {
                 style={{ width: 18, height: 18, marginRight: 8 }}
               />
             }
-            style={{ color: AC.systemBlue, fontWeight: "400" }}
+            className="text-sf-blue font-normal"
           >
             Clone on GitHub
           </Form.Link>
@@ -396,12 +378,12 @@ export default function Page() {
           </Form.Text>
 
           {/* Custom with wrap-below */}
-          <Form.HStack style={{ flexWrap: "wrap" }}>
+          <Form.HStack className="flex-wrap">
             <Form.Text>Wrap Below</Form.Text>
             {/* Spacer */}
             <View className="flex-1" />
             {/* Right */}
-            <Form.Text style={{ flexShrink: 1, color: AC.secondaryLabel }}>
+            <Form.Text className="shrink text-sf-text-2">
               Long list of text that should wrap around when it gets too long
             </Form.Text>
           </Form.HStack>
@@ -415,7 +397,7 @@ export default function Page() {
           <SegmentsTest />
         </Form.Section>
         <Form.Section>
-          <Form.HStack style={{ gap: 16 }}>
+          <Form.HStack className="gap-4">
             <Image
               source={{ uri: "https://github.com/evanbacon.png" }}
               style={{
@@ -425,8 +407,10 @@ export default function Page() {
               }}
             />
             <View className="gap-1">
-              <Form.Text style={Form.FormFont.default}>Evan's iPhone</Form.Text>
-              <Form.Text style={Form.FormFont.caption}>
+              <Form.Text className="text-sf-text text-lg">
+                Evan's iPhone
+              </Form.Text>
+              <Form.Text className="text-sf-text-2 text-xs">
                 This iPhone 16 Pro Max
               </Form.Text>
             </View>
@@ -457,7 +441,7 @@ export default function Page() {
               enter into Safari, Siri, and Spotlight in a way that is not linked
               to you.{"\n\n"}Searches include lookups of general knowledge, and
               requests to do things like play music and get directions.{"\n"}
-              <Link style={{ color: AC.link }} href="/two">
+              <Link className="text-sf-link" href="/two">
                 About Search & Privacy...
               </Link>
             </Text>
@@ -473,7 +457,9 @@ export default function Page() {
           <Link href="/two">
             <View className="gap-1">
               <Form.Text>Evan's iPhone</Form.Text>
-              <Text style={Form.FormFont.caption}>This iPhone 16 Pro Max</Text>
+              <Text className="text-sf-text-2 text-xs">
+                This iPhone 16 Pro Max
+              </Text>
             </View>
           </Link>
 
@@ -505,9 +491,7 @@ export default function Page() {
             Custom Icon
           </FormLabel>
           <Form.Link
-            style={{
-              color: AC.systemGreen,
-            }}
+            className="text-sf-green"
             href="/two"
             systemImage="photo.on.rectangle"
           >
@@ -549,9 +533,7 @@ export default function Page() {
             Pressable
           </Text>
 
-          <Text style={{ fontWeight: "bold", color: AC.systemPink }}>
-            Custom style
-          </Text>
+          <Text className="font-bold text-sf-pink">Custom style</Text>
           <Form.Text bold>Bold</Form.Text>
 
           <View>
@@ -560,9 +542,9 @@ export default function Page() {
 
           {/* Table style: | A   B |*/}
           <Form.HStack>
-            <Text style={Form.FormFont.default}>Foo</Text>
-            <View style={{ flex: 1 }} />
-            <Text style={Form.FormFont.secondary}>Bar</Text>
+            <Text className="text-sf-text text-lg">Foo</Text>
+            <View className="flex-1" />
+            <Text className="text-sf-text-2 text-xs">Bar</Text>
           </Form.HStack>
         </Form.Section>
         <Form.Section title="Table">
@@ -571,9 +553,9 @@ export default function Page() {
 
           {/* Custom version of same code */}
           <Form.HStack>
-            <Text style={Form.FormFont.default}>SDK 51</Text>
-            <View style={{ flex: 1 }} />
-            <Text style={Form.FormFont.secondary}>Expo Router v3</Text>
+            <Text className="text-sf-text text-lg">SDK 51</Text>
+            <View className="flex-1" />
+            <Text className="text-sf-text-2 text-xs">Expo Router v3</Text>
           </Form.HStack>
         </Form.Section>
 
@@ -592,14 +574,7 @@ export default function Page() {
 
         <Form.Section
           title={
-            <Text
-              style={{
-                fontSize: 18,
-                fontWeight: "bold",
-                color: AC.label,
-                textTransform: "none",
-              }}
-            >
+            <Text className="text-sf-label text-[18px] font-bold normal-case">
               Developer
             </Text>
           }
@@ -612,7 +587,7 @@ export default function Page() {
               color: AC.systemBlue,
               size: 20,
             }}
-            style={{ color: AC.systemBlue }}
+            className="text-sf-link"
           >
             Developer Privacy Policy
           </Form.Link>
@@ -668,10 +643,10 @@ function FormExpandable({
 
   return (
     <Form.FormItem onPress={() => setOpen(!open)}>
-      <Form.HStack style={{ flexWrap: "wrap" }}>
+      <Form.HStack className="flex-wrap">
         <Form.Text>{children}</Form.Text>
         {/* Spacer */}
-        <View style={{ flex: 1 }} />
+        <View className="flex-1" />
         {open && (
           <Image
             source={open ? "chevron.up" : "chevron.down"}
@@ -680,7 +655,7 @@ function FormExpandable({
           />
         )}
         {/* Right */}
-        <Form.Text style={{ flexShrink: 1, color: AC.secondaryLabel }}>
+        <Form.Text className="flex-shrink text-sf-text-2">
           {open ? hint : preview}
         </Form.Text>
         {!open && (
@@ -707,20 +682,20 @@ function FormLabel({
   color?: OpaqueColorValue;
 }) {
   return (
-    <Form.HStack style={{ gap: 16 }}>
+    <Form.HStack className="gap-16">
       <Image
         source={systemImage}
         size={28}
         tintColor={color ?? AC.systemBlue}
       />
-      <Text style={Form.FormFont.default}>{children}</Text>
+      <Text className="text-sf-text text-lg">{children}</Text>
     </Form.HStack>
   );
 }
 
 function SegmentsTest() {
   return (
-    <View style={{ flex: 1 }}>
+    <View>
       <Segments defaultValue="account">
         <SegmentsList>
           <SegmentsTrigger value="account">Account</SegmentsTrigger>
@@ -728,12 +703,10 @@ function SegmentsTest() {
         </SegmentsList>
 
         <SegmentsContent value="account">
-          <Form.Text style={{ paddingVertical: 12 }}>Account Section</Form.Text>
+          <Form.Text className="py-3">Account Section</Form.Text>
         </SegmentsContent>
         <SegmentsContent value="password">
-          <Form.Text style={{ paddingVertical: 12 }}>
-            Password Section
-          </Form.Text>
+          <Form.Text className="py-3">Password Section</Form.Text>
         </SegmentsContent>
       </Segments>
     </View>
@@ -745,15 +718,7 @@ function TripleItemTest() {
     <>
       <HorizontalItem title="Expires" badge="88" subtitle="Days" />
 
-      <View
-        style={{
-          backgroundColor: AC.separator,
-          width: 0.5,
-          maxHeight: "50%",
-          minHeight: "50%",
-          marginVertical: "auto",
-        }}
-      />
+      <View className="bg-sf-border min-w-[0.5px] max-w-[0.5px] h-1/2 flex-1 my-auto" />
 
       <HorizontalItem
         title="Developer"
@@ -774,15 +739,7 @@ function TripleItemTest() {
         subtitle="Evan Bacon"
       />
 
-      <View
-        style={{
-          backgroundColor: AC.separator,
-          width: 0.5,
-          maxHeight: "50%",
-          minHeight: "50%",
-          marginVertical: "auto",
-        }}
-      />
+      <View className="bg-sf-border min-w-[0.5px] max-w-[0.5px] h-1/2 flex-1 my-auto" />
 
       <HorizontalItem title="Version" badge="3.6" subtitle="Build 250" />
     </>
@@ -799,39 +756,19 @@ function HorizontalItem({
   subtitle: string;
 }) {
   return (
-    <View style={{ alignItems: "center", gap: 4, flex: 1 }}>
-      <Form.Text
-        style={{
-          textTransform: "uppercase",
-          fontSize: 10,
-          fontWeight: "600",
-          color: AC.secondaryLabel,
-        }}
-      >
+    <View className="items-center gap-2 flex-1">
+      <Form.Text className="text-xs uppercase font-semibold text-sf-text-2">
         {title}
       </Form.Text>
       {typeof badge === "string" ? (
-        <Form.Text
-          style={{
-            fontSize: 20,
-            fontWeight: "bold",
-            color: AC.secondaryLabel,
-          }}
-        >
+        <Form.Text className="text-xl font-bold text-sf-text-2">
           {badge}
         </Form.Text>
       ) : (
         badge
       )}
 
-      <Form.Text
-        style={{
-          fontSize: 12,
-          color: AC.secondaryLabel,
-        }}
-      >
-        {subtitle}
-      </Form.Text>
+      <Form.Text className="text-xs text-sf-text-2">{subtitle}</Form.Text>
     </View>
   );
 }

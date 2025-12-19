@@ -1,27 +1,30 @@
 "use client";
 
-import { Image, SFSymbolSource } from "@/components/ui/img";
-import { IconSymbol, IconSymbolName } from "@/components/ui/icon-symbol";
-import * as AppleColors from "@bacons/apple-colors";
-import { Href, LinkProps, Link as RouterLink, Stack } from "expo-router";
+import { SFIcon, SFIconName } from "./sf-icon";
+import { Href, LinkProps, Stack } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
 import React, { use } from "react";
+import {
+  Text as RNText,
+  Link as RouterLink,
+  TouchableHighlight,
+  View,
+  TextInput,
+  useCSSVariable,
+  AnimatedScrollView,
+} from "@/tw";
 import {
   Button,
   GestureResponderEvent,
   OpaqueColorValue,
   RefreshControl,
-  Text as RNText,
   ScrollViewProps,
   Share,
   StyleProp,
   StyleSheet,
-  TextInput,
   TextInputProps,
   TextProps,
   TextStyle,
-  TouchableHighlight,
-  View,
   ViewProps,
   ViewStyle,
 } from "react-native";
@@ -32,78 +35,56 @@ import DateTimePicker, {
 
 import { Switch, SwitchProps } from "@/components/ui/switch";
 
-import { HeaderButton } from "./header";
 import Animated from "react-native-reanimated";
 import { SymbolWeight } from "expo-symbols";
-
-import { useScrollToTop } from "@/hooks/use-tab-to-top";
-import * as AC from "@bacons/apple-colors";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useBottomTabOverflow } from "./tab-bar-background";
+import { cn } from "@/lib/utils";
 
 type ListStyle = "grouped" | "auto";
 
 type SystemImageCustomProps = {
-  name: IconSymbolName;
+  name: SFIconName;
   color?: OpaqueColorValue;
   size?: number;
   weight?: SymbolWeight;
   style?: StyleProp<TextStyle>;
 };
 
-type SystemImageProps = IconSymbolName | SystemImageCustomProps;
+type SystemImageProps = SFIconName | SystemImageCustomProps;
+
+import * as AppleColors from "@bacons/apple-colors";
+
+export const FormFont = {
+  // From inspecting SwiftUI `List { Text("Foo") }` in Xcode.
+  default: {
+    color: AppleColors.label,
+    // 17.00pt is the default font size for a Text in a List.
+    fontSize: 17,
+    // UICTFontTextStyleBody is the default fontFamily.
+  },
+  secondary: {
+    color: AppleColors.secondaryLabel,
+    fontSize: 17,
+  },
+  caption: {
+    color: AppleColors.secondaryLabel,
+    fontSize: 12,
+  },
+  title: {
+    color: AppleColors.label,
+    fontSize: 17,
+    fontWeight: "600",
+  },
+};
 
 const ListStyleContext = React.createContext<ListStyle>("auto");
 
 const minItemHeight = 20;
 
-const Colors = {
-  systemGray4: AppleColors.systemGray4, // "rgba(209, 209, 214, 1)",
-  secondarySystemGroupedBackground:
-    AppleColors.secondarySystemGroupedBackground, // "rgba(255, 255, 255, 1)",
-};
-
 const styles = StyleSheet.create({
   itemPadding: {
     paddingVertical: 11,
     paddingHorizontal: 20,
-  },
-  hstack: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  vstack: {
-    flex: 1,
-    flexDirection: "column",
-    // alignItems: "center",
-    // gap: 8,
-  },
-  spacer: { flex: 1 },
-  separator: {
-    marginStart: 60,
-    borderBottomWidth: 0.5, //StyleSheet.hairlineWidth,
-    marginTop: -0.5, // -StyleSheet.hairlineWidth,
-    borderBottomColor: AppleColors.separator,
-  },
-  groupedList: {
-    backgroundColor: Colors.secondarySystemGroupedBackground,
-    borderTopWidth: 0.5,
-    borderBottomWidth: 0.5,
-    borderColor: AppleColors.separator,
-  },
-  standardList: {
-    borderCurve: "continuous",
-    overflow: "hidden",
-    borderRadius: 10,
-    backgroundColor: Colors.secondarySystemGroupedBackground,
-  },
-
-  hintText: {
-    color: AppleColors.secondaryLabel,
-    paddingVertical: 8,
-    fontSize: 14,
   },
 });
 
@@ -114,6 +95,12 @@ const SectionStyleContext = React.createContext<{
 });
 
 type RefreshCallback = () => Promise<void>;
+
+const CardStyleContext = React.createContext<{
+  sheet?: boolean;
+}>({
+  sheet: false,
+});
 
 const RefreshContext = React.createContext<{
   subscribe: (cb: RefreshCallback) => () => void;
@@ -194,11 +181,14 @@ type ListProps = ScrollViewProps & {
   /** Set the Expo Router `<Stack />` title when mounted. */
   navigationTitle?: string;
   listStyle?: ListStyle;
+  sheet?: boolean;
 };
 export function List(props: ListProps) {
   return (
     <RefreshContextProvider>
-      <InnerList {...props} />
+      <CardStyleContext value={{ sheet: props.sheet }}>
+        <InnerList {...props} />
+      </CardStyleContext>
     </RefreshContextProvider>
   );
 }
@@ -208,30 +198,27 @@ if (__DEV__) List.displayName = "FormList";
 export function ScrollView(
   props: ScrollViewProps & { ref?: React.Ref<Animated.ScrollView> }
 ) {
-  const paddingBottom = useBottomTabOverflow();
-
-  const { top: statusBarInset, bottom } = useSafeAreaInsets(); // inset of the status bar
-
-  const largeHeaderInset = statusBarInset + 92; // inset to use for a large header since it's frame is equal to 96 + the frame of status bar
-
-  useScrollToTop(props.ref!, -largeHeaderInset);
-
+  const { bottom } = useSafeAreaInsets(); // inset of the status bar
+  const { sheet } = use(CardStyleContext);
   return (
-    <Animated.ScrollView
+    <AnimatedScrollView
       scrollToOverflowEnabled
       automaticallyAdjustsScrollIndicatorInsets
       contentInsetAdjustmentBehavior="automatic"
-      contentInset={{ bottom: paddingBottom }}
       scrollIndicatorInsets={{
-        bottom: paddingBottom - (process.env.EXPO_OS === "ios" ? bottom : 0),
+        bottom: process.env.EXPO_OS === "ios" ? bottom : 0,
       }}
       {...props}
-      style={[{ backgroundColor: AC.systemGroupedBackground }, props.style]}
+      className={cn(
+        sheet ? "bg-transparent" : "bg-sf-grouped-bg",
+
+        props.className
+      )}
     />
   );
 }
 
-function InnerList({ contentContainerStyle, ...props }: ListProps) {
+function InnerList({ contentContainerStyle, className, ...props }: ListProps) {
   const { hasSubscribers, refreshing, refresh } = React.use(RefreshContext);
 
   return (
@@ -245,15 +232,12 @@ function InnerList({ contentContainerStyle, ...props }: ListProps) {
             {
               paddingVertical: 16,
               gap: 24,
+              // overflow: "visible",
             },
             contentContainerStyle
           )}
-          style={{
-            maxWidth: 768,
-            width: process.env.EXPO_OS === "web" ? "100%" : undefined,
-            marginHorizontal:
-              process.env.EXPO_OS === "web" ? "auto" : undefined,
-          }}
+          contentContainerClassName="native:overflow-visible"
+          className={cn("web:w-full web:mx-auto", className)}
           refreshControl={
             hasSubscribers ? (
               <RefreshControl refreshing={refreshing} onRefresh={refresh} />
@@ -266,14 +250,35 @@ function InnerList({ contentContainerStyle, ...props }: ListProps) {
   );
 }
 
+export function LeftBadge({
+  name,
+  className,
+}: {
+  name: SFIconName;
+  className?: string;
+}) {
+  return (
+    <View
+      className={cn(
+        "flex-row items-center bg-blue-500 rounded-xl curve-sf mr-2 p-2 aspect-square",
+        className
+      )}
+    >
+      <SFIcon name={name} size={24} className="text-white text-2xl" />
+    </View>
+  );
+}
+
 export function FormItem({
   children,
   href,
   onPress,
   onLongPress,
+  disabled,
   style,
   ref,
 }: Pick<ViewProps, "children"> & {
+  disabled?: boolean;
   href?: Href<any>;
   onPress?: (event: any) => void;
   onLongPress?: (event: GestureResponderEvent) => void;
@@ -282,6 +287,8 @@ export function FormItem({
 }) {
   const itemStyle = use(SectionStyleContext)?.style ?? styles.itemPadding;
   const resolvedStyle = [itemStyle, style];
+  const systemGray4 = useCSSVariable("--sf-gray-4");
+
   if (href == null) {
     if (onPress == null && onLongPress == null) {
       const childrenCount = getFlatChildren(children).length;
@@ -304,9 +311,14 @@ export function FormItem({
     return (
       <TouchableHighlight
         ref={ref}
-        underlayColor={AppleColors.systemGray4}
+        underlayColor={systemGray4}
         onPress={onPress}
         onLongPress={onLongPress}
+        className={cn(
+          "web:hover:bg-sf-fill web:transition-colors",
+          disabled && "opacity-50"
+        )}
+        disabled={disabled}
       >
         <View style={resolvedStyle}>
           <HStack style={{ minHeight: minItemHeight }}>{children}</HStack>
@@ -316,13 +328,17 @@ export function FormItem({
   }
 
   return (
-    <Link asChild href={href} onPress={onPress} onLongPress={onLongPress}>
-      <TouchableHighlight ref={ref} underlayColor={AppleColors.systemGray4}>
+    <RouterLink asChild href={href} onPress={onPress} onLongPress={onLongPress}>
+      <TouchableHighlight
+        ref={ref}
+        underlayColor={systemGray4}
+        disabled={disabled}
+      >
         <View style={resolvedStyle}>
           <HStack style={{ minHeight: minItemHeight }}>{children}</HStack>
         </View>
       </TouchableHighlight>
-    </Link>
+    </RouterLink>
   );
 }
 
@@ -334,36 +350,33 @@ type FormTextProps = TextProps & {
   /** Adds a prefix SF Symbol image to the left of the text */
   systemImage?: SystemImageProps | React.ReactNode;
 
+  imageClassName?: string;
   bold?: boolean;
 };
 
 /** Text but with iOS default color and sizes. */
 export function Text({ bold, ...props }: FormTextProps) {
-  const font: TextStyle = {
-    ...FormFont.default,
-    flexShrink: 0,
-    fontWeight: bold ? "600" : "normal",
-  };
-
   return (
     <RNText
       dynamicTypeRamp="body"
       {...props}
-      style={mergedStyleProp(font, props.style)}
+      className={cn(
+        "text-sf-text text-lg shrink-0",
+        bold && "font-semibold",
+        props.className
+      )}
     />
   );
 }
 
 export function TextField({ ...props }: TextInputProps) {
-  const font: TextStyle = {
-    ...FormFont.default,
-  };
+  const placeholderText = useCSSVariable("--sf-text-placeholder");
 
   return (
     <TextInput
-      placeholderTextColor={AppleColors.placeholderText}
+      placeholderTextColor={placeholderText}
       {...props}
-      style={mergedStyleProp(font, props.style)}
+      className={cn("text-sf-text text-lg", props.className)}
     />
   );
 }
@@ -400,7 +413,6 @@ if (__DEV__) DatePicker.displayName = "FormDatePicker";
 export function Link({
   bold,
   children,
-  headerRight,
   hintImage,
   ...props
 }: LinkProps & {
@@ -408,59 +420,14 @@ export function Link({
   hint?: React.ReactNode;
   /** Adds a prefix SF Symbol image to the left of the text. */
   systemImage?: SystemImageProps | React.ReactNode;
+  imageClassName?: string;
 
   /** Changes the right icon. */
   hintImage?: SystemImageProps | React.ReactNode;
 
-  // TODO: Automatically detect this somehow.
-  /** Is the link inside a header. */
-  headerRight?: boolean;
-
   bold?: boolean;
 }) {
-  const font: TextStyle = {
-    ...FormFont.default,
-    fontWeight: bold ? "600" : "normal",
-  };
-
   const resolvedChildren = (() => {
-    if (headerRight) {
-      if (process.env.EXPO_OS === "web") {
-        return <div style={{ paddingRight: 16 }}>{children}</div>;
-      }
-      const wrappedTextChildren = React.Children.map(children, (child) => {
-        // Filter out empty children
-        if (!child) {
-          return null;
-        }
-        if (typeof child === "string") {
-          return (
-            <RNText
-              style={mergedStyleProp<TextStyle>(
-                { ...font, color: AppleColors.link },
-                props.style
-              )}
-            >
-              {child}
-            </RNText>
-          );
-        }
-        return child;
-      });
-
-      return (
-        <HeaderButton
-          pressOpacity={0.7}
-          style={{
-            // Offset on the side so the margins line up. Unclear how to handle when this is used in headerLeft.
-            // We should automatically detect it somehow.
-            marginRight: -8,
-          }}
-        >
-          {wrappedTextChildren}
-        </HeaderButton>
-      );
-    }
     return children;
   })();
 
@@ -468,10 +435,8 @@ export function Link({
     <RouterLink
       dynamicTypeRamp="body"
       {...props}
-      asChild={
-        props.asChild ?? (process.env.EXPO_OS === "web" ? false : headerRight)
-      }
-      style={mergedStyleProp<TextStyle>(font, props.style)}
+      asChild={props.asChild ?? false}
+      className={cn("text-sf-text", bold && "font-semibold", props.className)}
       onPress={
         process.env.EXPO_OS === "web"
           ? props.onPress
@@ -504,35 +469,13 @@ export function Link({
               }
             }
       }
-      children={resolvedChildren}
-    />
+    >
+      {resolvedChildren}
+    </RouterLink>
   );
 }
 
 if (__DEV__) Link.displayName = "FormLink";
-
-export const FormFont = {
-  // From inspecting SwiftUI `List { Text("Foo") }` in Xcode.
-  default: {
-    color: AppleColors.label,
-    // 17.00pt is the default font size for a Text in a List.
-    fontSize: 17,
-    // UICTFontTextStyleBody is the default fontFamily.
-  },
-  secondary: {
-    color: AppleColors.secondaryLabel,
-    fontSize: 17,
-  },
-  caption: {
-    color: AppleColors.secondaryLabel,
-    fontSize: 12,
-  },
-  title: {
-    color: AppleColors.label,
-    fontSize: 17,
-    fontWeight: "600",
-  },
-};
 
 function getFlatChildren(children: React.ReactNode) {
   const allChildren: React.ReactNode[] = [];
@@ -579,8 +522,11 @@ export function Section({
   itemStyle?: ViewStyle;
 }) {
   const listStyle = React.use(ListStyleContext) ?? "auto";
-
+  const linkColor = useCSSVariable("--sf-link");
+  const placeholderText = useCSSVariable("--sf-text-placeholder");
   const allChildren = getFlatChildren(children);
+  const { sheet } = use(CardStyleContext);
+  const bg = useCSSVariable(sheet ? "--sf-bg-2" : "--sf-grouped-bg-2");
 
   const childrenWithSeparator = allChildren.map((child, index) => {
     if (!React.isValidElement(child)) {
@@ -628,12 +574,9 @@ export function Section({
     // Set the hint for the hintBoolean prop.
     if (resolvedProps.hintBoolean != null) {
       resolvedProps.hint ??= resolvedProps.hintBoolean ? (
-        <Image
-          source="sf:checkmark.circle.fill"
-          tintColor={AppleColors.systemGreen}
-        />
+        <SFIcon name="checkmark.circle.fill" className="text-sf-green" />
       ) : (
-        <Image source="sf:slash.circle" tintColor={AppleColors.systemGray} />
+        <SFIcon name="slash.circle" className="text-sf-gray" />
       );
     }
 
@@ -646,7 +589,7 @@ export function Section({
 
       delete resolvedProps.title;
       resolvedProps.style = mergedStyleProp(
-        { color: color ?? AppleColors.link },
+        { color: color ?? linkColor },
         resolvedProps.style
       );
       child = <RNText {...resolvedProps}>{title}</RNText>;
@@ -666,7 +609,9 @@ export function Section({
         ...resolvedProps,
         onPress: undefined,
         onLongPress: undefined,
-        style: mergedStyleProp(FormFont.default, resolvedProps.style),
+        // ?? {} is required for rncss otherwise no style object is defined from classname
+        style: resolvedProps.style ?? {},
+        className: cn("text-sf-text text-lg", resolvedProps?.className),
       });
 
       const hintView = (() => {
@@ -684,11 +629,7 @@ export function Section({
               <RNText
                 selectable
                 dynamicTypeRamp="body"
-                style={{
-                  ...FormFont.secondary,
-                  textAlign: "right",
-                  flexShrink: 1,
-                }}
+                className="text-sf-text-2 text-lg text-right shrink"
               >
                 {child}
               </RNText>
@@ -704,6 +645,7 @@ export function Section({
             <SymbolView
               systemImage={resolvedProps.systemImage}
               style={resolvedProps.style}
+              className={resolvedProps.imageClassName}
             />
             {child}
             {hintView && <Spacer />}
@@ -725,7 +667,8 @@ export function Section({
             return (
               <RNText
                 dynamicTypeRamp="body"
-                style={mergedStyleProp(FormFont.default, resolvedProps?.style)}
+                style={resolvedProps?.style ?? {}}
+                className={cn("text-lg text-sf-text", resolvedProps?.className)}
               >
                 {linkChild}
               </RNText>
@@ -747,7 +690,7 @@ export function Section({
           }
           if (typeof child === "string") {
             return (
-              <Text selectable style={FormFont.secondary}>
+              <Text selectable className="text-lg text-sf-text-2">
                 {child}
               </Text>
             );
@@ -757,15 +700,11 @@ export function Section({
       })();
 
       child = React.cloneElement(child, {
-        style: [
-          FormFont.default,
-          process.env.EXPO_OS === "web" && {
-            alignItems: "stretch",
-            flexDirection: "column",
-            display: "flex",
-          },
-          resolvedProps.style,
-        ],
+        className: cn(
+          "text-sf-text text-lg web:items-stretch web:flex-col web:flex",
+          resolvedProps.className
+        ),
+        style: resolvedProps.style ?? {},
         dynamicTypeRamp: "body",
         numberOfLines: 1,
         adjustsFontSizeToFit: true,
@@ -775,13 +714,14 @@ export function Section({
           <FormItem>
             <HStack>
               <SymbolView
+                className={resolvedProps.imageClassName}
                 systemImage={resolvedProps.systemImage}
-                style={resolvedProps.style}
+                style={resolvedProps.style ?? {}}
               />
               {wrappedTextChildren}
               <Spacer />
               {hintView}
-              <View style={{}}>
+              <View>
                 <LinkChevronIcon
                   href={resolvedProps.href}
                   systemImage={resolvedProps.hintImage}
@@ -800,12 +740,15 @@ export function Section({
           style={{ paddingVertical: 0, paddingHorizontal: 0 }}
         >
           {React.cloneElement(child, {
-            placeholderTextColor: AppleColors.placeholderText,
+            placeholderTextColor: placeholderText,
             ...resolvedProps,
             onPress: undefined,
             onLongPress: undefined,
+            className: cn(
+              "text-sf-text text-lg px-5",
+              resolvedProps?.className
+            ),
             style: mergedStyleProp(
-              FormFont.default,
               {
                 outline: "none",
                 // outlineWidth: 1,
@@ -855,17 +798,22 @@ export function Section({
         style: mergedStyleProp<ViewStyle>(styles.itemPadding, itemStyle),
       }}
     >
-      <Animated.View
+      <View
         {...props}
-        style={[
-          listStyle === "grouped" ? styles.groupedList : styles.standardList,
-          props.style,
-        ]}
+        // style={StyleSheet.flatten([{ backgroundColor: bg }, props.style ?? {}])}
+        collapsable={false}
+        className={cn(
+          sheet ? "bg-sf-bg-2" : "bg-sf-grouped-bg-2",
+          listStyle === "grouped"
+            ? "border-sf-border overflow-hidden border-t-[0.5px] border-b-[0.5px]"
+            : "curve-sf rounded-3xl overflow-hidden",
+          props.className
+        )}
       >
         {childrenWithSeparator.map((child, index) => (
           <React.Fragment key={index}>{child}</React.Fragment>
         ))}
-      </Animated.View>
+      </View>
     </SectionStyleContext>
   );
 
@@ -890,7 +838,10 @@ export function Section({
 
     if (isStringishNode(titleHint)) {
       return (
-        <RNText dynamicTypeRamp="footnote" style={styles.hintText}>
+        <RNText
+          dynamicTypeRamp="footnote"
+          className="text-sf-text-2 py-2 text-base"
+        >
           {titleHint}
         </RNText>
       );
@@ -905,25 +856,11 @@ export function Section({
         paddingHorizontal: padding,
       }}
     >
-      <View
-        style={{
-          paddingHorizontal: 20,
-          gap: 20,
-          flexDirection: "row",
-          justifyContent: "space-between",
-        }}
-      >
+      <View className="px-5 gap-5 flex-row justify-between">
         {title && (
           <RNText
             dynamicTypeRamp="footnote"
-            style={{
-              textTransform: "uppercase",
-              color: AppleColors.secondaryLabel,
-              paddingVertical: 8,
-              fontSize: 14,
-              // use Apple condensed font
-              // fontVariant: ["small-caps"],
-            }}
+            className="uppercase text-sf-text-2 py-2 text-base"
           >
             {title}
           </RNText>
@@ -936,12 +873,7 @@ export function Section({
       {footer && (
         <RNText
           dynamicTypeRamp="footnote"
-          style={{
-            color: AppleColors.secondaryLabel,
-            paddingHorizontal: 20,
-            paddingTop: 8,
-            fontSize: 14,
-          }}
+          className="text-sf-text-2 text-base px-5 pt-2"
         >
           {footer}
         </RNText>
@@ -953,9 +885,11 @@ export function Section({
 function SymbolView({
   systemImage,
   style,
+  className,
 }: {
   systemImage?: SystemImageProps | React.ReactNode;
   style?: StyleProp<TextStyle>;
+  className?: string;
 }) {
   if (!systemImage) {
     return null;
@@ -977,22 +911,26 @@ function SymbolView({
   }
 
   return (
-    <IconSymbol
+    <SFIcon
       name={symbolProps.name}
       size={symbolProps.size ?? 20}
-      style={[{ marginRight: 8 }, symbolProps.style]}
+      style={symbolProps.style ?? {}}
       weight={symbolProps.weight}
-      color={color ?? AppleColors.label}
+      className={cn("text-sf-text mr-2", className)}
+      // TODO: Remove
+      // color={color ?? AppleColors.label}
     />
   );
 }
 
-function LinkChevronIcon({
+export function LinkChevronIcon({
   href,
   systemImage,
+  className,
 }: {
   href?: any;
   systemImage?: SystemImageProps | React.ReactNode;
+  className?: string;
 }) {
   const isHrefExternal =
     typeof href === "string" && /^([\w\d_+.-]+:)?\/\//.test(href);
@@ -1005,10 +943,11 @@ function LinkChevronIcon({
         return systemImage;
       }
       return (
-        <IconSymbol
+        <SFIcon
           name={systemImage.name}
-          size={systemImage.size ?? size}
-          color={systemImage.color ?? AppleColors.tertiaryLabel}
+          size={systemImage.size}
+          color={systemImage.color}
+          className={cn("text-sf-text-3 text-2xl ios:text-sm", className)}
         />
       );
     }
@@ -1022,14 +961,15 @@ function LinkChevronIcon({
       : "chevron.right";
 
   return (
-    <Image
-      source={"sf:" + resolvedName}
+    <SFIcon
+      name={resolvedName}
       size={size}
       weight="bold"
       // from xcode, not sure which color is the exact match
       // #BFBFBF
       // #9D9DA0
-      tintColor={AppleColors.tertiaryLabel}
+      // tintColor={AppleColors.tertiaryLabel}
+      className={cn("text-sf-text-3 text-2xl ios:text-sm", className)}
     />
   );
 }
@@ -1038,25 +978,29 @@ export function HStack(props: ViewProps) {
   return (
     <View
       {...props}
-      style={mergedStyleProp<ViewStyle>(styles.hstack, props.style)}
+      className={cn("flex-row items-center gap-2", props.className)}
     />
   );
 }
+
 export function VStack(props: ViewProps) {
-  return (
-    <View
-      {...props}
-      style={mergedStyleProp<ViewStyle>(styles.vstack, props.style)}
-    />
-  );
+  return <View {...props} className={cn("flex-1 flex-col", props.className)} />;
 }
 
 export function Spacer(props: ViewProps) {
-  return <View {...props} style={[styles.spacer, props.style]} />;
+  return <View {...props} className={cn("flex-1", props.className)} />;
 }
 
 function Separator(props: ViewProps) {
-  return <View {...props} style={[styles.separator, props.style]} />;
+  return (
+    <View
+      {...props}
+      className={cn(
+        "border-b-sf-border ms-15 border-b-[0.5px] mt-[-0.5px]",
+        props.className
+      )}
+    />
+  );
 }
 
 export function mergedStyleProp<TStyle extends ViewStyle | TextStyle>(
