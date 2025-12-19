@@ -1,0 +1,333 @@
+@layer base {
+  html {
+    /* https://lightningcss.dev/transpilation.html#:~:text=For%20this%20to%20work%2C%20you%20must%20set%20the%20color%2Dscheme%20property%20on%20an%20ancestor%20element */
+    color-scheme: light;
+  }
+}
+
+:root {
+  /* Accent colors */
+  --sf-blue: light-dark(rgb(0 122 255), rgb(10 132 255));
+  --sf-brown: light-dark(rgb(162 132 94), rgb(172 142 104));
+  --sf-cyan: light-dark(rgb(50 173 230), rgb(100 210 255));
+  --sf-green: light-dark(rgb(52 199 89), rgb(48 209 89));
+  --sf-indigo: light-dark(rgb(88 86 214), rgb(94 92 230));
+  --sf-mint: light-dark(rgb(0 199 190), rgb(99 230 226));
+  --sf-orange: light-dark(rgb(255 149 0), rgb(255 159 10));
+  --sf-pink: light-dark(rgb(255 45 85), rgb(255 55 95));
+  --sf-purple: light-dark(rgb(175 82 222), rgb(191 90 242));
+  --sf-red: light-dark(rgb(255 59 48), rgb(255 69 58));
+  --sf-teal: light-dark(rgb(48 176 199), rgb(64 200 224));
+  --sf-yellow: light-dark(rgb(255 204 0), rgb(255 214 10));
+
+  /* Gray scales */
+  --sf-gray: light-dark(rgb(142 142 147), rgb(142 142 147));
+  --sf-gray-2: light-dark(rgb(174 174 178), rgb(99 99 102));
+  --sf-gray-3: light-dark(rgb(199 199 204), rgb(72 72 74));
+  --sf-gray-4: light-dark(rgb(209 209 214), rgb(58 58 60));
+  --sf-gray-5: light-dark(rgb(229 229 234), rgb(44 44 46));
+  --sf-gray-6: light-dark(rgb(242 242 247), rgb(28 28 30));
+
+  /* Text and label colors */
+  --sf-text: light-dark(rgb(0 0 0), rgb(255 255 255));
+  --sf-text-2: light-dark(rgb(60 60 67 / 0.6), rgb(235 235 245 / 0.6));
+  --sf-text-3: light-dark(rgb(60 60 67 / 0.3), rgb(235 235 245 / 0.3));
+  --sf-text-4: light-dark(rgb(60 60 67 / 0.18), rgb(235 235 245 / 0.16));
+  --sf-text-placeholder: light-dark(
+    rgb(60 60 67 / 0.3),
+    rgb(235 235 245 / 0.3)
+  );
+  --sf-text-dark: light-dark(rgb(0 0 0), rgb(0 0 0));
+  --sf-text-light: light-dark(rgb(255 255 255 / 0.6), rgb(255 255 255 / 0.6));
+
+  /* Fill colors */
+  --sf-fill: light-dark(rgb(120 120 128 / 0.2), rgb(120 120 128 / 0.36));
+  --sf-fill-2: light-dark(rgb(120 120 128 / 0.16), rgb(120 120 128 / 0.32));
+  --sf-fill-3: light-dark(rgb(118 118 128 / 0.12), rgb(118 118 128 / 0.24));
+  --sf-fill-4: light-dark(rgb(116 116 128 / 0.08), rgb(118 118 128 / 0.18));
+
+  /* Background colors */
+  --sf-bg: light-dark(rgb(255 255 255), rgb(0 0 0));
+  --sf-bg-2: light-dark(rgb(242 242 247), rgb(28 28 30));
+  --sf-bg-3: light-dark(rgb(255 255 255), rgb(44 44 46));
+  --sf-grouped-bg: light-dark(rgb(242 242 247), rgb(0 0 0));
+  --sf-grouped-bg-2: light-dark(rgb(255 255 255), rgb(28 28 30));
+  --sf-grouped-bg-3: light-dark(rgb(242 242 247), rgb(44 44 46));
+
+  /* Border and link colors */
+  --sf-border: light-dark(rgb(60 60 67 / 0.29), rgb(84 84 89 / 0.6));
+  --sf-border-opaque: light-dark(rgb(198 198 198), rgb(56 56 58));
+  --sf-link: light-dark(rgb(0 122 255), rgb(10 133 255));
+
+  @media (color-gamut: p3) {
+    /* Accent colors (P3) */
+    --sf-blue: light-dark(
+      color(display-p3 0 0.48 1),
+      color(display-p3 0.04 0.52 1)
+    );
+    --sf-brown: light-dark(
+      color(display-p3 0.64 0.52 0.37),
+      color(display-p3 0.67 0.56 0.41)
+    );
+    --sf-cyan: light-dark(
+      color(display-p3 0.2 0.68 0.9),
+      color(display-p3 0.39 0.82 1)
+    );
+    --sf-green: light-dark(
+      color(display-p3 0.2 0.78 0.35),
+      color(display-p3 0.19 0.82 0.35)
+    );
+    --sf-indigo: light-dark(
+      color(display-p3 0.35 0.34 0.84),
+      color(display-p3 0.37 0.36 0.9)
+    );
+    --sf-mint: light-dark(
+      color(display-p3 0 0.78 0.75),
+      color(display-p3 0.39 0.9 0.89)
+    );
+    --sf-orange: light-dark(
+      color(display-p3 1 0.58 0),
+      color(display-p3 1 0.62 0.04)
+    );
+    --sf-pink: light-dark(
+      color(display-p3 1 0.18 0.33),
+      color(display-p3 1 0.22 0.37)
+    );
+    --sf-purple: light-dark(
+      color(display-p3 0.69 0.32 0.87),
+      color(display-p3 0.75 0.35 0.95)
+    );
+    --sf-red: light-dark(
+      color(display-p3 1 0.23 0.19),
+      color(display-p3 1 0.27 0.23)
+    );
+    --sf-teal: light-dark(
+      color(display-p3 0.19 0.69 0.78),
+      color(display-p3 0.25 0.78 0.88)
+    );
+    --sf-yellow: light-dark(
+      color(display-p3 1 0.8 0),
+      color(display-p3 1 0.84 0.04)
+    );
+
+    /* Gray scales (P3) */
+    --sf-gray: light-dark(
+      color(display-p3 0.56 0.56 0.58),
+      color(display-p3 0.56 0.56 0.58)
+    );
+    --sf-gray-2: light-dark(
+      color(display-p3 0.68 0.68 0.7),
+      color(display-p3 0.39 0.39 0.4)
+    );
+    --sf-gray-3: light-dark(
+      color(display-p3 0.78 0.78 0.8),
+      color(display-p3 0.28 0.28 0.29)
+    );
+    --sf-gray-4: light-dark(
+      color(display-p3 0.82 0.82 0.84),
+      color(display-p3 0.23 0.23 0.24)
+    );
+    --sf-gray-5: light-dark(
+      color(display-p3 0.9 0.9 0.92),
+      color(display-p3 0.17 0.17 0.18)
+    );
+    --sf-gray-6: light-dark(
+      color(display-p3 0.95 0.95 0.97),
+      color(display-p3 0.11 0.11 0.12)
+    );
+
+    /* Text and label colors (P3) */
+    --sf-text: light-dark(color(display-p3 0 0 0), color(display-p3 1 1 1));
+    --sf-text-2: light-dark(
+      color(display-p3 0.24 0.24 0.26 / 0.6),
+      color(display-p3 0.92 0.92 0.96 / 0.6)
+    );
+    --sf-text-3: light-dark(
+      color(display-p3 0.24 0.24 0.26 / 0.3),
+      color(display-p3 0.92 0.92 0.96 / 0.3)
+    );
+    --sf-text-4: light-dark(
+      color(display-p3 0.24 0.24 0.26 / 0.18),
+      color(display-p3 0.92 0.92 0.96 / 0.16)
+    );
+    --sf-text-placeholder: light-dark(
+      color(display-p3 0.24 0.24 0.26 / 0.3),
+      color(display-p3 0.92 0.92 0.96 / 0.3)
+    );
+    --sf-text-dark: light-dark(
+      color(display-p3 0 0 0 / 1),
+      color(display-p3 0 0 0 / 1)
+    );
+    --sf-text-light: light-dark(
+      color(display-p3 1 1 1 / 0.6),
+      color(display-p3 1 1 1 / 0.6)
+    );
+
+    /* Fill colors (P3) */
+    --sf-fill: light-dark(
+      color(display-p3 0.47 0.47 0.5 / 0.2),
+      color(display-p3 0.47 0.47 0.5 / 0.36)
+    );
+    --sf-fill-2: light-dark(
+      color(display-p3 0.47 0.47 0.5 / 0.16),
+      color(display-p3 0.47 0.47 0.5 / 0.32)
+    );
+    --sf-fill-3: light-dark(
+      color(display-p3 0.46 0.46 0.5 / 0.12),
+      color(display-p3 0.46 0.46 0.5 / 0.24)
+    );
+    --sf-fill-4: light-dark(
+      color(display-p3 0.45 0.45 0.5 / 0.08),
+      color(display-p3 0.46 0.46 0.5 / 0.18)
+    );
+
+    /* Background colors (P3) */
+    --sf-bg: light-dark(
+      color(display-p3 1 1 1 / 1),
+      color(display-p3 0 0 0 / 1)
+    );
+    --sf-bg-2: light-dark(
+      color(display-p3 0.95 0.95 0.97 / 1),
+      color(display-p3 0.11 0.11 0.12 / 1)
+    );
+    --sf-bg-3: light-dark(
+      color(display-p3 1 1 1 / 1),
+      color(display-p3 0.17 0.17 0.18 / 1)
+    );
+    --sf-grouped-bg: light-dark(
+      color(display-p3 0.95 0.95 0.97 / 1),
+      color(display-p3 0 0 0 / 1)
+    );
+    --sf-grouped-bg-2: light-dark(
+      color(display-p3 1 1 1 / 1),
+      color(display-p3 0.11 0.11 0.12 / 1)
+    );
+    --sf-grouped-bg-3: light-dark(
+      color(display-p3 0.95 0.95 0.97 / 1),
+      color(display-p3 0.17 0.17 0.18 / 1)
+    );
+
+    /* Border and link colors (P3) */
+    --sf-border: light-dark(
+      color(display-p3 0.24 0.24 0.26 / 0.29),
+      color(display-p3 0.33 0.33 0.35 / 0.6)
+    );
+    --sf-border-opaque: light-dark(
+      color(display-p3 0.78 0.78 0.78 / 1),
+      color(display-p3 0.22 0.22 0.23 / 1)
+    );
+    --sf-link: light-dark(
+      color(display-p3 0 0.48 1 / 1),
+      color(display-p3 0.04 0.52 1 / 1)
+    );
+  }
+}
+
+@media ios {
+  :root {
+    --sf-blue: platformColor(systemBlue);
+    --sf-brown: platformColor(systemBrown);
+    --sf-cyan: platformColor(systemCyan);
+    --sf-green: platformColor(systemGreen);
+    --sf-indigo: platformColor(systemIndigo);
+    --sf-mint: platformColor(systemMint);
+    --sf-orange: platformColor(systemOrange);
+    --sf-pink: platformColor(systemPink);
+    --sf-purple: platformColor(systemPurple);
+    --sf-red: platformColor(systemRed);
+    --sf-teal: platformColor(systemTeal);
+    --sf-yellow: platformColor(systemYellow);
+
+    --sf-gray: platformColor(systemGray);
+    --sf-gray-2: platformColor(systemGray2);
+    --sf-gray-3: platformColor(systemGray3);
+    --sf-gray-4: platformColor(systemGray4);
+    --sf-gray-5: platformColor(systemGray5);
+    --sf-gray-6: platformColor(systemGray6);
+
+    --sf-text: platformColor(label);
+    --sf-text-2: platformColor(secondaryLabel);
+    --sf-text-3: platformColor(tertiaryLabel);
+    --sf-text-4: platformColor(quaternaryLabel);
+    --sf-text-placeholder: platformColor(placeholderText);
+    --sf-text-dark: platformColor(darkText);
+    --sf-text-light: platformColor(lightText);
+
+    --sf-fill: platformColor(systemFill);
+    --sf-fill-2: platformColor(secondarySystemFill);
+    --sf-fill-3: platformColor(tertiarySystemFill);
+    --sf-fill-4: platformColor(quaternarySystemFill);
+
+    --sf-bg: platformColor(systemBackground);
+    --sf-bg-2: platformColor(secondarySystemBackground);
+    --sf-bg-3: platformColor(tertiarySystemBackground);
+
+    --sf-grouped-bg: platformColor(systemGroupedBackground);
+    --sf-grouped-bg-2: platformColor(secondarySystemGroupedBackground);
+    --sf-grouped-bg-3: platformColor(tertiarySystemGroupedBackground);
+
+    --sf-border: platformColor(separator);
+    --sf-border-opaque: platformColor(opaqueSeparator);
+
+    --sf-link: platformColor(link);
+  }
+}
+
+@layer theme {
+  @theme {
+
+    /* Accent colors */
+    --color-sf-blue: var(--sf-blue) /* rgba(0, 122, 255, 1) */;
+    --color-sf-brown: var(--sf-brown) /* rgba(162, 132, 94, 1) */;
+    --color-sf-cyan: var(--sf-cyan) /* rgba(50, 173, 230, 1) */;
+    --color-sf-green: var(--sf-green) /* rgba(52, 199, 89, 1) */;
+    --color-sf-indigo: var(--sf-indigo) /* rgba(88, 86, 214, 1) */;
+    --color-sf-mint: var(--sf-mint) /* rgba(0, 199, 190, 1) */;
+    --color-sf-orange: var(--sf-orange) /* rgba(255, 149, 0, 1) */;
+    --color-sf-pink: var(--sf-pink) /* rgba(255, 45, 85, 1) */;
+    --color-sf-purple: var(--sf-purple) /* rgba(175, 82, 222, 1) */;
+    --color-sf-red: var(--sf-red) /* rgba(255, 59, 48, 1) */;
+    --color-sf-teal: var(--sf-teal) /* rgba(48, 176, 199, 1) */;
+    --color-sf-yellow: var(--sf-yellow) /* rgba(255, 204, 0, 1) */;
+
+    /* Gray scales */
+    --color-sf-gray: var(--sf-gray) /* rgba(142, 142, 147, 1) */;
+    --color-sf-gray-2: var(--sf-gray-2) /* rgba(174, 174, 178, 1) */;
+    --color-sf-gray-3: var(--sf-gray-3) /* rgba(199, 199, 204, 1) */;
+    --color-sf-gray-4: var(--sf-gray-4) /* rgba(209, 209, 214, 1) */;
+    --color-sf-gray-5: var(--sf-gray-5) /* rgba(229, 229, 234, 1) */;
+    --color-sf-gray-6: var(--sf-gray-6) /* rgba(242, 242, 247, 1) */;
+
+    /* Text and label colors */
+    --color-sf-text: var(--sf-text) /* rgba(0, 0, 0, 1) */;
+    --color-sf-text-2: var(--sf-text-2) /* rgba(61.2, 61.2, 66, 0.6) */;
+    --color-sf-text-3: var(--sf-text-3) /* rgba(61.2, 61.2, 66, 0.3) */;
+    --color-sf-text-4: var(--sf-text-4) /* rgba(61.2, 61.2, 66, 0.18) */;
+    --color-sf-text-placeholder: var(--sf-text-placeholder)
+      /* rgba(61.2, 61.2, 66, 0.3) */;
+    --color-sf-text-dark: var(--sf-text-dark) /* rgba(0, 0, 0, 1) */;
+    --color-sf-text-light: var(--sf-text-light) /* rgba(255, 255, 255, 0.6) */;
+
+    /* Fill colors */
+    --color-sf-fill: var(--sf-fill) /* rgba(119.85, 119.85, 127.5, 0.2) */;
+    --color-sf-fill-2: var(--sf-fill-2) /* rgba(119.85, 119.85, 127.5, 0.16) */;
+    --color-sf-fill-3: var(--sf-fill-3) /* rgba(117.3, 117.3, 127.5, 0.12) */;
+    --color-sf-fill-4: var(--sf-fill-4) /* rgba(114.75, 114.75, 127.5, 0.08) */;
+
+    /* Background colors */
+    --color-sf-bg: var(--sf-bg) /* rgba(255, 255, 255, 1) */;
+    --color-sf-bg-2: var(--sf-bg-2) /* rgba(242.25, 242.25, 247.35, 1) */;
+    --color-sf-bg-3: var(--sf-bg-3) /* rgba(255, 255, 255, 1) */;
+    --color-sf-grouped-bg: var(--sf-grouped-bg)
+      /* rgba(242.25, 242.25, 247.35, 1) */;
+    --color-sf-grouped-bg-2: var(--sf-grouped-bg-2) /* rgba(255, 255, 255, 1) */;
+    --color-sf-grouped-bg-3: var(--sf-grouped-bg-3)
+      /* rgba(242.25, 242.25, 247.35, 1) */;
+
+    /* Border and link colors */
+    --color-sf-border: var(--sf-border) /* rgba(61.2, 61.2, 66, 0.29) */;
+    --color-sf-border-opaque: var(--sf-border-opaque) /* rgba(198.9, 198.9, 198.9, 1) */;
+    --color-sf-link: var(--sf-link) /* rgba(0, 122.4, 255, 1) */;
+
+  }
+}

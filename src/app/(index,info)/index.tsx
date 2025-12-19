@@ -22,8 +22,8 @@ import {
   Text,
   Appearance,
   TextInput,
-  View,
 } from "react-native";
+import { View } from "@/tw";
 import Animated, {
   interpolate,
   useAnimatedRef,
@@ -103,7 +103,7 @@ function Switches() {
 
       <Form.HStack>
         <Form.Text>Manual</Form.Text>
-        <View style={{ flex: 1 }} />
+        <View className="flex-1" />
         <Switch value={on} onValueChange={setOn} />
       </Form.HStack>
     </Form.Section>
@@ -159,7 +159,7 @@ export default function Page() {
   const [show, setShow] = React.useState(false);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View className="flex-1">
       {show && <GlurryList setShow={setShow} />}
       <Stack.Screen
         options={{
@@ -399,7 +399,7 @@ export default function Page() {
           <Form.HStack style={{ flexWrap: "wrap" }}>
             <Form.Text>Wrap Below</Form.Text>
             {/* Spacer */}
-            <View style={{ flex: 1 }} />
+            <View className="flex-1" />
             {/* Right */}
             <Form.Text style={{ flexShrink: 1, color: AC.secondaryLabel }}>
               Long list of text that should wrap around when it gets too long
@@ -424,14 +424,14 @@ export default function Page() {
                 borderRadius: 999,
               }}
             />
-            <View style={{ gap: 4 }}>
+            <View className="gap-1">
               <Form.Text style={Form.FormFont.default}>Evan's iPhone</Form.Text>
               <Form.Text style={Form.FormFont.caption}>
                 This iPhone 16 Pro Max
               </Form.Text>
             </View>
 
-            <View style={{ flex: 1 }} />
+            <View className="flex-1" />
 
             <Image
               source="sf:person.fill.badge.plus"
@@ -471,7 +471,7 @@ export default function Page() {
           </Form.Link>
 
           <Link href="/two">
-            <View style={{ gap: 4 }}>
+            <View className="gap-1">
               <Form.Text>Evan's iPhone</Form.Text>
               <Text style={Form.FormFont.caption}>This iPhone 16 Pro Max</Text>
             </View>

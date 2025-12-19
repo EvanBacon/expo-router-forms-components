@@ -1,3 +1,5 @@
+import "@/global.css";
+
 import ThemeProvider from "@/components/ui/theme-provider";
 
 import { AsyncFont } from "@/components/data/async-font";
