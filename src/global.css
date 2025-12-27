@@ -2,14 +2,39 @@
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/preflight.css" layer(base);
 @import "tailwindcss/utilities.css";
-@import "nativewind/theme";
+
 @import "./css/sf.css";
+
 
 @layer theme {
   @theme {
     /* Fonts */
     --font-rounded: "SF Pro Rounded", "Hiragino Maru Gothic ProN", Meiryo,
       "MS PGothic", sans-serif;
+
+
+    /* Text size line heights */
+    --text-xs--line-height: calc(1em / 0.75);
+    --text-sm--line-height: calc(1.25em / 0.875);
+    --text-base--line-height: calc(1.5em / 1);
+    --text-lg--line-height: calc(1.75em / 1.125);
+    --text-xl--line-height: calc(1.75em / 1.25);
+    --text-2xl--line-height: calc(2em / 1.5);
+    --text-3xl--line-height: calc(2.25em / 1.875);
+    --text-4xl--line-height: calc(2.5em / 2.25);
+    --text-5xl--line-height: 1em;
+    --text-6xl--line-height: 1em;
+    --text-7xl--line-height: 1em;
+    --text-8xl--line-height: 1em;
+    --text-9xl--line-height: 1em;
+
+    /* Leading scales */
+    --leading-tight: 1.25em;
+    --leading-snug: 1.375em;
+    --leading-normal: 1.5em;
+    --leading-relaxed: 1.625em;
+    --leading-loose: 2em;
+
   }
 }
 

@@ -4,13 +4,8 @@ import * as Form from "@/components/ui/form";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import * as AC from "@bacons/apple-colors";
 import { Image } from "expo-image";
-import {
-  Modal,
-  Pressable,
-  StyleSheet,
-  useColorScheme,
-  View,
-} from "react-native";
+import { Modal, StyleSheet, useColorScheme } from "react-native";
+import { Pressable, View } from "@/tw";
 import Animated, {
   Easing,
   FadeIn,
@@ -254,7 +249,7 @@ export function GlurryList({ setShow }: { setShow: (show: boolean) => void }) {
         exiting={SlideOutDown.easing(Easing.in(Easing.exp))}
         style={{ flex: 1 }}
       >
-        <Pressable style={{ flex: 1 }} onPress={() => setShow(false)}>
+        <Pressable className="flex-1" onPress={() => setShow(false)}>
           <Form.List
             navigationTitle="Components"
             style={{
@@ -267,7 +262,7 @@ export function GlurryList({ setShow }: { setShow: (show: boolean) => void }) {
               transform: [{ scaleY: -1 }],
             }}
           >
-            <View style={{ gap: 8 }}>
+            <View className="gap-2">
               {providers.map((provider) => (
                 <TouchableBounce
                   sensory
@@ -298,12 +293,12 @@ export function GlurryList({ setShow }: { setShow: (show: boolean) => void }) {
                         height: 24,
                       }}
                     />
-                    <View style={{ gap: 4 }}>
-                      <Form.Text style={Form.FormFont.default}>
+                    <View className="gap-1">
+                      <Form.Text className="text-sf-text text-lg">
                         {provider.title}
                       </Form.Text>
                     </View>
-                    <View style={{ flex: 1 }} />
+                    <View className="flex-1" />
                     {provider.selected && (
                       <IconSymbol
                         color={AC.label}

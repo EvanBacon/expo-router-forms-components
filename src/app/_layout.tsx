@@ -9,7 +9,8 @@ import { Suspense, useEffect } from "react";
 import { Toaster } from "@/utils/toast";
 import { GestureHandlerRootView } from "@/utils/native-gesture-provider";
 import { SourceCodePro_400Regular } from "@expo-google-fonts/source-code-pro";
-
+import { Icon, Label, NativeTabs } from "expo-router/unstable-native-tabs";
+import { useCSSVariable } from "@/tw";
 SplashScreen.preventAutoHideAsync();
 
 function SplashFallback() {
@@ -23,6 +24,8 @@ function SplashFallback() {
 }
 
 export default function Layout() {
+  const label = useCSSVariable("--sf-text");
+
   // Keep the splash screen visible while we fetch resources
   return (
     <Suspense fallback={<SplashFallback />}>
@@ -30,14 +33,36 @@ export default function Layout() {
       <AsyncFont src={SourceCodePro_400Regular} fontFamily="Source Code Pro" />
       <ThemeProvider>
         <GestureHandlerRootView style={{ flex: 1, display: "contents" }}>
-          <Tabs>
-            <Tabs.Screen name="(index)" systemImage="house.fill" title="Home" />
-            <Tabs.Screen
-              name="(info)"
-              systemImage="cursorarrow.rays"
-              title="Info"
-            />
-          </Tabs>
+          {process.env.EXPO_OS === "web" ? (
+            <Tabs>
+              <Tabs.Screen
+                name="(index)"
+                systemImage="house.fill"
+                title="Home"
+              />
+              <Tabs.Screen
+                name="(info)"
+                systemImage="cursorarrow.rays"
+                title="Info"
+              />
+            </Tabs>
+          ) : (
+            <NativeTabs tintColor={label}>
+              <NativeTabs.Trigger name="(index)">
+                <Label>Home</Label>
+                <Icon
+                  sf={{
+                    default: "house",
+                    selected: "house.fill",
+                  }}
+                />
+              </NativeTabs.Trigger>
+              <NativeTabs.Trigger name="(info)" role="search">
+                <Label>Info</Label>
+                <Icon sf="cursorarrow.rays" />
+              </NativeTabs.Trigger>
+            </NativeTabs>
+          )}
           <Toaster />
         </GestureHandlerRootView>
       </ThemeProvider>

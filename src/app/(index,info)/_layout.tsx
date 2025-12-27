@@ -3,7 +3,7 @@ import * as AC from "@bacons/apple-colors";
 import { Text, View } from "react-native";
 
 import * as Form from "@/components/ui/form";
-import { IconSymbol } from "@/components/ui/icon-symbol";
+import { SFIcon } from "@/components/ui/sf-icon";
 import { useMemo } from "react";
 
 export const unstable_settings = {
@@ -52,10 +52,9 @@ export default function Layout({ segment }: { segment: string }) {
           sheetAllowedDetents: [0.25],
           headerRight: () => (
             <Form.Link headerRight href="/" dismissTo>
-              <IconSymbol
+              <SFIcon
                 name="xmark.circle.fill"
-                color={AC.systemGray}
-                size={28}
+                className="text-2xl text-sf-gray"
               />
             </Form.Link>
           ),

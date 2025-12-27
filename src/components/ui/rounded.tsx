@@ -1,4 +1,5 @@
-import { View, ViewProps } from "react-native";
+import { cn } from "@/lib/utils";
+import { View, ViewProps } from "@/tw";
 
 export function Rounded({
   rounded,
@@ -10,23 +11,17 @@ export function Rounded({
   rounded?: boolean;
   capsule?: boolean;
 }) {
-  const paddingStyle =
-    padding === true ? { padding: 16 } : padding ? { padding } : {};
   return (
     <View
       {...props}
-      style={[
-        paddingStyle,
-        {
-          borderCurve: "continuous",
-          borderRadius: 10,
-        },
-        capsule && {
-          borderCurve: "circular",
-          borderRadius: 9999,
-        },
-        props.style,
-      ]}
+      className={cn(
+        "curve-sf rounded-3xl",
+        padding === true ? "p-4" : padding ? `p-[${padding}]` : "",
+
+        rounded && "rounded-3xl",
+        capsule ? "rounded-full" : "curve-sf",
+        props.className
+      )}
     />
   );
 }
