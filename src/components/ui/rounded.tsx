@@ -15,10 +15,10 @@ export function Rounded({
     <View
       {...props}
       className={cn(
-        "rounded-[10px]",
+        "curve-sf rounded-3xl",
         padding === true ? "p-4" : padding ? `p-[${padding}]` : "",
 
-        rounded && "rounded-lg",
+        rounded && "rounded-3xl",
         capsule ? "rounded-full" : "curve-sf",
         props.className
       )}
