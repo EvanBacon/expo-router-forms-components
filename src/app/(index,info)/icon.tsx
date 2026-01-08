@@ -5,6 +5,7 @@ import { Image } from "expo-image";
 import * as AC from "@bacons/apple-colors";
 import MaskedView from "@react-native-masked-view/masked-view";
 
+//
 const backgroundImage =
   process.env.EXPO_OS === "web"
     ? `backgroundImage`
