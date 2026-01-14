@@ -812,17 +812,99 @@ function TabBarControllerTabs({
   className,
   style,
 }: TabBarControllerTabsProps) {
+  const [isEditMode, setIsEditMode] = React.useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = React.useState(
+    defaultSidebarOpen ?? false
+  );
+  const [items, setItems] = React.useState<Map<string, TabBarItem>>(new Map());
+  const orderRef = React.useRef(0);
+  const [_value, _setValue] = React.useState("");
+
+  const setValue = React.useCallback((newValue: string) => {
+    _setValue(newValue);
+  }, []);
+
+  const registerItem = React.useCallback((item: Omit<TabBarItem, "order">) => {
+    setItems((prev) => {
+      const newMap = new Map(prev);
+      if (!newMap.has(item.value)) {
+        newMap.set(item.value, { ...item, order: orderRef.current++ });
+      }
+      return newMap;
+    });
+  }, []);
+
+  const unregisterItem = React.useCallback((itemValue: string) => {
+    setItems((prev) => {
+      const newMap = new Map(prev);
+      newMap.delete(itemValue);
+      return newMap;
+    });
+  }, []);
+
+  const togglePin = React.useCallback((itemValue: string) => {
+    setItems((prev) => {
+      const newMap = new Map(prev);
+      const item = newMap.get(itemValue);
+      if (item) {
+        newMap.set(itemValue, { ...item, pinned: !item.pinned });
+      }
+      return newMap;
+    });
+  }, []);
+
+  const pinnedItems = React.useMemo(() => {
+    return Array.from(items.values())
+      .filter((item) => item.pinned)
+      .sort((a, b) => a.order - b.order);
+  }, [items]);
+
+  const contextValue = React.useMemo<TabBarControllerContextProps>(
+    () => ({
+      value: _value,
+      setValue,
+      isEditMode,
+      setIsEditMode,
+      isSidebarOpen,
+      setIsSidebarOpen,
+      items,
+      registerItem,
+      unregisterItem,
+      togglePin,
+      pinnedItems,
+      isRouterMode: true,
+    }),
+    [
+      _value,
+      setValue,
+      isEditMode,
+      isSidebarOpen,
+      items,
+      registerItem,
+      unregisterItem,
+      togglePin,
+      pinnedItems,
+    ]
+  );
+
   return (
-    <TabBarControllerProvider
-        defaultSidebarOpen={defaultSidebarOpen}
-        className={className}
+    <TabBarControllerContext.Provider value={contextValue}>
+      <div
+        data-slot="tabbar-wrapper"
+        data-editing={isEditMode}
+        data-sidebar-open={isSidebarOpen}
         style={style}
-        isRouterMode
+        className={cn("flex min-h-svh w-full", className)}
       >
-    <RouterTabs style={{ display: "contents" }}>
-        {children}
-    </RouterTabs>
-      </TabBarControllerProvider>
+        <RouterTabs
+          style={{
+            display: "contents",
+          }}
+        >
+          {children}
+        </RouterTabs>
+      </div>
+    </TabBarControllerContext.Provider>
   );
 }
 
@@ -927,24 +1009,96 @@ function TabBarControllerLink({
 
   return (
     <TabTrigger name={name} href={href} asChild>
-      <button
-        data-slot="tabbar-menu-button"
-        data-pinned={isPinned}
-        className={cn(
-          "flex w-full items-center gap-3 rounded-full px-2 py-2 text-left text-sm",
-          "transition-colors duration-150",
-          "hover:bg-(--sf-fill)",
-          "data-[active=true]:bg-(--sf-fill-2)",
-          className
-        )}
+      <TabBarLinkButton
+        icon={icon}
+        isPinned={isPinned}
+        className={className}
         {...props}
       >
-        {icon && <IconSymbol name={icon} size={20} color="var(--sf-text)" />}
-        <span className="flex-1 truncate text-(--sf-text)">{children}</span>
-      </button>
+        {children}
+      </TabBarLinkButton>
     </TabTrigger>
   );
 }
+
+/** Button that receives isFocused from TabTrigger asChild */
+function TabBarLinkButton({
+  icon,
+  isPinned,
+  className,
+  children,
+  isFocused,
+  onPress,
+  ...props
+}: {
+  icon?: IconSymbolName;
+  isPinned: boolean;
+  isFocused?: boolean;
+  onPress?: () => void;
+} & React.ComponentProps<"button">) {
+  return (
+    <button
+      data-slot="tabbar-menu-button"
+      data-pinned={isPinned}
+      data-active={isFocused}
+      className={cn(
+        "flex w-full items-center gap-3 rounded-full px-2 py-2 text-left text-sm",
+        "transition-colors duration-150",
+        "hover:bg-(--sf-fill)",
+        isFocused && "bg-(--sf-fill-2)",
+        className
+      )}
+      onClick={onPress}
+      {...props}
+    >
+      {icon && <IconSymbol name={icon} size={20} color="var(--sf-text)" />}
+      <span
+        className={cn("flex-1 truncate text-(--sf-text)", isFocused && "font-medium")}
+      >
+        {children}
+      </span>
+    </button>
+  );
+}
+
+/** Floating bar button that receives isFocused from TabTrigger asChild */
+function FloatingBarButton({
+  icon,
+  label,
+  isFocused,
+  onPress,
+  ...props
+}: {
+  icon?: IconSymbolName;
+  label: React.ReactNode;
+  isFocused?: boolean;
+  onPress?: () => void;
+} & React.ComponentProps<"button">) {
+  return (
+    <button
+      data-active={isFocused}
+      className={cn(
+        "flex items-center gap-1.5 rounded-full px-3 py-1.5",
+        "text-sm transition-colors",
+        isFocused
+          ? "bg-(--sf-fill) text-(--sf-text) font-medium"
+          : "text-(--sf-text-2) hover:bg-(--sf-fill)"
+      )}
+      onClick={onPress}
+      {...props}
+    >
+      {icon && (
+        <IconSymbol
+          name={icon}
+          size={16}
+          color={isFocused ? "var(--sf-text)" : "var(--sf-text-2)"}
+        />
+      )}
+      <span>{label}</span>
+    </button>
+  );
+}
+
 
 /* ----------------------------------------------------------------------------------
  * TabBarControllerRouterFloatingBar (Expo Router Integration)
@@ -996,19 +1150,7 @@ function TabBarControllerRouterFloatingBar({
           href={item.href}
           asChild
         >
-          <button
-            className={cn(
-              "flex items-center gap-1.5 rounded-full px-3 py-1.5",
-              "text-sm transition-colors",
-              "data-[active=true]:bg-(--sf-fill) data-[active=true]:font-medium",
-              "text-(--sf-text-2) hover:bg-(--sf-fill)"
-            )}
-          >
-            {item.icon && (
-              <IconSymbol name={item.icon} size={16} color="currentColor" />
-            )}
-            <span>{item.label}</span>
-          </button>
+          <FloatingBarButton icon={item.icon} label={item.label} />
         </TabTrigger>
       ))}
     </div>

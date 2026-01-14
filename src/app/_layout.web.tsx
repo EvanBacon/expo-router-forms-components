@@ -47,8 +47,8 @@ export default function Layout() {
           <TabBarControllerTabs>
             {/* Hidden TabList to register routes with Expo Router */}
             <TabList style={{ display: "none" }}>
-              <TabTrigger name="(index)" href="/(index)" />
-              <TabTrigger name="(info)" href="/(info)" />
+              <TabTrigger name="index" href="/(index)" />
+              <TabTrigger name="info" href="/(info)" />
             </TabList>
 
             <TabBarControllerSidebar>
@@ -62,7 +62,7 @@ export default function Layout() {
                   <TabBarControllerMenuItem>
                     <TabBarControllerLink
                       href="/(index)"
-                      name="(index)"
+                      name="index"
                       icon="house.fill"
                       pinned
                     >
@@ -72,7 +72,7 @@ export default function Layout() {
                   <TabBarControllerMenuItem>
                     <TabBarControllerLink
                       href="/(info)"
-                      name="(info)"
+                      name="info"
                       icon="cursorarrow.rays"
                       pinned
                     >
