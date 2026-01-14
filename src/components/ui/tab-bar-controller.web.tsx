@@ -324,22 +324,42 @@ function TabBarControllerContent({
   ...props
 }: React.ComponentProps<"div">) {
   const { isEditMode } = useTabBarController();
+  const [isScrolled, setIsScrolled] = React.useState(false);
+
+  const handleScroll = React.useCallback((e: React.UIEvent<HTMLDivElement>) => {
+    const scrollTop = e.currentTarget.scrollTop;
+    setIsScrolled(scrollTop > 4);
+  }, []);
+
+  const fade = 50;
 
   return (
     <div
       data-slot="tabbar-content"
       data-editing={isEditMode}
+      data-scrolled={isScrolled}
       className={cn(
         "flex min-h-0 flex-1 flex-col overflow-y-auto overflow-x-hidden px-2 pb-2",
         className
       )}
       style={{
-        maskImage:
-          "linear-gradient(to bottom, transparent 0%, black 20px, black 100%)",
-        WebkitMaskImage:
-          "linear-gradient(to bottom, transparent 0%, black 20px, black 100%)",
+        maskImage: isScrolled
+          ? `linear-gradient(to bottom, transparent ${
+              fade * 0.2
+            }px, black ${fade}px, black 100%)`
+          : undefined,
+        WebkitMaskImage: isScrolled
+          ? `linear-gradient(to bottom, transparent ${
+              fade * 0.2
+            }px, black ${fade}px, black 100%)`
+          : undefined,
+        marginTop: -fade,
+        paddingTop: fade,
+        scrollbarWidth: "thin",
+        scrollbarColor: "var(--color-sf-gray-2) transparent",
         ...style,
       }}
+      onScroll={handleScroll}
       {...props}
     >
       {isEditMode && (
