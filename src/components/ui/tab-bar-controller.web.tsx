@@ -85,18 +85,15 @@ function TabBarControllerProvider({
     [onValueChange]
   );
 
-  const registerItem = React.useCallback(
-    (item: Omit<TabBarItem, "order">) => {
-      setItems((prev) => {
-        const newMap = new Map(prev);
-        if (!newMap.has(item.value)) {
-          newMap.set(item.value, { ...item, order: orderRef.current++ });
-        }
-        return newMap;
-      });
-    },
-    []
-  );
+  const registerItem = React.useCallback((item: Omit<TabBarItem, "order">) => {
+    setItems((prev) => {
+      const newMap = new Map(prev);
+      if (!newMap.has(item.value)) {
+        newMap.set(item.value, { ...item, order: orderRef.current++ });
+      }
+      return newMap;
+    });
+  }, []);
 
   const unregisterItem = React.useCallback((itemValue: string) => {
     setItems((prev) => {
@@ -176,40 +173,33 @@ function TabBarControllerSidebar({
   children,
   ...props
 }: React.ComponentProps<"div">) {
-  const { isSidebarOpen, setIsSidebarOpen } = useTabBarController();
+  const { isSidebarOpen } = useTabBarController();
 
   return (
-    <>
-      {/* Backdrop overlay */}
-      <div
-        data-slot="tabbar-backdrop"
-        onClick={() => setIsSidebarOpen(false)}
-        className={cn(
-          "fixed inset-0 z-40 bg-black/20",
-          "transition-opacity duration-300",
-          isSidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-        )}
-      />
-      {/* Floating sidebar panel */}
+    <div
+      data-slot="tabbar-sidebar-wrapper"
+      className={cn(
+        "flex overflow-hidden p-3",
+        "transition-all duration-300 ease-out",
+        isSidebarOpen ? "w-[18.5rem] min-w-[18.5rem]" : "w-0 min-w-0 p-0"
+      )}
+    >
       <div
         data-slot="tabbar-sidebar"
         data-open={isSidebarOpen}
         className={cn(
-          "fixed left-4 top-4 bottom-4 z-50 w-80",
-          "flex flex-col overflow-hidden",
-          "bg-[var(--sf-grouped-bg-2)] rounded-2xl",
-          "shadow-2xl shadow-black/20",
+          "flex h-full w-72 flex-col overflow-hidden rounded-2xl",
+          "bg-(--sf-grouped-bg-2)/80 backdrop-blur-xl",
+          "shadow-xl shadow-black/15",
           "transition-all duration-300 ease-out",
-          isSidebarOpen
-            ? "opacity-100 translate-x-0 scale-100"
-            : "opacity-0 -translate-x-8 scale-95 pointer-events-none",
+          isSidebarOpen ? "opacity-100 scale-100" : "opacity-0 scale-95",
           className
         )}
         {...props}
       >
         {children}
       </div>
-    </>
+    </div>
   );
 }
 
@@ -228,18 +218,14 @@ function TabBarControllerSidebarTrigger({
       data-slot="tabbar-sidebar-trigger"
       onClick={() => setIsSidebarOpen(!isSidebarOpen)}
       className={cn(
-        "flex h-8 w-8 items-center justify-center rounded-full",
-        "text-[var(--sf-text-2)] hover:bg-[var(--sf-fill)]",
+        "flex h-8 w-8 items-center justify-center rounded-md",
+        "text-(--sf-text-2) hover:bg-(--sf-fill)",
         "transition-colors",
         className
       )}
       {...props}
     >
-      <IconSymbol
-        name="line.3.horizontal"
-        size={18}
-        color="currentColor"
-      />
+      <IconSymbol name="line.3.horizontal" size={18} color="currentColor" />
     </button>
   );
 }
@@ -259,20 +245,22 @@ function TabBarControllerHeader({
     <div
       data-slot="tabbar-header"
       className={cn(
-        "flex flex-row items-center gap-2 p-4",
+        "flex flex-row items-center justify-between px-4 py-3",
         className
       )}
       {...props}
     >
+      <div className="flex flex-row items-center gap-3">{children}</div>
       <button
         onClick={() => setIsSidebarOpen(false)}
-        className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--sf-link)] hover:bg-[var(--sf-fill)] transition-colors"
+        className="flex h-7 w-7 items-center justify-center rounded-md text-(--sf-text-2) hover:bg-(--sf-fill) transition-colors"
       >
-        <IconSymbol name="checkmark" size={20} color="currentColor" />
+        <IconSymbol
+          name="rectangle.portrait.and.arrow.right"
+          size={18}
+          color="currentColor"
+        />
       </button>
-      <div className="flex flex-1 flex-row items-center justify-between">
-        {children}
-      </div>
     </div>
   );
 }
@@ -285,18 +273,15 @@ function TabBarControllerTitle({
   className,
   children,
   ...props
-}: React.ComponentProps<"h2">) {
+}: React.ComponentProps<"span">) {
   return (
-    <h2
+    <span
       data-slot="tabbar-title"
-      className={cn(
-        "flex-1 text-base font-semibold text-[var(--sf-text)]",
-        className
-      )}
+      className={cn("text-sm font-medium text-(--sf-text-2)", className)}
       {...props}
     >
       {children}
-    </h2>
+    </span>
   );
 }
 
@@ -315,7 +300,7 @@ function TabBarControllerEditTrigger({
       data-slot="tabbar-edit-trigger"
       onClick={() => setIsEditMode(!isEditMode)}
       className={cn(
-        "text-base font-normal text-[var(--sf-link)]",
+        "text-sm text-(--sf-link)",
         "hover:opacity-70 transition-opacity",
         className
       )}
@@ -342,13 +327,13 @@ function TabBarControllerContent({
       data-slot="tabbar-content"
       data-editing={isEditMode}
       className={cn(
-        "flex min-h-0 flex-1 flex-col gap-2 overflow-auto p-2",
+        "flex min-h-0 flex-1 flex-col overflow-auto px-2 pb-2",
         className
       )}
       {...props}
     >
       {isEditMode && (
-        <p className="px-2 py-1 text-xs text-[var(--sf-text-2)]">
+        <p className="px-2 py-2 text-xs text-(--sf-text-3)">
           Drag to customize items in the sidebar or tab bar.
         </p>
       )}
@@ -455,10 +440,10 @@ function TabBarControllerMenuButton({
       data-pinned={isPinned}
       onClick={handleClick}
       className={cn(
-        "flex w-full items-center gap-3 rounded-lg p-2 text-left text-sm",
+        "flex w-full items-center gap-3 rounded-lg px-2 py-2 text-left text-sm",
         "transition-colors duration-150",
-        "hover:bg-[var(--sf-fill)]",
-        "data-[active=true]:bg-[var(--sf-fill-2)]",
+        "hover:bg-(--sf-fill)",
+        "data-[active=true]:bg-(--sf-fill-2)",
         className
       )}
       {...props}
@@ -469,30 +454,18 @@ function TabBarControllerMenuButton({
             "flex h-5 w-5 items-center justify-center rounded-full",
             "border-2 transition-colors",
             isPinned
-              ? "border-[var(--sf-blue)] bg-[var(--sf-blue)]"
-              : "border-[var(--sf-text-3)] bg-transparent"
+              ? "border-(--sf-blue) bg-(--sf-blue)"
+              : "border-(--sf-text-3) bg-transparent"
           )}
         >
-          {isPinned && (
-            <IconSymbol name="checkmark" size={12} color="white" />
-          )}
+          {isPinned && <IconSymbol name="checkmark" size={12} color="white" />}
         </span>
       )}
-      {icon && (
-        <IconSymbol
-          name={icon}
-          size={20}
-          color={
-            isActive ? "var(--sf-blue)" : "var(--sf-text-2)"
-          }
-        />
-      )}
+      {icon && <IconSymbol name={icon} size={20} color="var(--sf-text)" />}
       <span
         className={cn(
-          "flex-1 truncate",
-          isActive
-            ? "font-medium text-[var(--sf-text)]"
-            : "text-[var(--sf-text)]"
+          "flex-1 truncate text-(--sf-text)",
+          isActive && "font-medium"
         )}
       >
         {children}
@@ -531,6 +504,14 @@ function TabBarControllerGroup({
         {...props}
       >
         {children}
+        {/* Border that shows when closed */}
+        <div
+          className={cn(
+            "mx-2 my-1 border-b border-(--sf-border)",
+            "transition-opacity duration-200",
+            isOpen ? "opacity-0" : "opacity-100"
+          )}
+        />
       </div>
     </GroupContext.Provider>
   );
@@ -559,19 +540,22 @@ function TabBarControllerGroupLabel({
       data-slot="tabbar-group-label"
       onClick={() => setIsOpen(!isOpen)}
       className={cn(
-        "flex h-8 w-full shrink-0 items-center gap-2 rounded-md px-2",
-        "text-xs font-medium uppercase text-[var(--sf-text-2)]",
-        "hover:bg-[var(--sf-fill)] transition-colors",
+        "flex h-11 w-full shrink-0 items-center justify-between gap-2 rounded-lg px-2",
+        "text-sm text-(--sf-text-2)",
+        "hover:bg-(--sf-fill) transition-colors",
         className
       )}
       {...props}
     >
-      <IconSymbol
-        name={isOpen ? "chevron.down" : "chevron.right"}
-        size={12}
-        color="var(--sf-text-2)"
-      />
-      <span className="flex-1 text-left">{children}</span>
+      <span>{children}</span>
+      <span
+        className={cn(
+          "transition-transform duration-200",
+          isOpen ? "rotate-90" : "rotate-0"
+        )}
+      >
+        <IconSymbol name="chevron.right" size={18} color="var(--sf-text-3)" />
+      </span>
     </button>
   );
 }
@@ -593,18 +577,28 @@ function TabBarControllerGroupContent({
   }
 
   const { isOpen } = groupContext;
+  const contentRef = React.useRef<HTMLDivElement>(null);
+  const [height, setHeight] = React.useState<number | undefined>(undefined);
 
-  if (!isOpen) {
-    return null;
-  }
+  React.useEffect(() => {
+    if (contentRef.current) {
+      setHeight(contentRef.current.scrollHeight);
+    }
+  }, [children]);
 
   return (
     <div
       data-slot="tabbar-group-content"
-      className={cn("w-full pl-2", className)}
+      className={cn(
+        "overflow-hidden transition-all duration-200 ease-out",
+        className
+      )}
+      style={{ height: isOpen ? height : 0 }}
       {...props}
     >
-      {children}
+      <div ref={contentRef} className="pl-4">
+        {children}
+      </div>
     </div>
   );
 }
@@ -623,7 +617,7 @@ function TabBarControllerInset({
       data-slot="tabbar-inset"
       className={cn(
         "relative flex w-full flex-1 flex-col",
-        "bg-[var(--sf-grouped-bg)]",
+        "bg-(--sf-grouped-bg)",
         className
       )}
       {...props}
@@ -653,10 +647,10 @@ function TabBarControllerFloatingBar({
       data-slot="tabbar-floating-bar"
       className={cn(
         "absolute left-1/2 top-4 z-10 -translate-x-1/2",
-        "flex flex-row items-center gap-1",
-        "rounded-full px-1.5 py-1.5",
-        "bg-[var(--sf-grouped-bg-2)]/90 backdrop-blur-xl",
-        "shadow-lg shadow-black/15",
+        "flex flex-row items-center gap-0.5",
+        "rounded-full px-1 py-1",
+        "bg-(--sf-grouped-bg-2)/95 backdrop-blur-xl",
+        "shadow-lg shadow-black/10",
         className
       )}
       {...props}
@@ -665,7 +659,7 @@ function TabBarControllerFloatingBar({
         onClick={() => setIsSidebarOpen(true)}
         className={cn(
           "flex h-8 w-8 items-center justify-center rounded-full",
-          "text-[var(--sf-text-2)] hover:bg-[var(--sf-fill)]",
+          "text-(--sf-text-2) hover:bg-(--sf-fill)",
           "transition-colors"
         )}
       >
@@ -680,11 +674,11 @@ function TabBarControllerFloatingBar({
             data-active={isActive}
             onClick={() => setValue(item.value)}
             className={cn(
-              "flex items-center gap-2 rounded-full px-3 py-1.5",
+              "flex items-center gap-1.5 rounded-full px-3 py-1.5",
               "text-sm transition-colors",
               isActive
-                ? "bg-[var(--sf-fill)] text-[var(--sf-text)] font-medium"
-                : "text-[var(--sf-text-2)] hover:bg-[var(--sf-fill)]"
+                ? "bg-(--sf-fill) text-(--sf-text) font-medium"
+                : "text-(--sf-text-2) hover:bg-(--sf-fill)"
             )}
           >
             {item.icon && (
