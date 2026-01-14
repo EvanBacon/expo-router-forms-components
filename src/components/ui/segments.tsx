@@ -17,7 +17,7 @@ import { StyleProp, ViewStyle } from "react-native";
 
 interface SegmentsContextValue {
   value: string;
-  setValue: React.Dispatch<React.SetStateAction<string>>;
+  setValue: (value: string | ((prev: string) => string)) => void;
 }
 
 const SegmentsContext = createContext<SegmentsContextValue | undefined>(
@@ -29,15 +29,42 @@ const SegmentsContext = createContext<SegmentsContextValue | undefined>(
  * ----------------------------------------------------------------------------------*/
 
 interface SegmentsProps {
-  /** The initial value for the controlled Segments */
-  defaultValue: string;
+  /** The initial value for uncontrolled Segments */
+  defaultValue?: string;
+
+  /** The controlled value for controlled Segments */
+  value?: string;
+
+  /** Callback when the value changes (for controlled mode) */
+  onValueChange?: (value: string) => void;
 
   /** The children of the Segments component (SegmentsList, SegmentsContent, etc.) */
   children: ReactNode;
 }
 
-export function Segments({ defaultValue, children }: SegmentsProps) {
-  const [value, setValue] = useState(defaultValue);
+export function Segments({
+  defaultValue,
+  value: controlledValue,
+  onValueChange,
+  children,
+}: SegmentsProps) {
+  const [uncontrolledValue, setUncontrolledValue] = useState(
+    defaultValue ?? ""
+  );
+
+  // Determine if we're in controlled mode
+  const isControlled = controlledValue !== undefined;
+  const value = isControlled ? controlledValue : uncontrolledValue;
+
+  const setValue = (newValue: string | ((prev: string) => string)) => {
+    const resolvedValue =
+      typeof newValue === "function" ? newValue(value) : newValue;
+
+    if (!isControlled) {
+      setUncontrolledValue(resolvedValue);
+    }
+    onValueChange?.(resolvedValue);
+  };
 
   return (
     <SegmentsContext value={{ value, setValue }}>{children}</SegmentsContext>

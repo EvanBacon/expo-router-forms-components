@@ -1,7 +1,28 @@
 @layer base {
+  /*
+   * Theme handling with light-dark() CSS function
+   * https://lightningcss.dev/transpilation.html#light-dark
+   *
+   * By default, use "light dark" which enables automatic switching based on
+   * prefers-color-scheme media query (system preference).
+   *
+   * Use .light or .dark class on html/body to force a specific theme.
+   * This follows the shadcn/ui pattern for theme control.
+   */
   html {
-    /* https://lightningcss.dev/transpilation.html#:~:text=For%20this%20to%20work%2C%20you%20must%20set%20the%20color%2Dscheme%20property%20on%20an%20ancestor%20element */
+    color-scheme: light dark;
+  }
+
+  /* Force light mode when .light class is applied */
+  html.light,
+  .light {
     color-scheme: light;
+  }
+
+  /* Force dark mode when .dark class is applied */
+  html.dark,
+  .dark {
+    color-scheme: dark;
   }
 }
 
