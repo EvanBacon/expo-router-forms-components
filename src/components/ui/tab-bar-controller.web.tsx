@@ -181,7 +181,7 @@ function TabBarControllerSidebar({
       className={cn(
         "flex overflow-hidden p-3",
         "transition-all duration-300 ease-out",
-        isSidebarOpen ? "w-[18.5rem] min-w-[18.5rem]" : "w-0 min-w-0 p-0"
+        isSidebarOpen ? "w-74 min-w-74" : "w-0 min-w-0 p-0"
       )}
     >
       <div
@@ -192,7 +192,9 @@ function TabBarControllerSidebar({
           "bg-(--sf-grouped-bg-2)/80 backdrop-blur-xl",
           "shadow-xl shadow-black/15",
           "transition-all duration-300 ease-out",
-          isSidebarOpen ? "opacity-100 scale-100" : "opacity-0 scale-95",
+          isSidebarOpen
+            ? "opacity-100 scale-100 blur-0"
+            : "opacity-0 scale-95 blur-md",
           className
         )}
         {...props}
@@ -638,10 +640,6 @@ function TabBarControllerFloatingBar({
   const { pinnedItems, value, setValue, isSidebarOpen, setIsSidebarOpen } =
     useTabBarController();
 
-  if (isSidebarOpen) {
-    return null;
-  }
-
   return (
     <div
       data-slot="tabbar-floating-bar"
@@ -651,6 +649,10 @@ function TabBarControllerFloatingBar({
         "rounded-full px-1 py-1",
         "bg-(--sf-grouped-bg-2)/95 backdrop-blur-xl",
         "shadow-lg shadow-black/10",
+        "transition-all duration-300 ease-out",
+        isSidebarOpen
+          ? "opacity-0 scale-95 blur-md pointer-events-none"
+          : "opacity-100 scale-100 blur-0",
         className
       )}
       {...props}
