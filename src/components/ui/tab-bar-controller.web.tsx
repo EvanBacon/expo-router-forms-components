@@ -702,15 +702,15 @@ function TabBarControllerFloatingBar({
     <div
       data-slot="tabbar-floating-bar"
       className={cn(
-        "absolute left-1/2 top-4 z-10 -translate-x-1/2",
+        "absolute top-4 z-10",
         "flex flex-row items-center gap-0.5",
         "rounded-full px-1 py-1",
         "bg-(--sf-grouped-bg-2)/95 backdrop-blur-xl",
         "shadow-lg shadow-black/10",
         "transition-all duration-300 ease-out",
         isSidebarOpen
-          ? "opacity-0 scale-95 blur-md pointer-events-none"
-          : "opacity-100 scale-100 blur-0",
+          ? "left-44 translate-x-0 opacity-0 scale-95 blur-md pointer-events-none"
+          : "left-1/2 -translate-x-1/2 opacity-100 scale-100 blur-0",
         className
       )}
       {...props}
@@ -1142,15 +1142,15 @@ function TabBarControllerRouterFloatingBar({
     <div
       data-slot="tabbar-floating-bar"
       className={cn(
-        "absolute left-1/2 top-4 z-10 -translate-x-1/2",
+        "absolute top-4 z-10",
         "flex flex-row items-center gap-0.5",
         "rounded-full px-1 py-1",
         "bg-(--sf-grouped-bg-2)/95 backdrop-blur-xl",
         "shadow-lg shadow-black/10",
         "transition-all duration-300 ease-out",
         isSidebarOpen
-          ? "opacity-0 scale-95 blur-md pointer-events-none"
-          : "opacity-100 scale-100 blur-0",
+          ? "left-44 translate-x-0 opacity-0 scale-95 blur-md pointer-events-none"
+          : "left-1/2 -translate-x-1/2 opacity-100 scale-100 blur-0",
         className
       )}
       {...props}
