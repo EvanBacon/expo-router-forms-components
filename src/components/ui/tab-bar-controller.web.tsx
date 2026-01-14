@@ -922,8 +922,8 @@ interface TabBarControllerSlotProps {
  */
 function TabBarControllerSlot({ className }: TabBarControllerSlotProps) {
   return (
-    <div data-slot="tabbar-slot" className={cn("flex-1 pt-16", className)}>
-      <TabSlot />
+    <div data-slot="tabbar-slot" className={cn("flex flex-1 flex-col pt-16", className)}>
+      <TabSlot style={{ flex: 1 }} />
     </div>
   );
 }
