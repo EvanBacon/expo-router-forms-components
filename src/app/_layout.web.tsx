@@ -47,7 +47,7 @@ export default function Layout() {
       <AsyncFont src={SourceCodePro_400Regular} fontFamily="Source Code Pro" />
       <ThemeProvider>
         <GestureHandlerRootView style={{ flex: 1, display: "contents" }}>
-          <TabBarControllerTabs>
+          <TabBarControllerTabs className="bg-sf-grouped-bg">
             {/* Hidden TabList to register routes with Expo Router */}
             <TabList style={{ display: "none" }}>
               <TabTrigger name="index" href="/(index)" />
@@ -85,7 +85,9 @@ export default function Layout() {
                 </TabBarControllerMenu>
 
                 <TabBarControllerGroup>
-                  <TabBarControllerGroupLabel>Favorites</TabBarControllerGroupLabel>
+                  <TabBarControllerGroupLabel>
+                    Favorites
+                  </TabBarControllerGroupLabel>
                   <TabBarControllerGroupContent>
                     <TabBarControllerMenu>
                       <TabBarControllerMenuItem>
@@ -120,7 +122,9 @@ export default function Layout() {
                 </TabBarControllerGroup>
 
                 <TabBarControllerGroup>
-                  <TabBarControllerGroupLabel>Settings</TabBarControllerGroupLabel>
+                  <TabBarControllerGroupLabel>
+                    Settings
+                  </TabBarControllerGroupLabel>
                   <TabBarControllerGroupContent>
                     <TabBarControllerMenu>
                       <TabBarControllerMenuItem>
