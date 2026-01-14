@@ -19,6 +19,8 @@ Personal component library for building iOS-style universal apps with Expo Route
 - [ ] Add prebuilt UIs as examples: AI chat page, dashboard, commerce page.
 - [ ] Create complex `command` palette component.
 - [ ] Make something like navigation-menu for web and toolbar + menu items for native.
+- [ ] `map` component.
+- [ ] merge themes stuff into expo-router (?)
 
 ## Stack
 
