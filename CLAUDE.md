@@ -15,10 +15,11 @@ Personal component library for building iOS-style universal apps with Expo Route
 - [ ] Echo components: anchor avatar badge button-group button card collapsible drawer label select separator skeleton
 - [ ] Input-based components: form input-group input-otp input textarea
 - [ ] Expo Router fallbacks: context-menu, sheet, toolbar
-- [ ] Chat components: conversation, message, prompt-input, preview.
+- [ ] Chat components: conversation, message, prompt-input, preview, speech to text, image-picker.
 - [ ] Add prebuilt UIs as examples: AI chat page, dashboard, commerce page.
 - [ ] Create complex `command` palette component.
 - [ ] Make something like navigation-menu for web and toolbar + menu items for native.
+- [ ] `sonner` component.
 - [ ] `map` component.
 - [ ] merge themes stuff into expo-router (?)
 
