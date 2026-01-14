@@ -1,6 +1,12 @@
 "use client";
 
 import * as React from "react";
+import {
+  Tabs as RouterTabs,
+  TabList,
+  TabTrigger,
+  TabSlot,
+} from "expo-router/ui";
 
 import { cn } from "@/lib/utils";
 import { IconSymbol, IconSymbolName } from "./icon-symbol";
@@ -15,6 +21,8 @@ interface TabBarItem {
   icon?: IconSymbolName;
   pinned: boolean;
   order: number;
+  /** Route href for Expo Router navigation */
+  href?: React.ComponentProps<typeof TabTrigger>["href"];
 }
 
 type TabBarControllerContextProps = {
@@ -29,6 +37,8 @@ type TabBarControllerContextProps = {
   unregisterItem: (value: string) => void;
   togglePin: (value: string) => void;
   pinnedItems: TabBarItem[];
+  /** Whether the controller is being used with Expo Router */
+  isRouterMode: boolean;
 };
 
 const TabBarControllerContext =
@@ -49,23 +59,26 @@ function useTabBarController() {
  * ----------------------------------------------------------------------------------*/
 
 interface TabBarControllerProviderProps {
-  defaultValue: string;
+  defaultValue?: string;
   value?: string;
   onValueChange?: (value: string) => void;
   defaultSidebarOpen?: boolean;
   children: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
+  /** @internal Used by TabBarControllerTabs to indicate router mode */
+  isRouterMode?: boolean;
 }
 
 function TabBarControllerProvider({
-  defaultValue,
+  defaultValue = "",
   value: valueProp,
   onValueChange,
   defaultSidebarOpen = false,
   children,
   className,
   style,
+  isRouterMode = false,
 }: TabBarControllerProviderProps) {
   const [isEditMode, setIsEditMode] = React.useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(defaultSidebarOpen);
@@ -133,6 +146,7 @@ function TabBarControllerProvider({
       unregisterItem,
       togglePin,
       pinnedItems,
+      isRouterMode,
     }),
     [
       value,
@@ -146,6 +160,7 @@ function TabBarControllerProvider({
       unregisterItem,
       togglePin,
       pinnedItems,
+      isRouterMode,
     ]
   );
 
@@ -750,10 +765,262 @@ function TabBarControllerPanel({
 }
 
 /* ----------------------------------------------------------------------------------
+ * TabBarControllerTabs (Expo Router Integration)
+ * ----------------------------------------------------------------------------------*/
+
+interface TabBarControllerTabsProps
+  extends Omit<TabBarControllerProviderProps, "isRouterMode"> {
+  children: React.ReactNode;
+}
+
+/**
+ * Expo Router-integrated tab bar controller.
+ * Use this as a layout component to get routing support.
+ *
+ * @example
+ * ```tsx
+ * // app/(tabs)/_layout.tsx
+ * export default function Layout() {
+ *   return (
+ *     <TabBarControllerTabs defaultSidebarOpen>
+ *       <TabBarControllerSidebar>
+ *         <TabBarControllerHeader>
+ *           <TabBarControllerTitle>Tabs</TabBarControllerTitle>
+ *         </TabBarControllerHeader>
+ *         <TabBarControllerContent>
+ *           <TabBarControllerMenu>
+ *             <TabBarControllerMenuItem>
+ *               <TabBarControllerMenuButton href="/home" name="home" icon="house.fill" pinned>
+ *                 Home
+ *               </TabBarControllerMenuButton>
+ *             </TabBarControllerMenuItem>
+ *           </TabBarControllerMenu>
+ *         </TabBarControllerContent>
+ *       </TabBarControllerSidebar>
+ *       <TabBarControllerInset>
+ *         <TabBarControllerFloatingBar />
+ *         <TabBarControllerSlot />
+ *       </TabBarControllerInset>
+ *     </TabBarControllerTabs>
+ *   );
+ * }
+ * ```
+ */
+function TabBarControllerTabs({
+  children,
+  defaultSidebarOpen,
+  className,
+  style,
+}: TabBarControllerTabsProps) {
+  return (
+    <TabBarControllerProvider
+        defaultSidebarOpen={defaultSidebarOpen}
+        className={className}
+        style={style}
+        isRouterMode
+      >
+    <RouterTabs style={{ display: "contents" }}>
+        {children}
+    </RouterTabs>
+      </TabBarControllerProvider>
+  );
+}
+
+/* ----------------------------------------------------------------------------------
+ * TabBarControllerSlot (Expo Router Integration)
+ * ----------------------------------------------------------------------------------*/
+
+interface TabBarControllerSlotProps {
+  className?: string;
+}
+
+/**
+ * Renders the currently active tab route when using Expo Router.
+ * Use this instead of TabBarControllerPanel when in router mode.
+ */
+function TabBarControllerSlot({ className }: TabBarControllerSlotProps) {
+  return (
+    <div data-slot="tabbar-slot" className={cn("flex-1 pt-16", className)}>
+      <TabSlot />
+    </div>
+  );
+}
+
+/* ----------------------------------------------------------------------------------
+ * TabBarControllerLink (Expo Router Integration)
+ * ----------------------------------------------------------------------------------*/
+
+interface TabBarControllerLinkProps
+  extends Omit<React.ComponentProps<"button">, "value"> {
+  /** Route href for Expo Router navigation */
+  href: React.ComponentProps<typeof TabTrigger>["href"];
+  /** Tab name for Expo Router (usually matches the route segment) */
+  name: string;
+  icon?: IconSymbolName;
+  pinned?: boolean;
+}
+
+/**
+ * A menu button that integrates with Expo Router for navigation.
+ * Use this instead of TabBarControllerMenuButton when in router mode.
+ */
+function TabBarControllerLink({
+  href,
+  name,
+  icon,
+  pinned = false,
+  className,
+  children,
+  ...props
+}: TabBarControllerLinkProps) {
+  const { isEditMode, registerItem, unregisterItem, togglePin, items } =
+    useTabBarController();
+
+  const item = items.get(name);
+  const isPinned = item?.pinned ?? pinned;
+
+  React.useEffect(() => {
+    registerItem({
+      value: name,
+      label: children,
+      icon,
+      pinned,
+      href,
+    });
+    return () => unregisterItem(name);
+  }, [name, icon, pinned, href, registerItem, unregisterItem, children]);
+
+  const handleEditClick = () => {
+    togglePin(name);
+  };
+
+  if (isEditMode) {
+    return (
+      <button
+        data-slot="tabbar-menu-button"
+        data-pinned={isPinned}
+        onClick={handleEditClick}
+        className={cn(
+          "flex w-full items-center gap-3 rounded-full px-2 py-2 text-left text-sm",
+          "transition-colors duration-150",
+          "hover:bg-(--sf-fill)",
+          className
+        )}
+        {...props}
+      >
+        <span
+          className={cn(
+            "flex h-5 w-5 items-center justify-center rounded-full",
+            "border-2 transition-colors",
+            isPinned
+              ? "border-(--sf-blue) bg-(--sf-blue)"
+              : "border-(--sf-text-3) bg-transparent"
+          )}
+        >
+          {isPinned && <IconSymbol name="checkmark" size={12} color="white" />}
+        </span>
+        {icon && <IconSymbol name={icon} size={20} color="var(--sf-text)" />}
+        <span className="flex-1 truncate text-(--sf-text)">{children}</span>
+      </button>
+    );
+  }
+
+  return (
+    <TabTrigger name={name} href={href} asChild>
+      <button
+        data-slot="tabbar-menu-button"
+        data-pinned={isPinned}
+        className={cn(
+          "flex w-full items-center gap-3 rounded-full px-2 py-2 text-left text-sm",
+          "transition-colors duration-150",
+          "hover:bg-(--sf-fill)",
+          "data-[active=true]:bg-(--sf-fill-2)",
+          className
+        )}
+        {...props}
+      >
+        {icon && <IconSymbol name={icon} size={20} color="var(--sf-text)" />}
+        <span className="flex-1 truncate text-(--sf-text)">{children}</span>
+      </button>
+    </TabTrigger>
+  );
+}
+
+/* ----------------------------------------------------------------------------------
+ * TabBarControllerRouterFloatingBar (Expo Router Integration)
+ * ----------------------------------------------------------------------------------*/
+
+/**
+ * A floating bar that integrates with Expo Router for navigation.
+ * Use this instead of TabBarControllerFloatingBar when in router mode.
+ */
+function TabBarControllerRouterFloatingBar({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
+  const { pinnedItems, isSidebarOpen, setIsSidebarOpen } =
+    useTabBarController();
+
+  return (
+    <div
+      data-slot="tabbar-floating-bar"
+      className={cn(
+        "absolute left-1/2 top-4 z-10 -translate-x-1/2",
+        "flex flex-row items-center gap-0.5",
+        "rounded-full px-1 py-1",
+        "bg-(--sf-grouped-bg-2)/95 backdrop-blur-xl",
+        "shadow-lg shadow-black/10",
+        "transition-all duration-300 ease-out",
+        isSidebarOpen
+          ? "opacity-0 scale-95 blur-md pointer-events-none"
+          : "opacity-100 scale-100 blur-0",
+        className
+      )}
+      {...props}
+    >
+      <button
+        onClick={() => setIsSidebarOpen(true)}
+        className={cn(
+          "flex h-8 w-8 items-center justify-center rounded-full",
+          "text-(--sf-text-2) hover:bg-(--sf-fill)",
+          "transition-colors"
+        )}
+      >
+        <IconSymbol name="line.3.horizontal" size={18} color="currentColor" />
+      </button>
+
+      {pinnedItems.map((item) => (
+        <TabTrigger
+          key={item.value}
+          name={item.value}
+          href={item.href}
+          asChild
+        >
+          <button
+            className={cn(
+              "flex items-center gap-1.5 rounded-full px-3 py-1.5",
+              "text-sm transition-colors",
+              "data-[active=true]:bg-(--sf-fill) data-[active=true]:font-medium",
+              "text-(--sf-text-2) hover:bg-(--sf-fill)"
+            )}
+          >
+            {item.icon && (
+              <IconSymbol name={item.icon} size={16} color="currentColor" />
+            )}
+            <span>{item.label}</span>
+          </button>
+        </TabTrigger>
+      ))}
+    </div>
+  );
+}
+
+/* ----------------------------------------------------------------------------------
  * Exports
  * ----------------------------------------------------------------------------------*/
 
 export {
+  // Standalone components
   TabBarControllerProvider,
   TabBarControllerSidebar,
   TabBarControllerSidebarTrigger,
@@ -771,6 +1038,15 @@ export {
   TabBarControllerFloatingBar,
   TabBarControllerPanel,
   useTabBarController,
+  // Expo Router integration
+  TabBarControllerTabs,
+  TabBarControllerSlot,
+  TabBarControllerLink,
+  TabBarControllerRouterFloatingBar,
 };
 
-export type { TabBarItem, TabBarControllerMenuButtonProps };
+export type {
+  TabBarItem,
+  TabBarControllerMenuButtonProps,
+  TabBarControllerLinkProps,
+};
