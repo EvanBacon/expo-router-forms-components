@@ -3,10 +3,10 @@ import {
   DefaultTheme,
   ThemeProvider as RNTheme,
 } from "@react-navigation/native";
-import { ThemeContextProvider, useTheme } from "./theme-context";
+import { ThemeContextProvider, useTheme, ThemeScript } from "./theme-context";
 
-// Re-export the theme hook and types for convenience
-export { useTheme } from "./theme-context";
+// Re-export the theme hook, types, and script for convenience
+export { useTheme, ThemeScript } from "./theme-context";
 export type { ThemeMode, ResolvedTheme } from "./theme-context";
 
 /**

@@ -15,6 +15,9 @@ The approach uses:
 - **CSS classes (`.light`/`.dark`)** - For manual theme override (shadcn/ui pattern)
 - **React Native Appearance API** - For native platform theme control
 - **ThemeContextProvider** - Unified React context for theme state management
+- **ThemeScript** - Inline script to prevent flash of incorrect theme (FOUC) on page load
+- **localStorage persistence** - Theme preference persists across sessions
+- **Cross-tab sync** - Theme changes sync across browser tabs
 
 ## CSS Setup
 
@@ -101,13 +104,71 @@ interface ThemeContextValue {
 }
 ```
 
+### localStorage Persistence
+
+Persist theme preference to localStorage so it survives page reloads:
+
+```typescript
+const STORAGE_KEY = "theme-mode";
+
+function getStoredTheme(): ThemeMode | null {
+  if (process.env.EXPO_OS !== "web") return null;
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored === "light" || stored === "dark" || stored === "system") {
+      return stored;
+    }
+  } catch {
+    // localStorage unavailable
+  }
+  return null;
+}
+
+function saveTheme(mode: ThemeMode): void {
+  if (process.env.EXPO_OS !== "web") return;
+  try {
+    localStorage.setItem(STORAGE_KEY, mode);
+  } catch {
+    // localStorage unavailable
+  }
+}
+```
+
+### Transition Disabling (borrowed from next-themes)
+
+Temporarily disable CSS transitions during theme changes to prevent jarring animations:
+
+```typescript
+function disableTransitions(): () => void {
+  if (process.env.EXPO_OS !== "web") return () => {};
+
+  const style = document.createElement("style");
+  style.appendChild(
+    document.createTextNode(
+      "*,*::before,*::after{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important}"
+    )
+  );
+  document.head.appendChild(style);
+
+  return () => {
+    // Force a reflow to ensure transitions are disabled before cleanup
+    (() => window.getComputedStyle(document.body))();
+    setTimeout(() => {
+      document.head.removeChild(style);
+    }, 1);
+  };
+}
+```
+
 ### Web Theme Application
 
 On web, apply `.light` or `.dark` classes to the `<html>` element. For system mode, remove both classes to let CSS handle it via `prefers-color-scheme`:
 
 ```typescript
-function applyWebTheme(mode: ThemeMode): void {
+function applyWebTheme(mode: ThemeMode, disableAnimations = false): void {
   if (process.env.EXPO_OS !== "web") return;
+
+  const enableTransitions = disableAnimations ? disableTransitions() : null;
 
   const html = document.documentElement;
 
@@ -121,6 +182,8 @@ function applyWebTheme(mode: ThemeMode): void {
     html.classList.add("dark");
   }
   // For "system" mode, no class is needed - CSS will use prefers-color-scheme
+
+  enableTransitions?.();
 }
 ```
 
@@ -182,7 +245,13 @@ export function ThemeContextProvider({
   children,
   defaultMode = "system",
 }: ThemeContextProviderProps) {
-  const [mode, setModeState] = useState<ThemeMode>(defaultMode);
+  // Initialize from localStorage on web, otherwise use defaultMode
+  const [mode, setModeState] = useState<ThemeMode>(() => {
+    if (process.env.EXPO_OS === "web") {
+      return getStoredTheme() ?? defaultMode;
+    }
+    return defaultMode;
+  });
 
   // Get the current system color scheme
   const systemColorScheme = useColorScheme();
@@ -200,9 +269,11 @@ export function ThemeContextProvider({
   // Apply theme when mode changes
   const setMode = useCallback((newMode: ThemeMode) => {
     setModeState(newMode);
+    saveTheme(newMode);
 
     if (process.env.EXPO_OS === "web") {
-      applyWebTheme(newMode);
+      // Disable transitions when user explicitly changes theme
+      applyWebTheme(newMode, true);
     } else {
       applyNativeTheme(newMode);
     }
@@ -216,6 +287,28 @@ export function ThemeContextProvider({
       applyNativeTheme(mode);
     }
   }, []);
+
+  // Cross-tab synchronization via storage events (web only)
+  useEffect(() => {
+    if (process.env.EXPO_OS !== "web") return;
+
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key !== STORAGE_KEY) return;
+
+      const newMode = e.newValue as ThemeMode | null;
+      if (newMode === "light" || newMode === "dark" || newMode === "system") {
+        setModeState(newMode);
+        applyWebTheme(newMode, true);
+      } else {
+        // Invalid or cleared - reset to default
+        setModeState(defaultMode);
+        applyWebTheme(defaultMode, true);
+      }
+    };
+
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, [defaultMode]);
 
   const value = useMemo(
     () => ({
@@ -242,10 +335,10 @@ import {
   DefaultTheme,
   ThemeProvider as RNTheme,
 } from "@react-navigation/native";
-import { ThemeContextProvider, useTheme } from "./theme-context";
+import { ThemeContextProvider, useTheme, ThemeScript } from "./theme-context";
 
 // Re-export for convenience
-export { useTheme } from "./theme-context";
+export { useTheme, ThemeScript } from "./theme-context";
 export type { ThemeMode, ResolvedTheme } from "./theme-context";
 
 function NavigationThemeProvider({ children }: { children: React.ReactNode }) {
@@ -268,6 +361,78 @@ export default function ThemeProvider({
 }
 ```
 
+## Preventing Flash of Incorrect Theme (FOUC)
+
+On page load, there can be a brief flash where the wrong theme is shown before JavaScript runs. The `ThemeScript` component injects an inline script that runs **before React hydration** to apply the correct theme immediately.
+
+### ThemeScript Component
+
+```typescript
+/**
+ * Inline script that runs before React hydration to prevent flash of incorrect theme.
+ * Pattern borrowed from next-themes.
+ *
+ * Add this to your root layout's <head> or at the start of <body>.
+ */
+export function ThemeScript({
+  defaultMode = "system",
+  storageKey = STORAGE_KEY,
+}: {
+  defaultMode?: ThemeMode;
+  storageKey?: string;
+}) {
+  // Only render on web
+  if (process.env.EXPO_OS !== "web") {
+    return null;
+  }
+
+  const script = `
+(function() {
+  try {
+    var mode = localStorage.getItem('${storageKey}') || '${defaultMode}';
+    var html = document.documentElement;
+    html.classList.remove('light', 'dark');
+    if (mode === 'light') {
+      html.classList.add('light');
+    } else if (mode === 'dark') {
+      html.classList.add('dark');
+    }
+    // For 'system', no class needed - CSS handles it via prefers-color-scheme
+  } catch (e) {}
+})();
+`;
+
+  return (
+    <script
+      suppressHydrationWarning
+      dangerouslySetInnerHTML={{ __html: script }}
+    />
+  );
+}
+```
+
+### Usage in Root Layout
+
+Add `ThemeScript` to your root layout, preferably in the `<head>` or at the very start of `<body>`:
+
+```typescript
+// app/_layout.tsx
+import { ThemeScript } from "@/components/ui/theme-provider";
+
+export default function RootLayout() {
+  return (
+    <>
+      <ThemeScript />
+      <ThemeProvider>
+        <Slot />
+      </ThemeProvider>
+    </>
+  );
+}
+```
+
+The script runs synchronously before any content renders, reading the stored theme preference from localStorage and applying the appropriate class to `<html>`. This prevents the visible flash that would occur if we waited for React to hydrate.
+
 ## How It Works
 
 ### On Web
@@ -287,12 +452,16 @@ export default function ThemeProvider({
 
 ## Key Benefits
 
-1. **Static rendering support**: No JavaScript needed for initial theme on web - CSS handles it
-2. **System preference detection**: Automatic via `prefers-color-scheme` media query
-3. **Manual override**: Users can force light or dark mode
-4. **Platform-native behavior**: Uses native APIs on iOS/Android
-5. **Smooth transitions**: Delayed theme application on iOS prevents jarring flashes
-6. **Single source of truth**: React context manages state across all components
+1. **No FOUC**: ThemeScript prevents flash of incorrect theme on page load
+2. **Static rendering support**: CSS handles initial theme, no JavaScript needed
+3. **System preference detection**: Automatic via `prefers-color-scheme` media query
+4. **Manual override**: Users can force light or dark mode
+5. **Persistence**: Theme preference saved to localStorage across sessions
+6. **Cross-tab sync**: Theme changes sync across browser tabs via storage events
+7. **Smooth transitions**: CSS transitions disabled during theme switch (no jarring animations)
+8. **Platform-native behavior**: Uses native Appearance API on iOS/Android
+9. **iOS animation smoothness**: Delayed theme application on iOS
+10. **Single source of truth**: React context manages state across all components
 
 ## Platform-Specific Notes
 
@@ -311,3 +480,7 @@ export default function ThemeProvider({
 - Uses CSS classes on `<html>` element (shadcn/ui pattern)
 - `color-scheme` property controls how `light-dark()` resolves colors
 - Works with static rendering - no hydration mismatch issues
+- ThemeScript prevents FOUC by applying theme before React hydration
+- localStorage persists preference across sessions
+- Storage events sync theme across browser tabs
+- CSS transitions disabled during theme switch for smooth changes
