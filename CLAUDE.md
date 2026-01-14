@@ -18,6 +18,7 @@ Personal component library for building iOS-style universal apps with Expo Route
 - [ ] Chat components: conversation, message, prompt-input, preview.
 - [ ] Add prebuilt UIs as examples: AI chat page, dashboard, commerce page.
 - [ ] Create complex `command` palette component.
+- [ ] Make something like navigation-menu for web and toolbar + menu items for native.
 
 ## Stack
 
