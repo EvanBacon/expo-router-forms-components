@@ -1,10 +1,10 @@
 import React, {
   createContext,
-  useContext,
   useState,
   useEffect,
   useCallback,
   useMemo,
+  use,
 } from "react";
 import { Appearance, ColorSchemeName, useColorScheme } from "react-native";
 
@@ -38,7 +38,7 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
  * Hook to access the theme context
  */
 export function useTheme(): ThemeContextValue {
-  const context = useContext(ThemeContext);
+  const context = use(ThemeContext);
   if (!context) {
     throw new Error("useTheme must be used within a ThemeContextProvider");
   }
@@ -153,7 +153,5 @@ export function ThemeContextProvider({
     [mode, resolvedTheme, setMode, isDark]
   );
 
-  return (
-    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
-  );
+  return <ThemeContext value={value}>{children}</ThemeContext>;
 }

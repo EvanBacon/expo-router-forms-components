@@ -34,7 +34,7 @@ export default function ThemeProvider({
   children: React.ReactNode;
 }) {
   return (
-    <ThemeContextProvider defaultMode="system">
+    <ThemeContextProvider defaultMode="dark">
       <NavigationThemeProvider>{children}</NavigationThemeProvider>
     </ThemeContextProvider>
   );
