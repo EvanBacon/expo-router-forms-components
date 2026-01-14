@@ -3,7 +3,7 @@ import {
   useNativeVariable as useFunctionalVariable,
 } from "react-native-css";
 
-import { Link as RouterLink } from "@/components/ui/link";
+import { Link as RouterLink } from "expo-router";
 import Animated from "react-native-reanimated";
 
 import React from "react";
@@ -46,16 +46,18 @@ export type ViewProps = React.ComponentProps<typeof RNView> & {
   className?: string;
 };
 
-export const Pressable = (
-  props: React.ComponentProps<typeof RNPressable> & {
+export const ScrollView = (
+  props: React.ComponentProps<typeof RNScrollView> & {
     className?: string;
+    contentContainerClassName?: string;
   }
 ) => {
-  return useCssElement(RNPressable, props, {
+  return useCssElement(RNScrollView, props, {
     className: "style",
+    contentContainerClassName: "contentContainerStyle",
   });
 };
-Pressable.displayName = "CSS(Pressable)";
+ScrollView.displayName = "CSS(ScrollView)";
 
 export const View = (
   props: React.ComponentProps<typeof RNView> & {
@@ -91,29 +93,6 @@ export const AnimatedScrollView = (
   });
 };
 
-function XXTouchableHighlight(
-  props: React.ComponentProps<typeof RNTouchableHighlight>
-) {
-  const { underlayColor, ...style } = StyleSheet.flatten(props.style) || {};
-
-  return (
-    <RNTouchableHighlight
-      underlayColor={underlayColor}
-      {...props}
-      style={style}
-    />
-  );
-}
-
-export const TouchableHighlight = (
-  props: React.ComponentProps<typeof RNTouchableHighlight>
-) => {
-  return useCssElement(XXTouchableHighlight, props, {
-    className: "style",
-  });
-};
-TouchableHighlight.displayName = "CSS(TouchableHighlight)";
-
 export const Text = (
   props: React.ComponentProps<typeof RNText> & {
     className?: string;
@@ -126,3 +105,5 @@ export const Text = (
 Text.displayName = "CSS(Text)";
 
 export { Image, ImageProps } from "./image";
+export { AppleGlassView, GlassContainer, BlurView } from "./glass";
+export * from "./touchable";

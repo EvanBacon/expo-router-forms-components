@@ -52,7 +52,7 @@ export default function Layout() {
             <TabList style={{ display: "none" }}>
               <TabTrigger name="index" href="/(index)" />
               <TabTrigger name="info" href="/(info)" />
-              <TabTrigger name="segments" href="/segments" />
+              {/* <TabTrigger name="segments" href="/segments" /> */}
             </TabList>
 
             <TabBarControllerSidebar>
@@ -91,7 +91,8 @@ export default function Layout() {
                   </TabBarControllerGroupLabel>
                   <TabBarControllerGroupContent>
                     <TabBarControllerMenu>
-                      <TabBarControllerMenuItem>
+                      {/* TODO: Support random links */}
+                      {/* <TabBarControllerMenuItem>
                         <TabBarControllerLink
                           href="/segments"
                           name="segments"
@@ -100,7 +101,7 @@ export default function Layout() {
                         >
                           Segments
                         </TabBarControllerLink>
-                      </TabBarControllerMenuItem>
+                      </TabBarControllerMenuItem> */}
                       <TabBarControllerMenuItem>
                         <TabBarControllerLink
                           href="/(index)"

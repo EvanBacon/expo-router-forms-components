@@ -15,7 +15,13 @@ import { cn } from "@/lib/utils";
 // import { Image } from "expo-image";
 import { Image } from "@/components/ui/img";
 import { ComponentProps } from "react";
-import { Button, OpaqueColorValue, Switch, Text, TextInput } from "react-native";
+import {
+  Button,
+  OpaqueColorValue,
+  Switch,
+  Text,
+  TextInput,
+} from "react-native";
 import { useTheme, ThemeMode } from "@/components/ui/theme-provider";
 import { View, Link, Pressable } from "@/tw";
 import Animated, {
@@ -40,7 +46,10 @@ function ThemeSwitcher() {
   const { mode, setMode, isDark } = useTheme();
 
   return (
-    <Form.Section title="Appearance" footer="Controls app-wide color scheme. System follows your device settings.">
+    <Form.Section
+      title="Appearance"
+      footer="Controls app-wide color scheme. System follows your device settings."
+    >
       <View className="py-2">
         <Segments
           value={mode}
@@ -156,7 +165,6 @@ export default function Page() {
                     <Link.Trigger>
                       <Image
                         source={{ uri: "https://github.com/evanbacon.png" }}
-
                         style={{
                           aspectRatio: 1,
                           height: 30,
@@ -221,6 +229,34 @@ export default function Page() {
           </Rounded>
         </Form.Section>
 
+        <Form.Section title="Components">
+          <Form.Link href="/segments">Segments</Form.Link>
+        </Form.Section>
+        <Form.Section title="Features">
+          <Form.Text
+            onPress={() => {
+              setShow(true);
+            }}
+          >
+            Open Blur Modal
+          </Form.Text>
+
+          <Link href="/settings" asChild custom>
+            <Link.Trigger>
+              <Pressable>
+                <Text>App Settings</Text>
+              </Pressable>
+            </Link.Trigger>
+            <Link.Menu>
+              <Link.MenuAction title="Share" onPress={() => {}} />
+            </Link.Menu>
+          </Link>
+
+          <Form.Link href="/icon">Change App Icon</Form.Link>
+          <Form.Link href="/_debug">Debug menu</Form.Link>
+          <Form.Link href="/privacy">Privacy Policy</Form.Link>
+        </Form.Section>
+
         <FontSection />
 
         <Form.Section title="Details">
@@ -250,31 +286,6 @@ export default function Page() {
             </Form.Text>
           </Form.Section>
         )}
-
-        <Form.Section title="Features">
-          <Form.Text
-            onPress={() => {
-              setShow(true);
-            }}
-          >
-            Open Blur Modal
-          </Form.Text>
-
-          <Link href="/settings" asChild custom>
-            <Link.Trigger>
-              <Pressable>
-                <Text>App Settings</Text>
-              </Pressable>
-            </Link.Trigger>
-            <Link.Menu>
-              <Link.MenuAction title="Share" onPress={() => {}} />
-            </Link.Menu>
-          </Link>
-
-          <Form.Link href="/icon">Change App Icon</Form.Link>
-          <Form.Link href="/_debug">Debug menu</Form.Link>
-          <Form.Link href="/privacy">Privacy Policy</Form.Link>
-        </Form.Section>
 
         <Form.Section title="Toasts" footer="Powered by sonner-native">
           <Form.Text
@@ -593,8 +604,6 @@ export default function Page() {
             onPress={() => {}}
           />
         </Form.Section>
-
-      
       </Form.List>
     </View>
   );
