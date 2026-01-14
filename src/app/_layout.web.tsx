@@ -21,6 +21,9 @@ import {
   TabBarControllerMenu,
   TabBarControllerMenuItem,
   TabBarControllerLink,
+  TabBarControllerGroup,
+  TabBarControllerGroupLabel,
+  TabBarControllerGroupContent,
   TabBarControllerInset,
   TabBarControllerRouterFloatingBar,
   TabBarControllerSlot,
@@ -73,13 +76,83 @@ export default function Layout() {
                     <TabBarControllerLink
                       href="/(info)"
                       name="info"
-                      icon="cursorarrow.rays"
+                      icon="info.circle.fill"
                       pinned
                     >
                       Info
                     </TabBarControllerLink>
                   </TabBarControllerMenuItem>
                 </TabBarControllerMenu>
+
+                <TabBarControllerGroup>
+                  <TabBarControllerGroupLabel>Favorites</TabBarControllerGroupLabel>
+                  <TabBarControllerGroupContent>
+                    <TabBarControllerMenu>
+                      <TabBarControllerMenuItem>
+                        <TabBarControllerLink
+                          href="/(index)"
+                          name="index"
+                          icon="star.fill"
+                        >
+                          Starred
+                        </TabBarControllerLink>
+                      </TabBarControllerMenuItem>
+                      <TabBarControllerMenuItem>
+                        <TabBarControllerLink
+                          href="/(index)"
+                          name="index"
+                          icon="heart.fill"
+                        >
+                          Liked
+                        </TabBarControllerLink>
+                      </TabBarControllerMenuItem>
+                      <TabBarControllerMenuItem>
+                        <TabBarControllerLink
+                          href="/(index)"
+                          name="index"
+                          icon="bookmark.fill"
+                        >
+                          Bookmarks
+                        </TabBarControllerLink>
+                      </TabBarControllerMenuItem>
+                    </TabBarControllerMenu>
+                  </TabBarControllerGroupContent>
+                </TabBarControllerGroup>
+
+                <TabBarControllerGroup>
+                  <TabBarControllerGroupLabel>Settings</TabBarControllerGroupLabel>
+                  <TabBarControllerGroupContent>
+                    <TabBarControllerMenu>
+                      <TabBarControllerMenuItem>
+                        <TabBarControllerLink
+                          href="/(index)"
+                          name="index"
+                          icon="gearshape.fill"
+                        >
+                          Preferences
+                        </TabBarControllerLink>
+                      </TabBarControllerMenuItem>
+                      <TabBarControllerMenuItem>
+                        <TabBarControllerLink
+                          href="/(index)"
+                          name="index"
+                          icon="person.fill"
+                        >
+                          Account
+                        </TabBarControllerLink>
+                      </TabBarControllerMenuItem>
+                      <TabBarControllerMenuItem>
+                        <TabBarControllerLink
+                          href="/(index)"
+                          name="index"
+                          icon="bell.fill"
+                        >
+                          Notifications
+                        </TabBarControllerLink>
+                      </TabBarControllerMenuItem>
+                    </TabBarControllerMenu>
+                  </TabBarControllerGroupContent>
+                </TabBarControllerGroup>
               </TabBarControllerContent>
             </TabBarControllerSidebar>
 
