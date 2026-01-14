@@ -9,7 +9,8 @@ import React, {
   use,
   useState,
 } from "react";
-import { StyleProp, ViewStyle } from "react-native";
+import { StyleProp, View, ViewStyle } from "react-native";
+import { cn } from "@/lib/utils";
 
 /* ----------------------------------------------------------------------------------
  * Context
@@ -40,6 +41,9 @@ interface SegmentsProps {
 
   /** The children of the Segments component (SegmentsList, SegmentsContent, etc.) */
   children: ReactNode;
+
+  /** Additional CSS classes (primarily used on web) */
+  className?: string;
 }
 
 export function Segments({
@@ -47,6 +51,7 @@ export function Segments({
   value: controlledValue,
   onValueChange,
   children,
+  className,
 }: SegmentsProps) {
   const [uncontrolledValue, setUncontrolledValue] = useState(
     defaultValue ?? ""
@@ -67,17 +72,22 @@ export function Segments({
   };
 
   return (
-    <SegmentsContext value={{ value, setValue }}>{children}</SegmentsContext>
+    <SegmentsContext value={{ value, setValue }}>
+      <View className={cn("flex flex-col gap-2", className)}>{children}</View>
+    </SegmentsContext>
   );
 }
 
 export function SegmentsList({
   children,
   style,
+  className,
 }: {
   /** The children will typically be one or more SegmentsTrigger elements */
   children: ReactNode;
   style?: StyleProp<ViewStyle>;
+  /** Additional CSS classes (primarily used on web) */
+  className?: string;
 }) {
   const context = use(SegmentsContext);
   if (!context) {
@@ -120,6 +130,8 @@ interface SegmentsTriggerProps {
   value: string;
   /** The label to display for this trigger in the SegmentedControl */
   children: ReactNode;
+  /** Additional CSS classes (primarily used on web) */
+  className?: string;
 }
 
 export function SegmentsTrigger(_: SegmentsTriggerProps) {
@@ -138,9 +150,15 @@ interface SegmentsContentProps {
   value: string;
   /** The content to be rendered when the active value matches */
   children: ReactNode;
+  /** Additional CSS classes (primarily used on web) */
+  className?: string;
 }
 
-export function SegmentsContent({ value, children }: SegmentsContentProps) {
+export function SegmentsContent({
+  value,
+  children,
+  className,
+}: SegmentsContentProps) {
   const context = use(SegmentsContext);
   if (!context) {
     throw new Error("SegmentsContent must be used within a Segments");
@@ -151,11 +169,9 @@ export function SegmentsContent({ value, children }: SegmentsContentProps) {
     return null;
   }
 
-  if (process.env.EXPO_OS === "web") {
-    return <>{children}</>;
-  }
-
-  return <>{children}</>;
+  return (
+    <View className={cn("flex-1 outline-none", className)}>{children}</View>
+  );
 }
 
 Segments.List = SegmentsList;

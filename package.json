@@ -19,6 +19,7 @@
     "@expo-google-fonts/source-code-pro": "^0.3.0",
     "@expo/vector-icons": "^15.0.3",
     "@radix-ui/react-context-menu": "^2.2.16",
+    "@radix-ui/react-tabs": "^1.1.13",
     "@react-native-community/datetimepicker": "8.4.4",
     "@react-native-masked-view/masked-view": "0.3.2",
     "@react-native-segmented-control/segmented-control": "2.5.7",

@@ -52,6 +52,7 @@ export default function Layout() {
             <TabList style={{ display: "none" }}>
               <TabTrigger name="index" href="/(index)" />
               <TabTrigger name="info" href="/(info)" />
+              <TabTrigger name="segments" href="/segments" />
             </TabList>
 
             <TabBarControllerSidebar>
@@ -86,17 +87,18 @@ export default function Layout() {
 
                 <TabBarControllerGroup>
                   <TabBarControllerGroupLabel>
-                    Favorites
+                    Components
                   </TabBarControllerGroupLabel>
                   <TabBarControllerGroupContent>
                     <TabBarControllerMenu>
                       <TabBarControllerMenuItem>
                         <TabBarControllerLink
-                          href="/(index)"
-                          name="index"
-                          icon="star.fill"
+                          href="/segments"
+                          name="segments"
+                          icon="square.split.2x1"
+                          pinned
                         >
-                          Starred
+                          Segments
                         </TabBarControllerLink>
                       </TabBarControllerMenuItem>
                       <TabBarControllerMenuItem>
