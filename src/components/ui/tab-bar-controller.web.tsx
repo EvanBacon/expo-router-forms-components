@@ -188,35 +188,58 @@ function TabBarControllerSidebar({
   children,
   ...props
 }: React.ComponentProps<"div">) {
-  const { isSidebarOpen } = useTabBarController();
+  const { isSidebarOpen, setIsSidebarOpen } = useTabBarController();
 
   return (
-    <div
-      data-slot="tabbar-sidebar-wrapper"
-      className={cn(
-        "flex overflow-hidden p-3",
-        "transition-all duration-300 ease-out",
-        isSidebarOpen ? "w-74 min-w-74" : "w-0 min-w-0 p-0"
-      )}
-    >
+    <>
+      {/* Backdrop for medium screens - click to dismiss */}
       <div
-        data-slot="tabbar-sidebar"
-        data-open={isSidebarOpen}
+        data-slot="tabbar-sidebar-backdrop"
+        onClick={() => setIsSidebarOpen(false)}
         className={cn(
-          "flex h-full w-72 flex-col overflow-hidden rounded-2xl",
-          "bg-(--sf-grouped-bg-2)/80 backdrop-blur-xl",
-          "shadow-xl shadow-black/15",
-          "transition-all duration-300 ease-out",
+          "fixed inset-0 z-40 bg-black/30",
+          "transition-opacity duration-300 ease-out",
+          "lg:hidden", // Only show on medium and smaller screens
           isSidebarOpen
-            ? "opacity-100 scale-100 blur-0"
-            : "opacity-0 scale-95 blur-md",
-          className
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
         )}
-        {...props}
+      />
+
+      {/* Sidebar wrapper */}
+      <div
+        data-slot="tabbar-sidebar-wrapper"
+        className={cn(
+          "p-3",
+          // Large screens: inline, pushes content
+          "lg:flex lg:overflow-hidden",
+          "lg:transition-[width,min-width,padding] lg:duration-300 lg:ease-out",
+          isSidebarOpen ? "lg:w-74 lg:min-w-74" : "lg:w-0 lg:min-w-0 lg:p-0",
+          // Medium screens: fixed overlay
+          "max-lg:fixed max-lg:left-0 max-lg:top-0 max-lg:bottom-0 max-lg:z-50",
+          "max-lg:transition-transform max-lg:duration-300 max-lg:ease-out",
+          isSidebarOpen ? "max-lg:translate-x-0" : "max-lg:-translate-x-full"
+        )}
       >
-        {children}
+        <div
+          data-slot="tabbar-sidebar"
+          data-open={isSidebarOpen}
+          className={cn(
+            "flex h-full w-72 flex-col overflow-hidden rounded-2xl",
+            "bg-(--sf-grouped-bg-2)/80 backdrop-blur-xl",
+            "shadow-xl shadow-black/15",
+            "transition-all duration-300 ease-out",
+            isSidebarOpen
+              ? "opacity-100 scale-100 blur-0"
+              : "opacity-0 scale-95 blur-md",
+            className
+          )}
+          {...props}
+        >
+          {children}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
@@ -317,7 +340,7 @@ function TabBarControllerEditTrigger({
       data-slot="tabbar-edit-trigger"
       onClick={() => setIsEditMode(!isEditMode)}
       className={cn(
-        "text-sm text-(--sf-link)",
+        "text-sm text-sf-text",
         "hover:opacity-70 transition-opacity",
         className
       )}

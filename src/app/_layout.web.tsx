@@ -53,7 +53,7 @@ export default function Layout() {
 
             <TabBarControllerSidebar>
               <TabBarControllerHeader>
-                <TabBarControllerTitle>Tabs</TabBarControllerTitle>
+                {/* <TabBarControllerTitle>Tabs</TabBarControllerTitle> */}
                 <TabBarControllerEditTrigger />
               </TabBarControllerHeader>
 
