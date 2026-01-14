@@ -331,8 +331,6 @@ function TabBarControllerContent({
     setIsScrolled(scrollTop > 4);
   }, []);
 
-  const fade = 50;
-
   return (
     <div
       data-slot="tabbar-content"
@@ -344,17 +342,11 @@ function TabBarControllerContent({
       )}
       style={{
         maskImage: isScrolled
-          ? `linear-gradient(to bottom, transparent ${
-              fade * 0.2
-            }px, black ${fade}px, black 100%)`
+          ? "linear-gradient(to bottom, transparent 0%, black 10px, black 100%)"
           : undefined,
         WebkitMaskImage: isScrolled
-          ? `linear-gradient(to bottom, transparent ${
-              fade * 0.2
-            }px, black ${fade}px, black 100%)`
+          ? "linear-gradient(to bottom, transparent 0%, black 10px, black 100%)"
           : undefined,
-        marginTop: -fade,
-        paddingTop: fade,
         scrollbarWidth: "thin",
         scrollbarColor: "var(--color-sf-gray-2) transparent",
         ...style,
@@ -470,7 +462,7 @@ function TabBarControllerMenuButton({
       data-pinned={isPinned}
       onClick={handleClick}
       className={cn(
-        "flex w-full items-center gap-3 rounded-lg px-2 py-2 text-left text-sm",
+        "flex w-full items-center gap-3 rounded-full px-2 py-2 text-left text-sm",
         "transition-colors duration-150",
         "hover:bg-(--sf-fill)",
         "data-[active=true]:bg-(--sf-fill-2)",
@@ -570,7 +562,7 @@ function TabBarControllerGroupLabel({
       data-slot="tabbar-group-label"
       onClick={() => setIsOpen(!isOpen)}
       className={cn(
-        "flex h-11 w-full shrink-0 items-center justify-between gap-2 rounded-lg px-2",
+        "flex h-11 w-full shrink-0 items-center justify-between gap-2 rounded-full px-2",
         "text-sm text-(--sf-text-2)",
         "hover:bg-(--sf-fill) transition-colors",
         className
