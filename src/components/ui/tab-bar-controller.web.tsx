@@ -247,7 +247,7 @@ function TabBarControllerHeader({
     <div
       data-slot="tabbar-header"
       className={cn(
-        "flex flex-row items-center justify-between px-4 py-3",
+        "flex shrink-0 flex-row items-center justify-between px-4 py-3",
         className
       )}
       {...props}
@@ -320,6 +320,7 @@ function TabBarControllerEditTrigger({
 function TabBarControllerContent({
   className,
   children,
+  style,
   ...props
 }: React.ComponentProps<"div">) {
   const { isEditMode } = useTabBarController();
@@ -329,9 +330,16 @@ function TabBarControllerContent({
       data-slot="tabbar-content"
       data-editing={isEditMode}
       className={cn(
-        "flex min-h-0 flex-1 flex-col overflow-auto px-2 pb-2",
+        "flex min-h-0 flex-1 flex-col overflow-y-auto overflow-x-hidden px-2 pb-2",
         className
       )}
+      style={{
+        maskImage:
+          "linear-gradient(to bottom, transparent 0%, black 20px, black 100%)",
+        WebkitMaskImage:
+          "linear-gradient(to bottom, transparent 0%, black 20px, black 100%)",
+        ...style,
+      }}
       {...props}
     >
       {isEditMode && (
