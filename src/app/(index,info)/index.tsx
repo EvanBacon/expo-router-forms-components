@@ -15,14 +15,8 @@ import { cn } from "@/lib/utils";
 // import { Image } from "expo-image";
 import { Image } from "@/components/ui/img";
 import { ComponentProps } from "react";
-import {
-  Button,
-  OpaqueColorValue,
-  Switch,
-  Text,
-  Appearance,
-  TextInput,
-} from "react-native";
+import { Button, OpaqueColorValue, Switch, Text, TextInput } from "react-native";
+import { useTheme, ThemeMode } from "@/components/ui/theme-provider";
 import { View, Link, Pressable } from "@/tw";
 import Animated, {
   interpolate,
@@ -42,44 +36,37 @@ import { toast } from "@/utils/toast";
 
 //
 
-function useOptimisticDarkMode() {
-  const [darkMode, setDarkMode] = React.useState(() => {
-    return Appearance.getColorScheme() === "dark";
-  });
+function ThemeSwitcher() {
+  const { mode, setMode, isDark } = useTheme();
 
-  return [
-    darkMode,
-    (value: Parameters<typeof Appearance.setColorScheme>[0]) => {
-      setDarkMode(value === "dark");
-      if (process.env.EXPO_OS === "ios") {
-        setTimeout(() => {
-          Appearance.setColorScheme(value);
-          // Add some time for the iOS switch animation to complete
-        }, 100);
-      } else if (process.env.EXPO_OS === "android") {
-        Appearance.setColorScheme(value);
-      } else if (process.env.EXPO_OS === "web") {
-        // Web doesn't support setting the color scheme, so we just log it
-        console.log("Setting color scheme to:", value);
-        // Add class= "dark" to the body element
-        document.body.classList.toggle("dark", value === "dark");
-      }
-    },
-  ] as const;
+  return (
+    <Form.Section title="Appearance" footer="Controls app-wide color scheme. System follows your device settings.">
+      <View className="py-2">
+        <Segments
+          value={mode}
+          onValueChange={(value) => setMode(value as ThemeMode)}
+        >
+          <SegmentsList>
+            <SegmentsTrigger value="system">System</SegmentsTrigger>
+            <SegmentsTrigger value="light">Light</SegmentsTrigger>
+            <SegmentsTrigger value="dark">Dark</SegmentsTrigger>
+          </SegmentsList>
+        </Segments>
+      </View>
+      <Form.Text
+        systemImage={{ name: isDark ? "moon.fill" : "sun.max.fill" }}
+        hint={isDark ? "Dark" : "Light"}
+      >
+        Current Theme
+      </Form.Text>
+    </Form.Section>
+  );
 }
 
 function Switches() {
   const [on, setOn] = React.useState(false);
-  const [darkMode, setDarkMode] = useOptimisticDarkMode();
   return (
     <Form.Section title="Toggle">
-      <Form.Toggle
-        systemImage={{ name: "moon" }}
-        value={darkMode}
-        onValueChange={(value) => setDarkMode(value ? "dark" : undefined)}
-      >
-        Always Dark
-      </Form.Toggle>
       <Form.Toggle systemImage="star" value={on} onValueChange={setOn}>
         Built-in
       </Form.Toggle>
@@ -395,6 +382,8 @@ export default function Page() {
             </Form.Text>
           </Form.HStack>
         </Form.Section>
+
+        <ThemeSwitcher />
 
         <Switches />
         <Form.Section
