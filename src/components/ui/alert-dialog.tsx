@@ -2,12 +2,24 @@
 
 import * as React from "react";
 import { createContext, use, Children, isValidElement, cloneElement } from "react";
-import { Alert, AlertButton } from "react-native";
-import { View, Text } from "@/tw";
+import { Alert, AlertButton, AlertType, KeyboardTypeOptions } from "react-native";
+import { Text } from "@/tw";
 import { Pressable } from "@/tw/touchable";
 import { cn } from "@/lib/utils";
 
-// Types
+// Types for prompt input
+interface PromptConfig {
+  type: AlertType;
+  defaultValue?: string;
+  keyboardType?: KeyboardTypeOptions;
+  placeholder?: string;
+}
+
+// Extended action that can receive input value
+interface AlertActionWithInput extends Omit<AlertButton, "onPress"> {
+  onPress?: (value?: string) => void;
+}
+
 interface AlertDialogContextValue {
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -15,8 +27,10 @@ interface AlertDialogContextValue {
   setTitle: (title: string) => void;
   description: string;
   setDescription: (description: string) => void;
-  actions: AlertButton[];
-  registerAction: (action: AlertButton) => () => void;
+  actions: AlertActionWithInput[];
+  registerAction: (action: AlertActionWithInput) => () => void;
+  promptConfig: PromptConfig | null;
+  setPromptConfig: (config: PromptConfig | null) => void;
   showAlert: () => void;
 }
 
@@ -44,7 +58,8 @@ function AlertDialog({ open: controlledOpen, onOpenChange, children }: AlertDial
   const [uncontrolledOpen, setUncontrolledOpen] = React.useState(false);
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
-  const actionsRef = React.useRef<AlertButton[]>([]);
+  const [promptConfig, setPromptConfig] = React.useState<PromptConfig | null>(null);
+  const actionsRef = React.useRef<AlertActionWithInput[]>([]);
   const [, forceUpdate] = React.useReducer((x) => x + 1, 0);
 
   const isControlled = controlledOpen !== undefined;
@@ -60,7 +75,7 @@ function AlertDialog({ open: controlledOpen, onOpenChange, children }: AlertDial
     [isControlled, onOpenChange]
   );
 
-  const registerAction = React.useCallback((action: AlertButton) => {
+  const registerAction = React.useCallback((action: AlertActionWithInput) => {
     actionsRef.current.push(action);
     forceUpdate();
     return () => {
@@ -70,11 +85,34 @@ function AlertDialog({ open: controlledOpen, onOpenChange, children }: AlertDial
   }, []);
 
   const showAlert = React.useCallback(() => {
-    Alert.alert(title, description, actionsRef.current, {
-      cancelable: true,
-      onDismiss: () => setOpen(false),
-    });
-  }, [title, description, setOpen]);
+    // Convert actions to AlertButton format
+    const buttons: AlertButton[] = actionsRef.current.map((action) => ({
+      text: action.text,
+      style: action.style,
+      onPress: action.onPress as AlertButton["onPress"],
+    }));
+
+    if (promptConfig) {
+      // Use Alert.prompt for input dialogs (iOS only, falls back to alert on Android)
+      Alert.prompt(
+        title,
+        description,
+        actionsRef.current.map((action) => ({
+          text: action.text,
+          style: action.style,
+          onPress: action.onPress,
+        })),
+        promptConfig.type,
+        promptConfig.defaultValue,
+        promptConfig.keyboardType
+      );
+    } else {
+      Alert.alert(title, description, buttons, {
+        cancelable: true,
+        onDismiss: () => setOpen(false),
+      });
+    }
+  }, [title, description, promptConfig, setOpen]);
 
   // Auto-show alert when open becomes true (for controlled mode)
   React.useEffect(() => {
@@ -94,6 +132,8 @@ function AlertDialog({ open: controlledOpen, onOpenChange, children }: AlertDial
         setDescription,
         actions: actionsRef.current,
         registerAction,
+        promptConfig,
+        setPromptConfig,
         showAlert,
       }}
     >
@@ -212,10 +252,42 @@ function AlertDialogDescription({ children }: AlertDialogDescriptionProps) {
   return null;
 }
 
+// Input - registers input configuration for Alert.prompt
+interface AlertDialogInputProps {
+  type?: "plain-text" | "secure-text" | "login-password";
+  defaultValue?: string;
+  keyboardType?: KeyboardTypeOptions;
+  placeholder?: string;
+  className?: string;
+}
+
+function AlertDialogInput({
+  type = "plain-text",
+  defaultValue,
+  keyboardType,
+}: AlertDialogInputProps) {
+  const { setPromptConfig } = useAlertDialog();
+
+  React.useEffect(() => {
+    setPromptConfig({
+      type,
+      defaultValue,
+      keyboardType,
+    });
+
+    return () => {
+      setPromptConfig(null);
+    };
+  }, [type, defaultValue, keyboardType, setPromptConfig]);
+
+  return null;
+}
+
 // Action button - registers as a confirm action
 interface AlertDialogActionProps {
   children: React.ReactNode;
-  onPress?: () => void;
+  /** Called when action is pressed. Receives input value if AlertDialogInput is present. */
+  onPress?: (value?: string) => void;
   className?: string;
 }
 
@@ -229,8 +301,8 @@ function AlertDialogAction({ children, onPress }: AlertDialogActionProps) {
     return registerAction({
       text,
       style: "default",
-      onPress: () => {
-        onPress?.();
+      onPress: (value?: string) => {
+        onPress?.(value);
         setOpen(false);
       },
     });
@@ -242,7 +314,8 @@ function AlertDialogAction({ children, onPress }: AlertDialogActionProps) {
 // Cancel button - registers as a cancel action
 interface AlertDialogCancelProps {
   children: React.ReactNode;
-  onPress?: () => void;
+  /** Called when cancel is pressed. Receives input value if AlertDialogInput is present. */
+  onPress?: (value?: string) => void;
   className?: string;
 }
 
@@ -256,8 +329,8 @@ function AlertDialogCancel({ children, onPress }: AlertDialogCancelProps) {
     return registerAction({
       text,
       style: "cancel",
-      onPress: () => {
-        onPress?.();
+      onPress: (value?: string) => {
+        onPress?.(value);
         setOpen(false);
       },
     });
@@ -269,7 +342,8 @@ function AlertDialogCancel({ children, onPress }: AlertDialogCancelProps) {
 // Destructive action - styled as destructive/red
 interface AlertDialogDestructiveProps {
   children: React.ReactNode;
-  onPress?: () => void;
+  /** Called when action is pressed. Receives input value if AlertDialogInput is present. */
+  onPress?: (value?: string) => void;
   className?: string;
 }
 
@@ -283,8 +357,8 @@ function AlertDialogDestructive({ children, onPress }: AlertDialogDestructivePro
     return registerAction({
       text,
       style: "destructive",
-      onPress: () => {
-        onPress?.();
+      onPress: (value?: string) => {
+        onPress?.(value);
         setOpen(false);
       },
     });
@@ -334,6 +408,7 @@ export {
   AlertDialogFooter,
   AlertDialogTitle,
   AlertDialogDescription,
+  AlertDialogInput,
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogDestructive,

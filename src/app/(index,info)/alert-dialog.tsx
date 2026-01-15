@@ -9,6 +9,7 @@ import {
   AlertDialogDestructive,
   AlertDialogFooter,
   AlertDialogHeader,
+  AlertDialogInput,
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
@@ -110,6 +111,77 @@ export default function AlertDialogExample() {
                   </AlertDialogCancel>
                   <AlertDialogAction onPress={() => console.log("Saved!")}>
                     Save
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </View>
+        </View>
+
+        {/* Prompt Example */}
+        <View className="gap-4">
+          <Text className="text-lg text-sf-text font-semibold">
+            Prompt with Input
+          </Text>
+          <Text className="text-sf-text-2 text-sm">
+            Uses Alert.prompt on iOS for native text input.
+          </Text>
+          <View className="flex w-full justify-center items-center p-10 border border-sf-border rounded-lg bg-sf-grouped-bg">
+            <AlertDialog>
+              <AlertDialogTrigger className="px-4 py-2 rounded-lg bg-sf-blue text-white font-medium hover:bg-sf-blue/90 cursor-pointer">
+                Rename Item
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Rename</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Enter a new name for this item.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogInput
+                  placeholder="Enter name..."
+                  defaultValue="My Item"
+                />
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                    onPress={(value) => console.log("New name:", value)}
+                  >
+                    Rename
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </View>
+        </View>
+
+        {/* Secure Input Example */}
+        <View className="gap-4">
+          <Text className="text-lg text-sf-text font-semibold">
+            Secure Input (Password)
+          </Text>
+          <View className="flex w-full justify-center items-center p-10 border border-sf-border rounded-lg bg-sf-grouped-bg">
+            <AlertDialog>
+              <AlertDialogTrigger className="px-4 py-2 rounded-lg border border-sf-border bg-sf-bg text-sf-text font-medium hover:bg-sf-fill cursor-pointer">
+                Enter Password
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Authentication Required</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Please enter your password to continue.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogInput
+                  type="secure-text"
+                  placeholder="Password"
+                />
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                    onPress={(password) => console.log("Password entered:", password ? "***" : "(empty)")}
+                  >
+                    Authenticate
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>

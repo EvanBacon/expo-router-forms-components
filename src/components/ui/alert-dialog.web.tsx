@@ -5,10 +5,31 @@ import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 
 import { cn } from "@/lib/utils";
 
+// Context for sharing input value between components
+interface AlertDialogInputContextValue {
+  value: string;
+  setValue: (value: string) => void;
+}
+
+const AlertDialogInputContext = React.createContext<AlertDialogInputContextValue | null>(null);
+
+function useAlertDialogInput() {
+  return React.useContext(AlertDialogInputContext);
+}
+
 function AlertDialog({
+  children,
   ...props
 }: React.ComponentProps<typeof AlertDialogPrimitive.Root>) {
-  return <AlertDialogPrimitive.Root data-slot="alert-dialog" {...props} />;
+  const [inputValue, setInputValue] = React.useState("");
+
+  return (
+    <AlertDialogInputContext.Provider value={{ value: inputValue, setValue: setInputValue }}>
+      <AlertDialogPrimitive.Root data-slot="alert-dialog" {...props}>
+        {children}
+      </AlertDialogPrimitive.Root>
+    </AlertDialogInputContext.Provider>
+  );
 }
 
 function AlertDialogTrigger({
@@ -117,10 +138,66 @@ function AlertDialogDescription({
   );
 }
 
+// Input component for prompt dialogs
+interface AlertDialogInputProps {
+  type?: "plain-text" | "secure-text" | "login-password";
+  defaultValue?: string;
+  placeholder?: string;
+  className?: string;
+}
+
+function AlertDialogInput({
+  type = "plain-text",
+  defaultValue = "",
+  placeholder,
+  className,
+}: AlertDialogInputProps) {
+  const inputContext = useAlertDialogInput();
+
+  React.useEffect(() => {
+    if (inputContext && defaultValue) {
+      inputContext.setValue(defaultValue);
+    }
+  }, [defaultValue, inputContext]);
+
+  if (!inputContext) return null;
+
+  const inputType = type === "secure-text" ? "password" : "text";
+
+  return (
+    <input
+      data-slot="alert-dialog-input"
+      type={inputType}
+      value={inputContext.value}
+      onChange={(e) => inputContext.setValue(e.target.value)}
+      placeholder={placeholder}
+      autoFocus
+      className={cn(
+        "flex h-10 w-full rounded-lg border border-sf-border bg-sf-bg px-3 py-2 text-sm text-sf-text placeholder:text-sf-text-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sf-blue focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+        className
+      )}
+    />
+  );
+}
+
+interface AlertDialogActionProps extends Omit<React.ComponentProps<typeof AlertDialogPrimitive.Action>, "onClick"> {
+  /** Called when action is pressed. Receives input value if AlertDialogInput is present. */
+  onPress?: (value?: string) => void;
+}
+
 function AlertDialogAction({
   className,
+  onPress,
+  onClick,
   ...props
-}: React.ComponentProps<typeof AlertDialogPrimitive.Action>) {
+}: AlertDialogActionProps & { onClick?: React.MouseEventHandler }) {
+  const inputContext = useAlertDialogInput();
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    onClick?.(e);
+    onPress?.(inputContext?.value);
+  };
+
   return (
     <AlertDialogPrimitive.Action
       data-slot="alert-dialog-action"
@@ -128,15 +205,30 @@ function AlertDialogAction({
         "inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-sf-blue px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-sf-blue/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sf-blue focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
         className
       )}
+      onClick={handleClick}
       {...props}
     />
   );
 }
 
+interface AlertDialogCancelProps extends Omit<React.ComponentProps<typeof AlertDialogPrimitive.Cancel>, "onClick"> {
+  /** Called when cancel is pressed. Receives input value if AlertDialogInput is present. */
+  onPress?: (value?: string) => void;
+}
+
 function AlertDialogCancel({
   className,
+  onPress,
+  onClick,
   ...props
-}: React.ComponentProps<typeof AlertDialogPrimitive.Cancel>) {
+}: AlertDialogCancelProps & { onClick?: React.MouseEventHandler }) {
+  const inputContext = useAlertDialogInput();
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    onClick?.(e);
+    onPress?.(inputContext?.value);
+  };
+
   return (
     <AlertDialogPrimitive.Cancel
       data-slot="alert-dialog-cancel"
@@ -144,15 +236,30 @@ function AlertDialogCancel({
         "inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-sf-border bg-sf-bg px-4 py-2 text-sm font-medium text-sf-text transition-colors hover:bg-sf-fill focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sf-blue focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
         className
       )}
+      onClick={handleClick}
       {...props}
     />
   );
 }
 
+interface AlertDialogDestructiveProps extends Omit<React.ComponentProps<typeof AlertDialogPrimitive.Action>, "onClick"> {
+  /** Called when action is pressed. Receives input value if AlertDialogInput is present. */
+  onPress?: (value?: string) => void;
+}
+
 function AlertDialogDestructive({
   className,
+  onPress,
+  onClick,
   ...props
-}: React.ComponentProps<typeof AlertDialogPrimitive.Action>) {
+}: AlertDialogDestructiveProps & { onClick?: React.MouseEventHandler }) {
+  const inputContext = useAlertDialogInput();
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    onClick?.(e);
+    onPress?.(inputContext?.value);
+  };
+
   return (
     <AlertDialogPrimitive.Action
       data-slot="alert-dialog-destructive"
@@ -160,6 +267,7 @@ function AlertDialogDestructive({
         "inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-sf-red px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-sf-red/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sf-red focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
         className
       )}
+      onClick={handleClick}
       {...props}
     />
   );
@@ -175,6 +283,7 @@ export {
   AlertDialogFooter,
   AlertDialogTitle,
   AlertDialogDescription,
+  AlertDialogInput,
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogDestructive,
