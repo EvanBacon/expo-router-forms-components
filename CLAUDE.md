@@ -9,7 +9,7 @@ Personal component library for building iOS-style universal apps with Expo Route
 - [ ] Fork stack on web to add support for new toolbar API in Expo Router v7. Stack should coordinate with custom tabs automatically to work like the ipad.
 - [ ] Add ability for tab bar to group extra links together.
 - [ ] Build out gallery + easy copy paste code snippets pages for things like segments.
-- [ ] Dialog component that is a component API around `alert()`.
+- [x] Dialog component that is a component API around `alert()`.
 - [ ] `popover` which uses a form-sheet on native.
 - [ ] Components that are mostly just context menus on native: context-menu, dropdown-menu
 - [ ] Echo components: anchor avatar badge button-group button card collapsible drawer label select separator skeleton
@@ -108,6 +108,156 @@ Theme controlled via `color-scheme` CSS property. Add `.light` or `.dark` class 
 ```tsx
 import { something } from "@/components/ui/something"; // src/components/ui/something
 ```
+
+## Adding New Components
+
+Follow these guidelines when creating new UI components to ensure consistency across the library.
+
+### File Structure
+
+Each component should have:
+
+1. **Native implementation**: `src/components/ui/{component}.tsx` - Default/native behavior
+2. **Web implementation**: `src/components/ui/{component}.web.tsx` - Web-specific with Radix UI primitives
+3. **Example page**: `src/app/(index,info)/{component}.tsx` - Demo page with usage examples
+4. **Documentation**: `docs/ui/{component}.md` - API reference and usage guide
+
+### Platform Implementation Strategy
+
+| Pattern | Native | Web |
+|---------|--------|-----|
+| Alerts/Dialogs | `Alert.alert()`, `Alert.prompt()` | Radix UI primitives |
+| Tabs/Segments | `@react-native-segmented-control` | Radix Tabs |
+| Context Menus | Native context menu APIs | Radix Context Menu |
+| Switches | React Native `Switch` | Custom styled component |
+| Simple components | Direct implementation | Same or enhanced with hover states |
+
+### Compound Component Pattern
+
+Use React Context for compound components that share state:
+
+```tsx
+// 1. Create context
+const ComponentContext = createContext<ContextValue | undefined>(undefined);
+
+// 2. Root component provides context
+function Component({ children }) {
+  const [state, setState] = useState();
+  return (
+    <ComponentContext value={{ state, setState }}>
+      {children}
+    </ComponentContext>
+  );
+}
+
+// 3. Sub-components consume context
+function ComponentItem({ children }) {
+  const context = use(ComponentContext);
+  if (!context) throw new Error("ComponentItem must be used within Component");
+  // ...
+}
+
+// 4. Attach sub-components as static properties
+Component.Item = ComponentItem;
+```
+
+### Props Conventions
+
+| Prop | Type | Usage |
+|------|------|-------|
+| `className` | `string` | Tailwind classes (web styling, use `cn()` helper) |
+| `onPress` | `(value?) => void` | Action callbacks (not `onClick`) |
+| `asChild` | `boolean` | Radix-style prop merging onto child element |
+| `children` | `ReactNode` | Content |
+| `value` / `onValueChange` | varies | Controlled component state |
+| `defaultValue` | varies | Uncontrolled initial state |
+
+### Styling Guidelines
+
+1. **Use Apple system colors** with `sf-` prefix:
+   - Text: `text-sf-text`, `text-sf-text-2`, `text-sf-text-3`
+   - Backgrounds: `bg-sf-bg`, `bg-sf-grouped-bg`, `bg-sf-fill`
+   - Accents: `text-sf-blue`, `bg-sf-red`, etc.
+   - Borders: `border-sf-border`
+
+2. **Web-only styles** use `web:` prefix or only apply in `.web.tsx` files
+
+3. **Use `cn()` helper** for conditional class merging:
+   ```tsx
+   import { cn } from "@/lib/utils";
+   className={cn("base-classes", conditional && "conditional-class", props.className)}
+   ```
+
+4. **Import primitives from `@/tw`**:
+   ```tsx
+   import { View, Text, TextInput } from "@/tw";
+   import { Pressable } from "@/tw/touchable";
+   ```
+
+### Native Implementation Checklist
+
+- [ ] Use native APIs where available (`Alert`, `SegmentedControl`, etc.)
+- [ ] Components render nothing or minimal UI (let native handle presentation)
+- [ ] Use `useEffect` to register metadata with parent context
+- [ ] Support both controlled (`value`/`onValueChange`) and uncontrolled (`defaultValue`) patterns
+- [ ] Extract text from children for native APIs: `extractTextFromChildren()`
+
+### Web Implementation Checklist
+
+- [ ] Use Radix UI primitives for accessibility and behavior
+- [ ] Add `data-slot` attributes for styling hooks
+- [ ] Include focus-visible styles: `focus-visible:ring-2 focus-visible:ring-sf-blue`
+- [ ] Add hover states: `hover:bg-sf-fill`
+- [ ] Support animations: `data-[state=open]:animate-in`
+- [ ] Use semantic HTML elements
+
+### Documentation Template
+
+Each component's `docs/ui/{component}.md` should include:
+
+1. **Title and description**
+2. **Installation** (any required dependencies)
+3. **Usage examples** (basic, with callbacks, variants)
+4. **API Reference** (table of all props for each sub-component)
+5. **Platform Differences** (native vs web behavior)
+6. **Accessibility** notes
+
+### Example Page Template
+
+```tsx
+export default function ComponentExample() {
+  return (
+    <ScrollView>
+      <View className="mx-auto flex w-full max-w-2xl min-w-0 flex-1 flex-col gap-8 px-4 py-6 md:px-0 lg:py-8">
+        <View className="gap-2">
+          <Text className="hidden web:visible text-2xl text-sf-text font-bold">
+            Component Name
+          </Text>
+          <Text className="text-sf-text-2">
+            Brief description of the component.
+          </Text>
+        </View>
+
+        {/* Example sections */}
+        <View className="gap-4">
+          <Text className="text-lg text-sf-text font-semibold">Example Title</Text>
+          <View className="flex w-full justify-center items-center p-10 border border-sf-border rounded-lg bg-sf-grouped-bg">
+            {/* Component demo */}
+          </View>
+        </View>
+      </View>
+    </ScrollView>
+  );
+}
+```
+
+### Dependencies
+
+- **Radix UI**: Install component-specific packages for web implementations
+  ```bash
+  npm install @radix-ui/react-{component} --legacy-peer-deps
+  ```
+- Use `--legacy-peer-deps` flag due to react-native-css peer dependency conflicts
 
 ## Important Notes
 
