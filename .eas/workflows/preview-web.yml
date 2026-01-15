@@ -5,33 +5,9 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
-  deploy_web_preview:
+  deploy_preview:
     name: Deploy Web Preview
-    steps:
-      - name: Check out repository
-        uses: eas/checkout
-
-      - name: Setup Node.js
-        uses: eas/use_npm_token
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Export web app
-        run: npx expo export --platform web
-
-      - name: Deploy to EAS Hosting
-        uses: eas/deploy
-        id: deploy
-        with:
-          alias: pr-${{ github.event.pull_request.number }}
-
-      - name: Post preview URL
-        uses: eas/preview_comment
-        with:
-          message: |
-            Web preview deployed!
-
-            **Preview URL:** ${{ steps.deploy.outputs.url }}
-
-            Alias URL: ${{ steps.deploy.outputs.alias_url }}
+    type: deploy
+    environment: preview
+    params:
+      alias: pr-${{ github.event.pull_request.number }}
