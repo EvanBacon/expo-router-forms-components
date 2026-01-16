@@ -307,25 +307,22 @@ export function DocsWrapper({ children, title }: DocsWrapperProps) {
 
   return (
     <ScrollView
-      className="flex-1"
+      className="min-w-0 flex-1"
       style={
         process.env.EXPO_OS === "web"
           ? ({ scrollPaddingTop: "var(--header-inset, 0)" } as any)
           : undefined
       }
-    >
-      <View
-        className="mx-auto flex w-full max-w-3xl min-w-0 flex-1 flex-col px-4 py-6 md:px-0 lg:py-8"
-        style={
-          process.env.EXPO_OS === "web"
+      contentContainerClassName="mx-auto w-full max-w-3xl  flex-col px-4 py-6 md:px-0 lg:py-8"
+      contentContainerStyle={process.env.EXPO_OS === "web"
             ? ({ paddingTop: "var(--header-inset, 0)" } as any)
-            : undefined
-        }
-      >
+            : {}}
+    >
+     
         <MDXComponents components={mdxComponents}>
           {children}
         </MDXComponents>
-      </View>
+      
     </ScrollView>
   );
 }

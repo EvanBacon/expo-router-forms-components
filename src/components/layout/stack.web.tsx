@@ -493,7 +493,56 @@ function Stack(props: StackProps) {
   );
 }
 
-Stack.Screen = ExpoStack.Screen;
+/* ----------------------------------------------------------------------------------
+ * Stack.Screen with Web Header Integration
+ * ----------------------------------------------------------------------------------
+ *
+ * Custom Stack.Screen that automatically configures the web floating header
+ * from the options prop. This eliminates the need to call useStackHeaderConfig
+ * separately - just use Stack.Screen with options.title, headerLeft, headerRight.
+ */
+
+type StackScreenComponentProps = React.ComponentProps<typeof ExpoStack.Screen> & {
+  /** Make the sheet open as a bottom sheet with default options on iOS. */
+  sheet?: boolean;
+  /** Make the screen open as a modal. */
+  modal?: boolean;
+};
+
+function StackScreenWithWebHeader({ options, ...props }: StackScreenComponentProps) {
+  const { setHeaderConfig } = useStackHeaderContext();
+
+  // Extract web header config from options
+  const title = typeof options?.title === "string" ? options.title : undefined;
+  const headerLeft = options?.headerLeft;
+  const headerRight = options?.headerRight;
+  const headerShown = options?.headerShown;
+
+  // Update web header config when options change
+  React.useEffect(() => {
+    setHeaderConfig({
+      title,
+      headerLeft: typeof headerLeft === "function" ? headerLeft({}) : headerLeft,
+      headerRight: typeof headerRight === "function" ? headerRight({}) : headerRight,
+      headerShown,
+    });
+    return () => setHeaderConfig({});
+  }, [title, headerShown, setHeaderConfig]);
+
+  // Update headerLeft/headerRight separately to avoid object comparison issues
+  React.useEffect(() => {
+    setHeaderConfig({
+      title,
+      headerLeft: typeof headerLeft === "function" ? headerLeft({}) : headerLeft,
+      headerRight: typeof headerRight === "function" ? headerRight({}) : headerRight,
+      headerShown,
+    });
+  }, [headerLeft, headerRight]);
+
+  return <ExpoStack.Screen options={options} {...props} />;
+}
+
+Stack.Screen = StackScreenWithWebHeader as React.FC<StackScreenComponentProps>;
 
 export default Stack;
 

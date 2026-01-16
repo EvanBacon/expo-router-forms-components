@@ -9,7 +9,7 @@ import {
   SegmentsList,
   SegmentsTrigger,
 } from "@/components/ui/segments";
-import Stack, { useStackHeaderConfig, HeaderButton } from "@/components/layout/stack";
+import Stack, { HeaderButton } from "@/components/layout/stack";
 import * as AC from "@bacons/apple-colors";
 import { cn } from "@/lib/utils";
 // import { Image } from "expo-image";
@@ -57,72 +57,17 @@ export default function Page() {
 
   const [show, setShow] = React.useState(false);
 
-  // Configure the web stack header
-  useStackHeaderConfig({
-    title: "Components",
-    headerRight: (
-      <HeaderButton icon="gearshape">Settings</HeaderButton>
-    ),
-  });
-
   return (
     <View className="flex-1">
       {show && <GlurryList setShow={setShow} />}
       <Stack.Screen
         options={{
+          title: "Components",
           headerLargeTitle: false,
-          // headerTitle() {
-          //   if (process.env.EXPO_OS === "web") {
-          //     return (
-          //       <Animated.View
-          //         style={[
-          //           style,
-          //           { flexDirection: "row", gap: 12, alignItems: "center" },
-          //         ]}
-          //       >
-          //         <Link href="/">
-          //           <Link.Trigger>
-          //             <Image
-          //               source={{ uri: "https://github.com/evanbacon.png" }}
-          //               style={{
-          //                 aspectRatio: 1,
-          //                 height: 30,
-          //                 borderRadius: 8,
-          //                 borderWidth: 0.5,
-          //                 borderColor: AC.separator,
-          //               }}
-          //             />
-          //           </Link.Trigger>
-          //           <Link.Menu>
-          //             <Link.MenuAction
-          //               icon="star"
-          //               title="Profile"
-          //               onPress={() => {}}
-          //             />
-          //           </Link.Menu>
-          //         </Link>
-          //         <Text className="font-bold text-xl text-sf-text">
-          //           Bacon Components
-          //         </Text>
-          //       </Animated.View>
-          //     );
-          //   }
-          //   return (
-          //     <Animated.Image
-          //       source={{ uri: "https://github.com/evanbacon.png" }}
-          //       style={[
-          //         style,
-          //         {
-          //           aspectRatio: 1,
-          //           height: 30,
-          //           borderRadius: 8,
-          //           borderWidth: 0.5,
-          //           borderColor: AC.separator,
-          //         },
-          //       ]}
-          //     />
-          //   );
-          // },
+          // Web-only: headerRight for the floating header
+          headerRight: () => (
+            <HeaderButton icon="gearshape">Settings</HeaderButton>
+          ),
         }}
       />
       <Form.List ref={ref} navigationTitle="Components">
