@@ -9,8 +9,10 @@ import { Suspense, useEffect } from "react";
 import { Toaster } from "@/utils/toast";
 import { GestureHandlerRootView } from "@/utils/native-gesture-provider";
 import { SourceCodePro_400Regular } from "@expo-google-fonts/source-code-pro";
-import type { Href } from "expo-router";
+import { Link, type Href } from "expo-router";
 import { TabList, TabTrigger } from "expo-router/ui";
+import { IconSymbol, type IconSymbolName } from "@/components/ui/icon-symbol";
+import { cn } from "@/lib/utils";
 
 import {
   TabBarControllerTabs,
@@ -38,7 +40,7 @@ const routeContext = require.context(
 
 // Auto-discover all MDX docs from docs/ui/
 const docsContext = require.context(
-  "../../../docs/ui",
+  "../../docs/ui",
   false,
   /\.mdx$/
 );
@@ -78,6 +80,31 @@ const discoveredDocs = docsContext
   .map(getDocsRouteInfo)
   .sort((a, b) => a.title.localeCompare(b.title));
 
+// Simple sidebar link that doesn't register as a tab
+function SidebarLink({
+  href,
+  icon,
+  children,
+}: {
+  href: Href;
+  icon: IconSymbolName;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      className={cn(
+        "flex w-full items-center gap-3 rounded-full px-2 py-2 text-left text-sm",
+        "transition-colors duration-150",
+        "hover:bg-(--sf-fill)"
+      )}
+    >
+      <IconSymbol name={icon} size={20} color="var(--sf-text)" />
+      <span className="flex-1 truncate text-(--sf-text)">{children}</span>
+    </Link>
+  );
+}
+
 SplashScreen.preventAutoHideAsync();
 
 function SplashFallback() {
@@ -101,12 +128,6 @@ export default function Layout() {
             <TabList style={{ display: "none" }}>
               <TabTrigger name="index" href="/(index)" />
               <TabTrigger name="info" href="/(info)" />
-              {/* {discoveredPages.map((route) => (
-                <TabTrigger key={route.name} name={route.name} href={route.href} />
-              ))}
-              {discoveredDocs.map((route) => (
-                <TabTrigger key={route.name} name={route.name} href={route.href} />
-              ))} */}
             </TabList>
 
             <TabBarControllerSidebar>
@@ -147,13 +168,9 @@ export default function Layout() {
                     <TabBarControllerMenu>
                       {discoveredDocs.map((route) => (
                         <TabBarControllerMenuItem key={route.name}>
-                          <TabBarControllerLink
-                            href={route.href}
-                            name={route.name}
-                            icon="doc.text"
-                          >
+                          <SidebarLink href={route.href} icon="doc.text">
                             {route.title}
-                          </TabBarControllerLink>
+                          </SidebarLink>
                         </TabBarControllerMenuItem>
                       ))}
                     </TabBarControllerMenu>
@@ -169,13 +186,9 @@ export default function Layout() {
                       <TabBarControllerMenu>
                         {discoveredPages.map((route) => (
                           <TabBarControllerMenuItem key={route.name}>
-                            <TabBarControllerLink
-                              href={route.href}
-                              name={route.name}
-                              icon="rectangle.grid.2x2"
-                            >
+                            <SidebarLink href={route.href} icon="rectangle.grid.2x2">
                               {route.title}
-                            </TabBarControllerLink>
+                            </SidebarLink>
                           </TabBarControllerMenuItem>
                         ))}
                       </TabBarControllerMenu>
@@ -183,42 +196,6 @@ export default function Layout() {
                   </TabBarControllerGroup>
                 )}
 
-                <TabBarControllerGroup>
-                  <TabBarControllerGroupLabel>
-                    Settings
-                  </TabBarControllerGroupLabel>
-                  <TabBarControllerGroupContent>
-                    <TabBarControllerMenu>
-                      <TabBarControllerMenuItem>
-                        <TabBarControllerLink
-                          href="/(index)"
-                          name="index"
-                          icon="gearshape.fill"
-                        >
-                          Preferences
-                        </TabBarControllerLink>
-                      </TabBarControllerMenuItem>
-                      <TabBarControllerMenuItem>
-                        <TabBarControllerLink
-                          href="/(index)"
-                          name="index"
-                          icon="person.fill"
-                        >
-                          Account
-                        </TabBarControllerLink>
-                      </TabBarControllerMenuItem>
-                      <TabBarControllerMenuItem>
-                        <TabBarControllerLink
-                          href="/(index)"
-                          name="index"
-                          icon="bell.fill"
-                        >
-                          Notifications
-                        </TabBarControllerLink>
-                      </TabBarControllerMenuItem>
-                    </TabBarControllerMenu>
-                  </TabBarControllerGroupContent>
-                </TabBarControllerGroup>
               </TabBarControllerContent>
             </TabBarControllerSidebar>
 
