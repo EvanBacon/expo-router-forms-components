@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Stack as ExpoStack, useRouter, useNavigation } from "expo-router";
 import { cn } from "@/lib/utils";
-import { IconSymbol } from "@/components/ui/icon-symbol";
+import { SFIcon } from "@/components/ui/sf-icon";
 import { useTabBarController } from "@/components/ui/tab-bar-controller.web";
 
 /* ----------------------------------------------------------------------------------
@@ -156,11 +156,11 @@ function WebStackHeader() {
             onClick={() => router.back()}
             className={cn(
               "flex h-10 items-center gap-1 rounded-full pl-2 pr-3",
-              "text-(--sf-blue) hover:bg-(--sf-fill)",
+              "text-sf-text hover:bg-sf-fill",
               "transition-colors"
             )}
           >
-            <IconSymbol name="chevron.left" size={20} color="var(--sf-blue)" />
+            <SFIcon name="chevron.left" className="text-sf-text text-xl" />
             <span className="text-sm font-medium">Back</span>
           </button>
         )}
@@ -269,11 +269,11 @@ function StackFloatingHeader({
             onClick={() => router.back()}
             className={cn(
               "flex h-10 items-center gap-1 rounded-full pl-2 pr-3",
-              "text-(--sf-blue) hover:bg-(--sf-fill)",
+              "text-sf-text hover:bg-sf-fill",
               "transition-colors"
             )}
           >
-            <IconSymbol name="chevron.left" size={20} color="var(--sf-blue)" />
+            <SFIcon name="chevron.left" className="text-sf-text text-xl" />
             <span className="text-sm font-medium">Back</span>
           </button>
         )}
@@ -334,13 +334,13 @@ function HeaderButton({
     <button
       className={cn(
         "flex h-10 items-center gap-1.5 rounded-full px-3",
-        "text-(--sf-blue) hover:bg-(--sf-fill)",
+        "text-sf-text hover:bg-sf-fill",
         "transition-colors",
         className
       )}
       {...props}
     >
-      {icon && <IconSymbol name={icon as any} size={18} color="var(--sf-blue)" />}
+      {icon && <SFIcon name={icon as any} className="text-sf-text text-xl" />}
       {children && <span className="text-sm font-medium">{children}</span>}
     </button>
   );
