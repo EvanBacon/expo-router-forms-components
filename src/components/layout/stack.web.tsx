@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Stack as ExpoStack, useRouter, useNavigation } from "expo-router";
+import { Stack as ExpoStack, useRouter } from "expo-router";
 import { cn } from "@/lib/utils";
 import { SFIcon } from "@/components/ui/sf-icon";
 import { useTabBarController } from "@/components/ui/tab-bar-controller.web";
@@ -103,13 +103,16 @@ function TabBarAwareProviderFallback({ children }: { children: React.ReactNode }
 
 function WebStackHeader() {
   const router = useRouter();
-  const navigation = useNavigation();
   const { isSidebarOpen, isInsideTabBar, headerConfig } = useStackHeaderContext();
 
   const { title, headerLeft, headerRight, headerShown = true } = headerConfig;
 
-  // Check if we can go back
-  const canGoBack = navigation.canGoBack();
+  // Check if we should show the back button
+  // Use pathname to determine if we're at the root - more reliable than navigation state
+  const pathname = typeof window !== "undefined" ? window.location.pathname : "/";
+  // Root paths end with just "/" or "/index" or match the tab pattern like "/(index)"
+  const isRootScreen = pathname === "/" || pathname.endsWith("/index") || /^\/\([^)]+\)\/?$/.test(pathname);
+  const canGoBack = !isRootScreen;
 
   if (!headerShown) {
     return null;
@@ -136,7 +139,7 @@ function WebStackHeader() {
         "flex items-start justify-between",
         "right-4",
         // When sidebar is open, account for its width (sidebar is ~296px + padding)
-        isSidebarOpen ? "left-[19.5rem]" : "left-4"
+        isSidebarOpen ? "left-78" : "left-4"
       )}
     >
       {/* Left toolbar */}
@@ -512,18 +515,19 @@ type StackScreenComponentProps = React.ComponentProps<typeof ExpoStack.Screen> &
 function StackScreenWithWebHeader({ options, ...props }: StackScreenComponentProps) {
   const { setHeaderConfig } = useStackHeaderContext();
 
-  // Extract web header config from options
-  const title = typeof options?.title === "string" ? options.title : undefined;
-  const headerLeft = options?.headerLeft;
-  const headerRight = options?.headerRight;
-  const headerShown = options?.headerShown;
+  // Extract web header config from options (handle both object and function forms)
+  const resolvedOptions = typeof options === "function" ? null : options;
+  const title = typeof resolvedOptions?.title === "string" ? resolvedOptions.title : undefined;
+  const headerLeft = resolvedOptions?.headerLeft;
+  const headerRight = resolvedOptions?.headerRight;
+  const headerShown = resolvedOptions?.headerShown;
 
   // Update web header config when options change
   React.useEffect(() => {
     setHeaderConfig({
       title,
-      headerLeft: typeof headerLeft === "function" ? headerLeft({}) : headerLeft,
-      headerRight: typeof headerRight === "function" ? headerRight({}) : headerRight,
+      headerLeft: typeof headerLeft === "function" ? headerLeft({} as any) : headerLeft,
+      headerRight: typeof headerRight === "function" ? headerRight({} as any) : headerRight,
       headerShown,
     });
     return () => setHeaderConfig({});
@@ -533,8 +537,8 @@ function StackScreenWithWebHeader({ options, ...props }: StackScreenComponentPro
   React.useEffect(() => {
     setHeaderConfig({
       title,
-      headerLeft: typeof headerLeft === "function" ? headerLeft({}) : headerLeft,
-      headerRight: typeof headerRight === "function" ? headerRight({}) : headerRight,
+      headerLeft: typeof headerLeft === "function" ? headerLeft({} as any) : headerLeft,
+      headerRight: typeof headerRight === "function" ? headerRight({} as any) : headerRight,
       headerShown,
     });
   }, [headerLeft, headerRight]);
