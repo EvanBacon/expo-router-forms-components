@@ -28,7 +28,7 @@ export default function Page() {
 
           <Skeleton dark />
 
-          <SFIcon name="star.bubble.fill" color={AC.systemCyan} />
+          <SFIcon name="star.bubble.fill" className="text-sf-cyan" />
         </View>
       </View>
     </BodyScrollView>

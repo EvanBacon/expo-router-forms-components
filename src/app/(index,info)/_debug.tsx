@@ -29,7 +29,7 @@ export default function DebugRoute() {
         {process.env.EXPO_OS !== "web" && (
           <Form.Text
             onPress={() => Linking.openSettings()}
-            hint={<SFIcon name="gear" color={AC.secondaryLabel} />}
+            hint={<SFIcon name="gear" className="text-sf-text-2" />}
           >
             Open System Settings
           </Form.Text>
@@ -243,7 +243,7 @@ function OTADynamicSection() {
             isLoading ? (
               <ActivityIndicator animating />
             ) : (
-              <SFIcon name="arrow.clockwise" color={AC.secondaryLabel} />
+              <SFIcon name="arrow.clockwise" className="text-sf-text-2" />
             )
           }
         >
