@@ -9,13 +9,13 @@ import { Suspense, useEffect } from "react";
 import { Toaster } from "@/utils/toast";
 import { GestureHandlerRootView } from "@/utils/native-gesture-provider";
 import { SourceCodePro_400Regular } from "@expo-google-fonts/source-code-pro";
+import type { Href } from "expo-router";
 import { TabList, TabTrigger } from "expo-router/ui";
 
 import {
   TabBarControllerTabs,
   TabBarControllerSidebar,
   TabBarControllerHeader,
-  TabBarControllerTitle,
   TabBarControllerEditTrigger,
   TabBarControllerContent,
   TabBarControllerMenu,
@@ -28,6 +28,55 @@ import {
   TabBarControllerRouterFloatingBar,
   TabBarControllerSlot,
 } from "@/components/ui/tab-bar-controller.web";
+
+// Auto-discover all pages using require.context (excluding special files and ui folder)
+const routeContext = require.context(
+  "./(index,info)",
+  false,
+  /^\.\/(?!_layout|_debug|ui)[^/]+\.tsx$/
+);
+
+// Auto-discover all MDX docs from docs/ui/
+const docsContext = require.context(
+  "../../../docs/ui",
+  false,
+  /\.mdx$/
+);
+
+// Convert filename to route info for pages
+function getPageRouteInfo(key: string) {
+  const filename = key.replace(/^\.\//, "").replace(/\.tsx$/, "");
+  const title = filename
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+  return { name: filename, title, href: `/(index)/${filename}` as Href };
+}
+
+// Convert MDX filename to route info for docs
+function getDocsRouteInfo(key: string) {
+  const filename = key.replace(/^\.\//, "").replace(/\.mdx$/, "");
+  // Try to get title from frontmatter, fallback to filename
+  const mod = docsContext(key);
+  const title = mod.frontmatter?.title ?? filename
+    .split("-")
+    .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+  return { name: `ui-${filename}`, title, href: `/(index)/ui/${filename}` as Href };
+}
+
+// Get all discovered page routes, excluding index and info (handled separately)
+const discoveredPages = routeContext
+  .keys()
+  .map(getPageRouteInfo)
+  .filter((route) => !["index", "info"].includes(route.name))
+  .sort((a, b) => a.title.localeCompare(b.title));
+
+// Get all discovered docs routes
+const discoveredDocs = docsContext
+  .keys()
+  .map(getDocsRouteInfo)
+  .sort((a, b) => a.title.localeCompare(b.title));
 
 SplashScreen.preventAutoHideAsync();
 
@@ -52,7 +101,12 @@ export default function Layout() {
             <TabList style={{ display: "none" }}>
               <TabTrigger name="index" href="/(index)" />
               <TabTrigger name="info" href="/(info)" />
-              {/* <TabTrigger name="segments" href="/segments" /> */}
+              {/* {discoveredPages.map((route) => (
+                <TabTrigger key={route.name} name={route.name} href={route.href} />
+              ))}
+              {discoveredDocs.map((route) => (
+                <TabTrigger key={route.name} name={route.name} href={route.href} />
+              ))} */}
             </TabList>
 
             <TabBarControllerSidebar>
@@ -87,42 +141,47 @@ export default function Layout() {
 
                 <TabBarControllerGroup>
                   <TabBarControllerGroupLabel>
-                    Components
+                    Documentation
                   </TabBarControllerGroupLabel>
                   <TabBarControllerGroupContent>
                     <TabBarControllerMenu>
-                      {/* TODO: Support random links */}
-                      {/* <TabBarControllerMenuItem>
-                        <TabBarControllerLink
-                          href="/segments"
-                          name="segments"
-                          icon="square.split.2x1"
-                          pinned
-                        >
-                          Segments
-                        </TabBarControllerLink>
-                      </TabBarControllerMenuItem> */}
-                      <TabBarControllerMenuItem>
-                        <TabBarControllerLink
-                          href="/(index)"
-                          name="index"
-                          icon="heart.fill"
-                        >
-                          Liked
-                        </TabBarControllerLink>
-                      </TabBarControllerMenuItem>
-                      <TabBarControllerMenuItem>
-                        <TabBarControllerLink
-                          href="/(index)"
-                          name="index"
-                          icon="bookmark.fill"
-                        >
-                          Bookmarks
-                        </TabBarControllerLink>
-                      </TabBarControllerMenuItem>
+                      {discoveredDocs.map((route) => (
+                        <TabBarControllerMenuItem key={route.name}>
+                          <TabBarControllerLink
+                            href={route.href}
+                            name={route.name}
+                            icon="doc.text"
+                          >
+                            {route.title}
+                          </TabBarControllerLink>
+                        </TabBarControllerMenuItem>
+                      ))}
                     </TabBarControllerMenu>
                   </TabBarControllerGroupContent>
                 </TabBarControllerGroup>
+
+                {discoveredPages.length > 0 && (
+                  <TabBarControllerGroup>
+                    <TabBarControllerGroupLabel>
+                      Examples
+                    </TabBarControllerGroupLabel>
+                    <TabBarControllerGroupContent>
+                      <TabBarControllerMenu>
+                        {discoveredPages.map((route) => (
+                          <TabBarControllerMenuItem key={route.name}>
+                            <TabBarControllerLink
+                              href={route.href}
+                              name={route.name}
+                              icon="rectangle.grid.2x2"
+                            >
+                              {route.title}
+                            </TabBarControllerLink>
+                          </TabBarControllerMenuItem>
+                        ))}
+                      </TabBarControllerMenu>
+                    </TabBarControllerGroupContent>
+                  </TabBarControllerGroup>
+                )}
 
                 <TabBarControllerGroup>
                   <TabBarControllerGroupLabel>

@@ -230,8 +230,8 @@ export default function Page() {
         </Form.Section>
 
         <Form.Section title="Components">
-          <Form.Link href="/segments">Segments</Form.Link>
-          <Form.Link href="/alert-dialog">Alert Dialog</Form.Link>
+          <Form.Link href="/ui/segments">Segments</Form.Link>
+          <Form.Link href="/ui/alert-dialog">Alert Dialog</Form.Link>
         </Form.Section>
         <Form.Section title="Features">
           <Form.Text
