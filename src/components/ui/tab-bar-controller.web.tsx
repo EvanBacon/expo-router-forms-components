@@ -714,6 +714,45 @@ function TabBarControllerInset({
 }
 
 /* ----------------------------------------------------------------------------------
+ * ProgressiveBlurBackdrop
+ * ----------------------------------------------------------------------------------
+ * A backdrop element with progressive blur that fades out gradually.
+ * Used behind floating bars and headers for an iOS-style effect.
+ */
+
+function ProgressiveBlurBackdrop({
+  position = "top",
+  className,
+}: {
+  position?: "top" | "bottom";
+  className?: string;
+}) {
+  const isTop = position === "top";
+
+  return (
+    <div
+      data-slot="progressive-blur-backdrop"
+      aria-hidden
+      className={cn(
+        "pointer-events-none absolute left-0 right-0 z-0",
+        isTop ? "top-0 h-24" : "bottom-0 h-24",
+        className
+      )}
+      style={{
+        maskImage: isTop
+          ? "linear-gradient(to bottom, black 0%, black 40%, transparent 100%)"
+          : "linear-gradient(to top, black 0%, black 40%, transparent 100%)",
+        WebkitMaskImage: isTop
+          ? "linear-gradient(to bottom, black 0%, black 40%, transparent 100%)"
+          : "linear-gradient(to top, black 0%, black 40%, transparent 100%)",
+        backdropFilter: "blur(20px) saturate(180%)",
+        WebkitBackdropFilter: "blur(20px) saturate(180%)",
+      }}
+    />
+  );
+}
+
+/* ----------------------------------------------------------------------------------
  * TabBarControllerFloatingBar
  * ----------------------------------------------------------------------------------*/
 
@@ -725,22 +764,32 @@ function TabBarControllerFloatingBar({
     useTabBarController();
 
   return (
-    <div
-      data-slot="tabbar-floating-bar"
-      className={cn(
-        "absolute top-4 z-10",
-        "flex flex-row items-center gap-0.5",
-        "rounded-full px-1 py-1",
-        "bg-(--sf-grouped-bg-2)/95 backdrop-blur-xl",
-        "shadow-lg shadow-black/10",
-        "transition-all duration-300 ease-out",
-        isSidebarOpen
-          ? "left-44 translate-x-0 opacity-0 scale-95 blur-md pointer-events-none"
-          : "left-1/2 -translate-x-1/2 opacity-100 scale-100 blur-0",
-        className
-      )}
-      {...props}
-    >
+    <>
+      {/* Progressive blur backdrop */}
+      <ProgressiveBlurBackdrop
+        position="top"
+        className={cn(
+          "transition-opacity duration-300",
+          isSidebarOpen ? "opacity-0" : "opacity-100"
+        )}
+      />
+
+      <div
+        data-slot="tabbar-floating-bar"
+        className={cn(
+          "absolute top-4 z-10",
+          "flex flex-row items-center gap-0.5",
+          "rounded-full px-1 py-1",
+          "bg-(--sf-grouped-bg-2)/80 backdrop-blur-xl",
+          "shadow-lg shadow-black/10",
+          "transition-all duration-300 ease-out",
+          isSidebarOpen
+            ? "left-44 translate-x-0 opacity-0 scale-95 blur-md pointer-events-none"
+            : "left-1/2 -translate-x-1/2 opacity-100 scale-100 blur-0",
+          className
+        )}
+        {...props}
+      >
       <button
         onClick={() => setIsSidebarOpen(true)}
         className={cn(
@@ -790,6 +839,7 @@ function TabBarControllerFloatingBar({
         );
       })}
     </div>
+    </>
   );
 }
 
@@ -1181,50 +1231,61 @@ function TabBarControllerRouterFloatingBar({
     useTabBarController();
 
   return (
-    <div
-      data-slot="tabbar-floating-bar"
-      className={cn(
-        "absolute top-4 z-10",
-        "flex flex-row items-center gap-0.5",
-        "rounded-full px-1 py-1",
-        "bg-(--sf-grouped-bg-2)/95 backdrop-blur-xl",
-        "shadow-lg shadow-black/10",
-        "transition-all duration-300 ease-out",
-        isSidebarOpen
-          ? "left-44 translate-x-0 opacity-0 scale-95 blur-md pointer-events-none"
-          : "left-1/2 -translate-x-1/2 opacity-100 scale-100 blur-0",
-        className
-      )}
-      {...props}
-    >
-      <button
-        onClick={() => setIsSidebarOpen(true)}
+    <>
+      {/* Progressive blur backdrop */}
+      <ProgressiveBlurBackdrop
+        position="top"
         className={cn(
-          "flex h-8 w-8 items-center justify-center rounded-full",
-          "text-(--sf-text-2) hover:bg-(--sf-fill)",
-          "transition-colors"
+          "transition-opacity duration-300",
+          isSidebarOpen ? "opacity-0" : "opacity-100"
         )}
-      >
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 36 36"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M5.52758 32H30.4724C33.5005 32 35 30.4764 35 27.4585V9.57082C35 6.55291 33.5005 5.0293 30.4724 5.0293H5.52758C2.514 5.0293 1 6.53825 1 9.57082V27.4585C1 30.4911 2.514 32 5.52758 32ZM5.55642 29.6414C4.11452 29.6414 3.32147 28.8649 3.32147 27.3414V9.68802C3.32147 8.16442 4.11452 7.38796 5.55642 7.38796H30.4436C31.8711 7.38796 32.6786 8.16442 32.6786 9.68802V27.3414C32.6786 28.8649 31.8711 29.6414 30.4436 29.6414H5.55642ZM11.9873 30.0955H14.2511V6.94846H11.9873V30.0955ZM9.21885 12.8231C9.65142 12.8231 10.0407 12.4276 10.0407 12.0027C10.0407 11.5632 9.65142 11.1823 9.21885 11.1823H6.11876C5.68619 11.1823 5.31129 11.5632 5.31129 12.0027C5.31129 12.4276 5.68619 12.8231 6.11876 12.8231H9.21885ZM9.21885 16.6175C9.65142 16.6175 10.0407 16.2219 10.0407 15.7824C10.0407 15.3429 9.65142 14.9767 9.21885 14.9767H6.11876C5.68619 14.9767 5.31129 15.3429 5.31129 15.7824C5.31129 16.2219 5.68619 16.6175 6.11876 16.6175H9.21885ZM9.21885 20.3973C9.65142 20.3973 10.0407 20.0309 10.0407 19.5915C10.0407 19.152 9.65142 18.7711 9.21885 18.7711H6.11876C5.68619 18.7711 5.31129 19.152 5.31129 19.5915C5.31129 20.0309 5.68619 20.3973 6.11876 20.3973H9.21885Z"
-            fill="currentColor"
-          />
-        </svg>
-      </button>
+      />
 
-      {pinnedItems.map((item) => (
-        <TabTrigger key={item.value} name={item.value} href={item.href} asChild>
-          <FloatingBarButton icon={item.icon} label={item.label} />
-        </TabTrigger>
-      ))}
-    </div>
+      <div
+        data-slot="tabbar-floating-bar"
+        className={cn(
+          "absolute top-4 z-10",
+          "flex flex-row items-center gap-0.5",
+          "rounded-full px-1 py-1",
+          "bg-(--sf-grouped-bg-2)/80 backdrop-blur-xl",
+          "shadow-lg shadow-black/10",
+          "transition-all duration-300 ease-out",
+          isSidebarOpen
+            ? "left-44 translate-x-0 opacity-0 scale-95 blur-md pointer-events-none"
+            : "left-1/2 -translate-x-1/2 opacity-100 scale-100 blur-0",
+          className
+        )}
+        {...props}
+      >
+        <button
+          onClick={() => setIsSidebarOpen(true)}
+          className={cn(
+            "flex h-8 w-8 items-center justify-center rounded-full",
+            "text-(--sf-text-2) hover:bg-(--sf-fill)",
+            "transition-colors"
+          )}
+        >
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 36 36"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M5.52758 32H30.4724C33.5005 32 35 30.4764 35 27.4585V9.57082C35 6.55291 33.5005 5.0293 30.4724 5.0293H5.52758C2.514 5.0293 1 6.53825 1 9.57082V27.4585C1 30.4911 2.514 32 5.52758 32ZM5.55642 29.6414C4.11452 29.6414 3.32147 28.8649 3.32147 27.3414V9.68802C3.32147 8.16442 4.11452 7.38796 5.55642 7.38796H30.4436C31.8711 7.38796 32.6786 8.16442 32.6786 9.68802V27.3414C32.6786 28.8649 31.8711 29.6414 30.4436 29.6414H5.55642ZM11.9873 30.0955H14.2511V6.94846H11.9873V30.0955ZM9.21885 12.8231C9.65142 12.8231 10.0407 12.4276 10.0407 12.0027C10.0407 11.5632 9.65142 11.1823 9.21885 11.1823H6.11876C5.68619 11.1823 5.31129 11.5632 5.31129 12.0027C5.31129 12.4276 5.68619 12.8231 6.11876 12.8231H9.21885ZM9.21885 16.6175C9.65142 16.6175 10.0407 16.2219 10.0407 15.7824C10.0407 15.3429 9.65142 14.9767 9.21885 14.9767H6.11876C5.68619 14.9767 5.31129 15.3429 5.31129 15.7824C5.31129 16.2219 5.68619 16.6175 6.11876 16.6175H9.21885ZM9.21885 20.3973C9.65142 20.3973 10.0407 20.0309 10.0407 19.5915C10.0407 19.152 9.65142 18.7711 9.21885 18.7711H6.11876C5.68619 18.7711 5.31129 19.152 5.31129 19.5915C5.31129 20.0309 5.68619 20.3973 6.11876 20.3973H9.21885Z"
+              fill="currentColor"
+            />
+          </svg>
+        </button>
+
+        {pinnedItems.map((item) => (
+          <TabTrigger key={item.value} name={item.value} href={item.href} asChild>
+            <FloatingBarButton icon={item.icon} label={item.label} />
+          </TabTrigger>
+        ))}
+      </div>
+    </>
   );
 }
 
@@ -1234,6 +1295,7 @@ function TabBarControllerRouterFloatingBar({
 
 export {
   // Standalone components
+  ProgressiveBlurBackdrop,
   TabBarControllerProvider,
   TabBarControllerSidebar,
   TabBarControllerSidebarTrigger,

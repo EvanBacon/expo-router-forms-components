@@ -4,7 +4,7 @@ import * as React from "react";
 import { Stack as ExpoStack, useRouter } from "expo-router";
 import { cn } from "@/lib/utils";
 import { SFIcon } from "@/components/ui/sf-icon";
-import { useTabBarController } from "@/components/ui/tab-bar-controller.web";
+import { useTabBarController, ProgressiveBlurBackdrop } from "@/components/ui/tab-bar-controller.web";
 
 /* ----------------------------------------------------------------------------------
  * Stack Header Context
@@ -131,29 +131,39 @@ function WebStackHeader() {
   }
 
   return (
-    <header
-      data-slot="stack-floating-header"
-      data-sidebar-open={isSidebarOpen}
-      className={cn(
-        "pointer-events-none fixed top-4 z-30",
-        "flex items-start justify-between",
-        "right-4",
-        // When sidebar is open, account for its width (sidebar is ~296px + padding)
-        isSidebarOpen ? "left-78" : "left-4"
-      )}
-    >
-      {/* Left toolbar */}
-      <div
-        data-slot="stack-header-left"
+    <>
+      {/* Progressive blur backdrop for header area */}
+      <ProgressiveBlurBackdrop
+        position="top"
         className={cn(
-          "pointer-events-auto flex items-center",
-          "rounded-full",
-          "bg-(--sf-grouped-bg-2)/95 backdrop-blur-xl",
-          "shadow-lg shadow-black/10",
-          "transition-all duration-300",
-          !hasLeftContent && "opacity-0 scale-95 pointer-events-none"
+          "fixed z-20",
+          isSidebarOpen ? "left-78" : "left-0"
+        )}
+      />
+
+      <header
+        data-slot="stack-floating-header"
+        data-sidebar-open={isSidebarOpen}
+        className={cn(
+          "pointer-events-none fixed top-4 z-30",
+          "flex items-start justify-between",
+          "right-4",
+          // When sidebar is open, account for its width (sidebar is ~296px + padding)
+          isSidebarOpen ? "left-78" : "left-4"
         )}
       >
+        {/* Left toolbar */}
+        <div
+          data-slot="stack-header-left"
+          className={cn(
+            "pointer-events-auto flex items-center",
+            "rounded-full",
+            "bg-(--sf-grouped-bg-2)/80 backdrop-blur-xl",
+            "shadow-lg shadow-black/10",
+            "transition-all duration-300",
+            !hasLeftContent && "opacity-0 scale-95 pointer-events-none"
+          )}
+        >
         {canGoBack && !headerLeft && (
           <button
             onClick={() => router.back()}
@@ -166,44 +176,45 @@ function WebStackHeader() {
             <SFIcon name="chevron.left" className="text-sf-text text-xl" />
             <span className="text-sm font-medium">Back</span>
           </button>
-        )}
-        {headerLeft}
-      </div>
+          )}
+          {headerLeft}
+        </div>
 
-      {/* Center title - hidden when floating bar is visible */}
-      <div
-        data-slot="stack-header-center"
-        className={cn(
-          "pointer-events-auto",
-          "rounded-full px-4 py-2.5",
-          "bg-(--sf-grouped-bg-2)/95 backdrop-blur-xl",
-          "shadow-lg shadow-black/10",
-          "transition-all duration-300 ease-out",
-          showCenterTitle && title
-            ? "opacity-100 scale-100"
-            : "opacity-0 scale-95 pointer-events-none"
-        )}
-      >
-        <span className="text-sm font-semibold text-(--sf-text) whitespace-nowrap">
-          {title}
-        </span>
-      </div>
+        {/* Center title - hidden when floating bar is visible */}
+        <div
+          data-slot="stack-header-center"
+          className={cn(
+            "pointer-events-auto",
+            "rounded-full px-4 py-2.5",
+            "bg-(--sf-grouped-bg-2)/80 backdrop-blur-xl",
+            "shadow-lg shadow-black/10",
+            "transition-all duration-300 ease-out",
+            showCenterTitle && title
+              ? "opacity-100 scale-100"
+              : "opacity-0 scale-95 pointer-events-none"
+          )}
+        >
+          <span className="text-sm font-semibold text-(--sf-text) whitespace-nowrap">
+            {title}
+          </span>
+        </div>
 
-      {/* Right toolbar */}
-      <div
-        data-slot="stack-header-right"
-        className={cn(
-          "pointer-events-auto flex items-center",
-          "rounded-full",
-          "bg-(--sf-grouped-bg-2)/95 backdrop-blur-xl",
-          "shadow-lg shadow-black/10",
-          "transition-all duration-300",
-          !hasRightContent && "opacity-0 scale-95 pointer-events-none"
-        )}
-      >
-        {headerRight}
-      </div>
-    </header>
+        {/* Right toolbar */}
+        <div
+          data-slot="stack-header-right"
+          className={cn(
+            "pointer-events-auto flex items-center",
+            "rounded-full",
+            "bg-(--sf-grouped-bg-2)/80 backdrop-blur-xl",
+            "shadow-lg shadow-black/10",
+            "transition-all duration-300",
+            !hasRightContent && "opacity-0 scale-95 pointer-events-none"
+          )}
+        >
+          {headerRight}
+        </div>
+      </header>
+    </>
   );
 }
 
@@ -246,75 +257,80 @@ function StackFloatingHeader({
   const hasRightContent = !!headerRight;
 
   return (
-    <header
-      data-slot="stack-floating-header"
-      data-sidebar-open={isSidebarOpen}
-      className={cn(
-        "pointer-events-none absolute top-4 left-0 right-0 z-20",
-        "flex items-start justify-between",
-        "px-4",
-        className
-      )}
-    >
-      <div
-        data-slot="stack-header-left"
-        className={cn(
-          "pointer-events-auto flex items-center",
-          "rounded-full",
-          "bg-(--sf-grouped-bg-2)/95 backdrop-blur-xl",
-          "shadow-lg shadow-black/10",
-          "transition-all duration-300",
-          !hasLeftContent && "opacity-0 scale-95 pointer-events-none"
-        )}
-      >
-        {canGoBack && !headerLeft && (
-          <button
-            onClick={() => router.back()}
-            className={cn(
-              "flex h-10 items-center gap-1 rounded-full pl-2 pr-3",
-              "text-sf-text hover:bg-sf-fill",
-              "transition-colors"
-            )}
-          >
-            <SFIcon name="chevron.left" className="text-sf-text text-xl" />
-            <span className="text-sm font-medium">Back</span>
-          </button>
-        )}
-        {headerLeft}
-      </div>
+    <>
+      {/* Progressive blur backdrop */}
+      <ProgressiveBlurBackdrop position="top" className="absolute" />
 
-      <div
-        data-slot="stack-header-center"
+      <header
+        data-slot="stack-floating-header"
+        data-sidebar-open={isSidebarOpen}
         className={cn(
-          "pointer-events-auto",
-          "rounded-full px-4 py-2.5",
-          "bg-(--sf-grouped-bg-2)/95 backdrop-blur-xl",
-          "shadow-lg shadow-black/10",
-          "transition-all duration-300 ease-out",
-          showCenterTitle && title
-            ? "opacity-100 scale-100"
-            : "opacity-0 scale-95 pointer-events-none"
+          "pointer-events-none absolute top-4 left-0 right-0 z-20",
+          "flex items-start justify-between",
+          "px-4",
+          className
         )}
       >
-        <span className="text-sm font-semibold text-(--sf-text) whitespace-nowrap">
-          {title}
-        </span>
-      </div>
+        <div
+          data-slot="stack-header-left"
+          className={cn(
+            "pointer-events-auto flex items-center",
+            "rounded-full",
+            "bg-(--sf-grouped-bg-2)/80 backdrop-blur-xl",
+            "shadow-lg shadow-black/10",
+            "transition-all duration-300",
+            !hasLeftContent && "opacity-0 scale-95 pointer-events-none"
+          )}
+        >
+          {canGoBack && !headerLeft && (
+            <button
+              onClick={() => router.back()}
+              className={cn(
+                "flex h-10 items-center gap-1 rounded-full pl-2 pr-3",
+                "text-sf-text hover:bg-sf-fill",
+                "transition-colors"
+              )}
+            >
+              <SFIcon name="chevron.left" className="text-sf-text text-xl" />
+              <span className="text-sm font-medium">Back</span>
+            </button>
+          )}
+          {headerLeft}
+        </div>
 
-      <div
-        data-slot="stack-header-right"
-        className={cn(
-          "pointer-events-auto flex items-center",
-          "rounded-full",
-          "bg-(--sf-grouped-bg-2)/95 backdrop-blur-xl",
-          "shadow-lg shadow-black/10",
-          "transition-all duration-300",
-          !hasRightContent && "opacity-0 scale-95 pointer-events-none"
-        )}
-      >
-        {headerRight}
-      </div>
-    </header>
+        <div
+          data-slot="stack-header-center"
+          className={cn(
+            "pointer-events-auto",
+            "rounded-full px-4 py-2.5",
+            "bg-(--sf-grouped-bg-2)/80 backdrop-blur-xl",
+            "shadow-lg shadow-black/10",
+            "transition-all duration-300 ease-out",
+            showCenterTitle && title
+              ? "opacity-100 scale-100"
+              : "opacity-0 scale-95 pointer-events-none"
+          )}
+        >
+          <span className="text-sm font-semibold text-(--sf-text) whitespace-nowrap">
+            {title}
+          </span>
+        </div>
+
+        <div
+          data-slot="stack-header-right"
+          className={cn(
+            "pointer-events-auto flex items-center",
+            "rounded-full",
+            "bg-(--sf-grouped-bg-2)/80 backdrop-blur-xl",
+            "shadow-lg shadow-black/10",
+            "transition-all duration-300",
+            !hasRightContent && "opacity-0 scale-95 pointer-events-none"
+          )}
+        >
+          {headerRight}
+        </div>
+      </header>
+    </>
   );
 }
 
