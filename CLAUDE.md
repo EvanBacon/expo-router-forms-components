@@ -255,12 +255,12 @@ export default function ComponentExample() {
 
 - **Radix UI**: Install component-specific packages for web implementations
   ```bash
-  npm install @radix-ui/react-{component} --legacy-peer-deps
+  bun install @radix-ui/react-{component} --legacy-peer-deps
   ```
-- Use `--legacy-peer-deps` flag due to react-native-css peer dependency conflicts
 
 ## Important Notes
 
+- ONLY use bun when installing dependencies. Never use npm.
 - Uses React 19 with React Compiler enabled
 - New Architecture enabled (`newArchEnabled: true`)
 - SVG files are transformed via custom metro transformer (`metro.transformer.js`)
