@@ -342,7 +342,7 @@ export function SimpleComponent(props: RootProps & { label: string }) {
 ### Real Example: Tab Bar
 
 ```tsx
-import { IconSymbol, IconSymbolName } from "@/components/ui/icon-symbol";
+import { SFIcon, SFIconName } from "@/components/ui/sf-icon";
 import {
   BottomTabBarButtonProps,
   BottomTabNavigationOptions,
@@ -377,7 +377,7 @@ export default function Tabs({
           ...childProps,
           options: {
             tabBarIcon: systemImage
-              ? (props: any) => <IconSymbol {...props} name={systemImage} />
+              ? (props: any) => <SFIcon {...props} name={systemImage} />
               : undefined,
             title,
             ...childProps.options,
@@ -400,7 +400,7 @@ export default function Tabs({
 // Sub-component with extended props
 Tabs.Screen = NativeTabs.Screen as React.FC<
   React.ComponentProps<typeof NativeTabs.Screen> & {
-    systemImage?: IconSymbolName;
+    systemImage?: SFIconName;
     title?: string;
   }
 >;

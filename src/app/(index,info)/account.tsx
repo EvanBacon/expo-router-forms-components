@@ -1,5 +1,5 @@
 import * as Form from "@/components/ui/form";
-import { IconSymbol } from "@/components/ui/icon-symbol";
+import { SFIcon } from "@/components/ui/sf-icon";
 import * as AC from "@bacons/apple-colors";
 import { Image, Platform, View } from "react-native";
 import * as Application from "expo-application";
@@ -86,7 +86,7 @@ function AppUpdate({ name, icon }: { name: string; icon: string }) {
 
         <View style={{ flex: 1 }} />
 
-        <IconSymbol
+        <SFIcon
           color={AC.systemBlue}
           name="icloud.and.arrow.down"
           weight="bold"

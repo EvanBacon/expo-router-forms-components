@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import * as Form from "@/components/ui/form";
-import { IconSymbol } from "@/components/ui/icon-symbol";
+import { SFIcon } from "@/components/ui/sf-icon";
 import * as AC from "@bacons/apple-colors";
 import { Image } from "expo-image";
 import { Modal, StyleSheet, useColorScheme } from "react-native";
@@ -202,7 +202,7 @@ function GloryModal({
                   borderCurve: "continuous",
                 }}
               >
-                <IconSymbol name="xmark" color={AC.label} size={24} />
+                <SFIcon name="xmark" color={AC.label} size={24} />
               </BlurView>
             </TouchableBounce>
           </Animated.View>
@@ -300,7 +300,7 @@ export function GlurryList({ setShow }: { setShow: (show: boolean) => void }) {
                     </View>
                     <View className="flex-1" />
                     {provider.selected && (
-                      <IconSymbol
+                      <SFIcon
                         color={AC.label}
                         name="checkmark.circle.fill"
                         weight="bold"

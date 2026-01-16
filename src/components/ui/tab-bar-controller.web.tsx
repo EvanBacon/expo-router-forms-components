@@ -9,7 +9,7 @@ import {
 } from "expo-router/ui";
 
 import { cn } from "@/lib/utils";
-import { IconSymbol, IconSymbolName } from "./icon-symbol";
+import { SFIcon, SFIconName } from "./sf-icon";
 
 /* ----------------------------------------------------------------------------------
  * Context
@@ -18,7 +18,7 @@ import { IconSymbol, IconSymbolName } from "./icon-symbol";
 interface TabBarItem {
   value: string;
   label: React.ReactNode;
-  icon?: IconSymbolName;
+  icon?: SFIconName;
   pinned: boolean;
   order: number;
   /** Route href for Expo Router navigation */
@@ -468,7 +468,7 @@ function TabBarControllerMenuItem({
 interface TabBarControllerMenuButtonProps
   extends Omit<React.ComponentProps<"button">, "value"> {
   value: string;
-  icon?: IconSymbolName;
+  icon?: SFIconName;
   pinned?: boolean;
 }
 
@@ -537,10 +537,10 @@ function TabBarControllerMenuButton({
               : "border-(--sf-text-3) bg-transparent"
           )}
         >
-          {isPinned && <IconSymbol name="checkmark" size={12} color="white" />}
+          {isPinned && <SFIcon name="checkmark" size={12} color="white" />}
         </span>
       )}
-      {icon && <IconSymbol name={icon} size={20} color="var(--sf-text)" />}
+      {icon && <SFIcon name={icon} size={20} color="var(--sf-text)" />}
       <span
         className={cn(
           "flex-1 truncate text-(--sf-text)",
@@ -633,7 +633,7 @@ function TabBarControllerGroupLabel({
           isOpen ? "rotate-90" : "rotate-0"
         )}
       >
-        <IconSymbol name="chevron.right" size={18} color="var(--sf-text-3)" />
+        <SFIcon name="chevron.right" size={18} color="var(--sf-text-3)" />
       </span>
     </button>
   );
@@ -828,7 +828,7 @@ function TabBarControllerFloatingBar({
             )}
           >
             {item.icon && (
-              <IconSymbol
+              <SFIcon
                 name={item.icon}
                 size={16}
                 color={isActive ? "var(--sf-text)" : "var(--sf-text-2)"}
@@ -1051,7 +1051,7 @@ interface TabBarControllerLinkProps
   href: React.ComponentProps<typeof TabTrigger>["href"];
   /** Tab name for Expo Router (usually matches the route segment) */
   name: string;
-  icon?: IconSymbolName;
+  icon?: SFIconName;
   pinned?: boolean;
 }
 
@@ -1112,9 +1112,9 @@ function TabBarControllerLink({
               : "border-(--sf-text-3) bg-transparent"
           )}
         >
-          {isPinned && <IconSymbol name="checkmark" size={12} color="white" />}
+          {isPinned && <SFIcon name="checkmark" size={12} color="white" />}
         </span>
-        {icon && <IconSymbol name={icon} size={20} color="var(--sf-text)" />}
+        {icon && <SFIcon name={icon} size={20} color="var(--sf-text)" />}
         <span className="flex-1 truncate text-(--sf-text)">{children}</span>
       </button>
     );
@@ -1144,7 +1144,7 @@ function TabBarLinkButton({
   onPress,
   ...props
 }: {
-  icon?: IconSymbolName;
+  icon?: SFIconName;
   isPinned: boolean;
   isFocused?: boolean;
   onPress?: () => void;
@@ -1164,7 +1164,7 @@ function TabBarLinkButton({
       onClick={onPress}
       {...props}
     >
-      {icon && <IconSymbol name={icon} size={20} color="var(--sf-text)" />}
+      {icon && <SFIcon name={icon} size={20} color="var(--sf-text)" />}
       <span
         className={cn(
           "flex-1 truncate text-(--sf-text)",
@@ -1185,7 +1185,7 @@ function FloatingBarButton({
   onPress,
   ...props
 }: {
-  icon?: IconSymbolName;
+  icon?: SFIconName;
   label: React.ReactNode;
   isFocused?: boolean;
   onPress?: () => void;
@@ -1204,7 +1204,7 @@ function FloatingBarButton({
       {...props}
     >
       {icon && (
-        <IconSymbol
+        <SFIcon
           name={icon}
           size={16}
           color={isFocused ? "var(--sf-text)" : "var(--sf-text-2)"}

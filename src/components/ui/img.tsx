@@ -1,6 +1,6 @@
 import Animated from "react-native-reanimated";
 import { Image as ExpoImage, ImageProps as ExpoImageProps } from "expo-image";
-import { IconSymbol } from "./icon-symbol";
+import { SFIcon } from "./sf-icon";
 import { SymbolViewProps } from "expo-symbols";
 import { ColorValue } from "react-native";
 
@@ -21,7 +21,7 @@ function CImage(props: ImageProps) {
   if (typeof source === "string") {
     if (source.startsWith("sf:")) {
       return (
-        <IconSymbol
+        <SFIcon
           {...props}
           name={source.substring(3) as SymbolViewProps["name"]}
           color={props.tintColor}

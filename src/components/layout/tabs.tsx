@@ -1,4 +1,4 @@
-import { IconSymbol, IconSymbolName } from "@/components/ui/icon-symbol";
+import { SFIcon, SFIconName } from "@/components/ui/sf-icon";
 import {
   BottomTabBarButtonProps,
   BottomTabNavigationOptions,
@@ -40,7 +40,7 @@ export default function Tabs({
           options: {
             tabBarIcon: !systemImage
               ? undefined
-              : (props: any) => <IconSymbol {...props} name={systemImage} />,
+              : (props: any) => <SFIcon {...props} name={systemImage} />,
             title,
             ...props.options,
           },
@@ -65,7 +65,7 @@ export default function Tabs({
 Tabs.Screen = NativeTabs.Screen as React.FC<
   React.ComponentProps<typeof NativeTabs.Screen> & {
     /** Add a system image for the tab icon. */
-    systemImage?: IconSymbolName;
+    systemImage?: SFIconName;
     /** Set the title of the icon. */
     title?: string;
   }

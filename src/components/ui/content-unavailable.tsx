@@ -1,13 +1,13 @@
 // Similar to https://developer.apple.com/documentation/swiftui/contentunavailableview
 
 import { View, Text } from "react-native";
-import { IconSymbol, IconSymbolName } from "./icon-symbol";
+import { SFIcon, SFIconName } from "./sf-icon";
 import * as AC from "@bacons/apple-colors";
 
 type Props = {
   title: string;
   description?: string;
-  systemImage: IconSymbolName | (React.ReactElement & {});
+  systemImage: SFIconName | (React.ReactElement & {});
   actions?: React.ReactNode;
 };
 
@@ -64,7 +64,7 @@ export function ContentUnavailable({
       }}
     >
       {typeof resolvedSystemImage === "string" ? (
-        <IconSymbol
+        <SFIcon
           animationSpec={animationSpec}
           name={resolvedSystemImage as any}
           size={48}

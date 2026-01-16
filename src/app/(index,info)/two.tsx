@@ -2,7 +2,7 @@ import { BodyScrollView } from "@/components/ui/body-scroll-view";
 import { StyleSheet, Text, View } from "react-native";
 
 import { FadeIn } from "@/components/ui/fade-in";
-import { IconSymbol } from "@/components/ui/icon-symbol";
+import { SFIcon } from "@/components/ui/sf-icon";
 import Skeleton from "@/components/ui/skeleton";
 import TouchableBounce from "@/components/ui/touchable-bounce";
 import * as AC from "@bacons/apple-colors";
@@ -28,7 +28,7 @@ export default function Page() {
 
           <Skeleton dark />
 
-          <IconSymbol name="star.bubble.fill" color={AC.systemCyan} />
+          <SFIcon name="star.bubble.fill" color={AC.systemCyan} />
         </View>
       </View>
     </BodyScrollView>

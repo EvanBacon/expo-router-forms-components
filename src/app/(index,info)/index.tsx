@@ -2,7 +2,7 @@ import React from "react";
 
 import { ContentUnavailable } from "@/components/ui/content-unavailable";
 import * as Form from "@/components/ui/form";
-import { IconSymbol } from "@/components/ui/icon-symbol";
+import { SFIcon } from "@/components/ui/sf-icon";
 import {
   Segments,
   SegmentsContent,
@@ -528,7 +528,7 @@ function FormLabel({
   /** Only used when `<FormLabel />` is a direct child of `<Section />`. */
   onPress?: () => void;
   children: React.ReactNode;
-  systemImage: ComponentProps<typeof IconSymbol>["name"];
+  systemImage: ComponentProps<typeof SFIcon>["name"];
   color?: OpaqueColorValue;
 }) {
   return (

@@ -4,7 +4,7 @@ import "@/components/runtime/clipboard";
 import * as Form from "@/components/ui/form";
 import Constants, { ExecutionEnvironment } from "expo-constants";
 
-import { IconSymbol } from "@/components/ui/icon-symbol";
+import { SFIcon } from "@/components/ui/sf-icon";
 import * as AC from "@bacons/apple-colors";
 import * as Updates from "expo-updates";
 import { ActivityIndicator, Linking, View } from "react-native";
@@ -29,7 +29,7 @@ export default function DebugRoute() {
         {process.env.EXPO_OS !== "web" && (
           <Form.Text
             onPress={() => Linking.openSettings()}
-            hint={<IconSymbol name="gear" color={AC.secondaryLabel} />}
+            hint={<SFIcon name="gear" color={AC.secondaryLabel} />}
           >
             Open System Settings
           </Form.Text>
@@ -243,7 +243,7 @@ function OTADynamicSection() {
             isLoading ? (
               <ActivityIndicator animating />
             ) : (
-              <IconSymbol name="arrow.clockwise" color={AC.secondaryLabel} />
+              <SFIcon name="arrow.clockwise" color={AC.secondaryLabel} />
             )
           }
         >

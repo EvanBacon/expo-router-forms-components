@@ -11,7 +11,7 @@ import { GestureHandlerRootView } from "@/utils/native-gesture-provider";
 import { SourceCodePro_400Regular } from "@expo-google-fonts/source-code-pro";
 import { Link, type Href } from "expo-router";
 import { TabList, TabTrigger } from "expo-router/ui";
-import { IconSymbol, type IconSymbolName } from "@/components/ui/icon-symbol";
+import { SFIcon, type SFIconName } from "@/components/ui/sf-icon";
 import { cn } from "@/lib/utils";
 
 import {
@@ -87,7 +87,7 @@ function SidebarLink({
   children,
 }: {
   href: Href;
-  icon: IconSymbolName;
+  icon: SFIconName;
   children: React.ReactNode;
 }) {
   return (
@@ -99,7 +99,7 @@ function SidebarLink({
         "hover:bg-(--sf-fill)"
       )}
     >
-      <IconSymbol name={icon} size={20} color="var(--sf-text)" />
+      <SFIcon name={icon} size={20} color="var(--sf-text)" />
       <span className="flex-1 truncate text-(--sf-text)">{children}</span>
     </Link>
   );

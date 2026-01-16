@@ -1,5 +1,5 @@
 import * as Form from "@/components/ui/form";
-import { IconSymbol, IconSymbolName } from "@/components/ui/icon-symbol";
+import { SFIcon, SFIconName } from "@/components/ui/sf-icon";
 import * as AC from "@bacons/apple-colors";
 import {
   Image,
@@ -18,7 +18,7 @@ function BadgeLabel({
   image,
 }: {
   color?: OpaqueColorValue;
-  image: IconSymbolName | React.ReactNode;
+  image: SFIconName | React.ReactNode;
 }) {
   return (
     <View
@@ -33,7 +33,7 @@ function BadgeLabel({
       }}
     >
       {typeof image === "string" ? (
-        <IconSymbol name={image} size={16} color={"white"} />
+        <SFIcon name={image} size={16} color={"white"} />
       ) : (
         image
       )}
