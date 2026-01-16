@@ -20,6 +20,15 @@ You can also just bootstrap a project with this repo:
 bunx create-expo -t https://github.com/EvanBacon/expo-router-forms-components
 ```
 
+<!-- 
+TODO: Somehow support opening the latest preview with a stable link
+
+[Open in Expo Go](https://302.expo.app/u?url=exp://u.expo.dev/@bacon/crispy)
+
+https://u.expo.dev/6d57ca78-f051-45fb-b38f-84aac37c746d/group/9c75ae27-88fd-42de-acc2-e52658d58d79
+
+exp://exp.host/@bacon/crispy -->
+
 ## Stack
 
 Use the correct stack header settings for peak iOS defaults:
