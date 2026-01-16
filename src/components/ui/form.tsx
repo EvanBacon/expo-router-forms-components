@@ -231,7 +231,7 @@ export function LeftBadge({
         className
       )}
     >
-      <SFIcon name={name} size={24} className="text-white text-2xl" />
+      <SFIcon name={name} className="text-2xl text-white" />
     </View>
   );
 }

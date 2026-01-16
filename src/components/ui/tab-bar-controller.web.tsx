@@ -537,10 +537,10 @@ function TabBarControllerMenuButton({
               : "border-(--sf-text-3) bg-transparent"
           )}
         >
-          {isPinned && <SFIcon name="checkmark" size={12} color="white" />}
+          {isPinned && <SFIcon name="checkmark" className="text-xs text-white" />}
         </span>
       )}
-      {icon && <SFIcon name={icon} size={20} color="var(--sf-text)" />}
+      {icon && <SFIcon name={icon} className="text-xl text-sf-text" />}
       <span
         className={cn(
           "flex-1 truncate text-(--sf-text)",
@@ -633,7 +633,7 @@ function TabBarControllerGroupLabel({
           isOpen ? "rotate-90" : "rotate-0"
         )}
       >
-        <SFIcon name="chevron.right" size={18} color="var(--sf-text-3)" />
+        <SFIcon name="chevron.right" className="text-lg text-sf-text-3" />
       </span>
     </button>
   );
@@ -1112,9 +1112,9 @@ function TabBarControllerLink({
               : "border-(--sf-text-3) bg-transparent"
           )}
         >
-          {isPinned && <SFIcon name="checkmark" size={12} color="white" />}
+          {isPinned && <SFIcon name="checkmark" className="text-xs text-white" />}
         </span>
-        {icon && <SFIcon name={icon} size={20} color="var(--sf-text)" />}
+        {icon && <SFIcon name={icon} className="text-xl text-sf-text" />}
         <span className="flex-1 truncate text-(--sf-text)">{children}</span>
       </button>
     );
@@ -1164,7 +1164,7 @@ function TabBarLinkButton({
       onClick={onPress}
       {...props}
     >
-      {icon && <SFIcon name={icon} size={20} color="var(--sf-text)" />}
+      {icon && <SFIcon name={icon} className="text-xl text-sf-text" />}
       <span
         className={cn(
           "flex-1 truncate text-(--sf-text)",

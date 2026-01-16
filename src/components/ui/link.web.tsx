@@ -109,7 +109,7 @@ function SubMenu({ menuElement }: { menuElement: React.ReactElement }) {
       >
         {icon && (
           <div className="flex items-center justify-center w-7 h-7 web:transition-opacity group-active:opacity-30">
-            <SFIcon name={icon} size={20} className="text-lg" />
+            <SFIcon name={icon} className="text-xl" />
           </div>
         )}
         {title}

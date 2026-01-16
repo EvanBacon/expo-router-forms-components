@@ -202,7 +202,7 @@ function GloryModal({
                   borderCurve: "continuous",
                 }}
               >
-                <SFIcon name="xmark" color={AC.label} size={24} />
+                <SFIcon name="xmark" className="text-2xl text-sf-text" />
               </BlurView>
             </TouchableBounce>
           </Animated.View>

@@ -33,7 +33,7 @@ function BadgeLabel({
       }}
     >
       {typeof image === "string" ? (
-        <SFIcon name={image} size={16} color={"white"} />
+        <SFIcon name={image} className="text-base text-white" />
       ) : (
         image
       )}

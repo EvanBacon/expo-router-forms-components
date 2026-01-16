@@ -99,7 +99,7 @@ function SidebarLink({
         "hover:bg-(--sf-fill)"
       )}
     >
-      <SFIcon name={icon} size={20} color="var(--sf-text)" />
+      <SFIcon name={icon} className="text-xl text-sf-text" />
       <span className="flex-1 truncate text-(--sf-text)">{children}</span>
     </Link>
   );
