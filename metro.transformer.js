@@ -51,7 +51,7 @@ async function convertSvgModule(projectRoot, src, options) {
 module.exports.transform = async ({ src, filename, options }) => {
   // Handle MDX/MD files
   if (filename.endsWith(".mdx") || filename.endsWith(".md")) {
-    return mdxTransformer.transform({ src, filename, options });
+    src = (await mdxTransformer.transform({ src, filename, options })).src;
   }
 
   // Handle SVG files
