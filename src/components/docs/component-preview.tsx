@@ -73,10 +73,7 @@ export function ComponentPreview({
               className="p-4 border-t border-sf-border overflow-x-auto"
               style={{ backgroundColor: "rgba(0,0,0,0.03)" }}
             >
-              <Text
-                className="text-sm text-sf-text font-mono whitespace-pre"
-                style={{ fontFamily: "var(--font-mono)" }}
-              >
+              <Text className="text-sm text-sf-text font-mono whitespace-pre">
                 {code.trim()}
               </Text>
             </View>

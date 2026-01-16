@@ -50,29 +50,18 @@ export function PropsTable({ data, className }: PropsTableProps) {
             )}
           >
             <View className="flex-1 min-w-[120px] px-4 py-3">
-              <Text
-                className="text-sm text-sf-blue font-mono"
-                style={{ fontFamily: "var(--font-mono)" }}
-              >
+              <Text className="text-sm text-sf-blue font-mono">
                 {prop.name}
-                {prop.required && (
-                  <Text className="text-sf-red">*</Text>
-                )}
+                {prop.required && <Text className="text-sf-red">*</Text>}
               </Text>
             </View>
             <View className="flex-1 min-w-[150px] px-4 py-3">
-              <Text
-                className="text-sm text-sf-text-2 font-mono"
-                style={{ fontFamily: "var(--font-mono)" }}
-              >
+              <Text className="text-sm text-sf-text-2 font-mono">
                 {prop.type}
               </Text>
             </View>
             <View className="w-[100px] px-4 py-3">
-              <Text
-                className="text-sm text-sf-text-3 font-mono"
-                style={{ fontFamily: "var(--font-mono)" }}
-              >
+              <Text className="text-sm text-sf-text-3 font-mono">
                 {prop.default || "-"}
               </Text>
             </View>

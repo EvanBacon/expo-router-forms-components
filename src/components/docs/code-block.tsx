@@ -52,10 +52,7 @@ export function CodeBlock({
           className="p-4 overflow-x-auto bg-sf-bg"
           style={{ backgroundColor: "rgba(0,0,0,0.03)" }}
         >
-          <Text
-            className="text-sm text-sf-text font-mono whitespace-pre"
-            style={{ fontFamily: "var(--font-mono)" }}
-          >
+          <Text className="text-sm text-sf-text font-mono whitespace-pre">
             {showLineNumbers
               ? code.split("\n").map((line, i) => (
                   <Text key={i}>
@@ -94,7 +91,6 @@ export function InlineCode({ children, className }: InlineCodeProps) {
         "px-1.5 py-0.5 rounded bg-sf-fill text-sf-text text-sm font-mono",
         className
       )}
-      style={{ fontFamily: "var(--font-mono)" }}
     >
       {children}
     </Text>

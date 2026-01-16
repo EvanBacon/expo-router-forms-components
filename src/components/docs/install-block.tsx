@@ -90,12 +90,7 @@ export function InstallBlock({
           className="p-4 bg-sf-bg"
           style={{ backgroundColor: "rgba(0,0,0,0.03)" }}
         >
-          <Text
-            className="text-sm text-sf-text font-mono"
-            style={{ fontFamily: "var(--font-mono)" }}
-          >
-            {command}
-          </Text>
+          <Text className="text-sm text-sf-text font-mono">{command}</Text>
         </View>
         <Pressable
           className="absolute top-2 right-2 p-2 rounded-md bg-sf-fill/80 hover:bg-sf-fill active:bg-sf-fill/60"
