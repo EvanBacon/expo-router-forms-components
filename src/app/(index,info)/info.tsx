@@ -2,7 +2,8 @@ import * as Form from "@/components/ui/form";
 import Stack from "@/components/layout/stack";
 import * as AC from "@bacons/apple-colors";
 import { Link } from "expo-router";
-import { Text, View } from "react-native";
+import { View } from "react-native";
+import { Text } from "@/tw";
 import Animated, {
   interpolate,
   useAnimatedRef,
@@ -87,9 +88,9 @@ export default function Page() {
 
         {/* Table style: | A   B |*/}
         <Form.HStack>
-          <Text style={Form.FormFont.default}>Foo</Text>
+          <Text className="text-sf-text text-lg">Foo</Text>
           <View style={{ flex: 1 }} />
-          <Text style={Form.FormFont.secondary}>Bar</Text>
+          <Text className="text-sf-text-2 text-lg">Bar</Text>
         </Form.HStack>
       </Form.Section>
       <Form.Section title="Links">
@@ -103,7 +104,7 @@ export default function Page() {
         <Link href="/two">
           <View style={{ gap: 4 }}>
             <Form.Text>Evan's iPhone</Form.Text>
-            <Text style={Form.FormFont.caption}>This iPhone 16 Pro Max</Text>
+            <Text className="text-sf-text-2 text-sm">This iPhone 16 Pro Max</Text>
           </View>
         </Link>
 
@@ -145,9 +146,9 @@ export default function Page() {
 
         {/* Custom version of same code */}
         <Form.HStack>
-          <Text style={Form.FormFont.default}>SDK 51</Text>
+          <Text className="text-sf-text text-lg">SDK 51</Text>
           <View style={{ flex: 1 }} />
-          <Text style={Form.FormFont.secondary}>Expo Router v3</Text>
+          <Text className="text-sf-text-2 text-lg">Expo Router v3</Text>
         </Form.HStack>
       </Form.Section>
     </Form.List>

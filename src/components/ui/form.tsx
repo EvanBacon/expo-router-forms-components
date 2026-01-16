@@ -21,12 +21,11 @@ import {
   ScrollViewProps,
   Share,
   StyleProp,
-  StyleSheet,
   TextInputProps,
   TextProps,
   TextStyle,
+  View as RNView,
   ViewProps,
-  ViewStyle,
 } from "react-native";
 import DateTimePicker, {
   AndroidNativeProps,
@@ -52,46 +51,15 @@ type SystemImageCustomProps = {
 
 type SystemImageProps = SFIconName | SystemImageCustomProps;
 
-import * as AppleColors from "@bacons/apple-colors";
-
-export const FormFont = {
-  // From inspecting SwiftUI `List { Text("Foo") }` in Xcode.
-  default: {
-    color: AppleColors.label,
-    // 17.00pt is the default font size for a Text in a List.
-    fontSize: 17,
-    // UICTFontTextStyleBody is the default fontFamily.
-  },
-  secondary: {
-    color: AppleColors.secondaryLabel,
-    fontSize: 17,
-  },
-  caption: {
-    color: AppleColors.secondaryLabel,
-    fontSize: 12,
-  },
-  title: {
-    color: AppleColors.label,
-    fontSize: 17,
-    fontWeight: "600",
-  },
-};
-
 const ListStyleContext = React.createContext<ListStyle>("auto");
 
-const minItemHeight = 20;
 
-const styles = StyleSheet.create({
-  itemPadding: {
-    paddingVertical: 11,
-    paddingHorizontal: 20,
-  },
-});
+const defaultItemPadding = { paddingVertical: 11, paddingHorizontal: 20 } as const;
 
 const SectionStyleContext = React.createContext<{
-  style: StyleProp<ViewStyle>;
+  itemPadding: { paddingVertical: number; paddingHorizontal: number };
 }>({
-  style: styles.itemPadding,
+  itemPadding: defaultItemPadding,
 });
 
 type RefreshCallback = () => Promise<void>;
@@ -198,7 +166,7 @@ if (__DEV__) List.displayName = "FormList";
 export function ScrollView(
   props: ScrollViewProps & { ref?: React.Ref<Animated.ScrollView> }
 ) {
-  const { bottom } = useSafeAreaInsets(); // inset of the status bar
+  const { bottom } = useSafeAreaInsets();
   const { sheet } = use(CardStyleContext);
   return (
     <AnimatedScrollView
@@ -209,22 +177,20 @@ export function ScrollView(
         bottom: process.env.EXPO_OS === "ios" ? bottom : 0,
       }}
       {...props}
-      style={mergedStyleProp(
-        // Web: Use header inset CSS variable for scroll padding (contentInsetAdjustmentBehavior equivalent)
-        process.env.EXPO_OS === "web"
-          ? ({ scrollPaddingTop: "var(--header-inset, 0)" } as any)
-          : undefined,
-        props.style
-      )}
       className={cn(
         sheet ? "bg-transparent" : "bg-sf-grouped-bg",
+        "web:scroll-pt-[var(--header-inset,0)]",
         props.className
       )}
     />
   );
 }
 
-function InnerList({ contentContainerStyle, className, ...props }: ListProps) {
+function InnerList({
+  contentContainerClassName,
+  className,
+  ...props
+}: ListProps) {
   const { hasSubscribers, refreshing, refresh } = React.use(RefreshContext);
 
   return (
@@ -234,18 +200,10 @@ function InnerList({ contentContainerStyle, className, ...props }: ListProps) {
       )}
       <ListStyleContext value={props.listStyle ?? "auto"}>
         <ScrollView
-          contentContainerStyle={mergedStyleProp(
-            {
-              paddingVertical: 16,
-              gap: 24,
-              // Web: Add top padding using CSS variable for header inset
-              ...(process.env.EXPO_OS === "web"
-                ? { paddingTop: "var(--header-inset, 0)" }
-                : {}),
-            },
-            contentContainerStyle
+          contentContainerClassName={cn(
+            "py-4 gap-6 native:overflow-visible web:pt-[var(--header-inset,0)]",
+            contentContainerClassName
           )}
-          contentContainerClassName="native:overflow-visible"
           className={cn("web:w-full web:mx-auto", className)}
           refreshControl={
             hasSubscribers ? (
@@ -291,11 +249,11 @@ export function FormItem({
   href?: Href<any>;
   onPress?: (event: any) => void;
   onLongPress?: (event: GestureResponderEvent) => void;
-  style?: ViewStyle;
-  ref?: React.Ref<View>;
+  style?: { paddingVertical?: number; paddingHorizontal?: number };
+  ref?: React.Ref<RNView>;
 }) {
-  const itemStyle = use(SectionStyleContext)?.style ?? styles.itemPadding;
-  const resolvedStyle = [itemStyle, style];
+  const { itemPadding } = use(SectionStyleContext);
+  const resolvedStyle = { ...itemPadding, ...style };
   const systemGray4 = useCSSVariable("--sf-gray-4");
 
   if (href == null) {
@@ -306,14 +264,14 @@ export function FormItem({
       if (childrenCount === 1) {
         return (
           <View style={resolvedStyle}>
-            <View style={{ minHeight: minItemHeight }}>{children}</View>
+            <View className="min-h-5">{children}</View>
           </View>
         );
       }
 
       return (
         <View style={resolvedStyle}>
-          <HStack style={{ minHeight: minItemHeight }}>{children}</HStack>
+          <HStack className="min-h-5">{children}</HStack>
         </View>
       );
     }
@@ -330,7 +288,7 @@ export function FormItem({
         disabled={disabled}
       >
         <View style={resolvedStyle}>
-          <HStack style={{ minHeight: minItemHeight }}>{children}</HStack>
+          <HStack className="min-h-5">{children}</HStack>
         </View>
       </TouchableHighlight>
     );
@@ -344,7 +302,7 @@ export function FormItem({
         disabled={disabled}
       >
         <View style={resolvedStyle}>
-          <HStack style={{ minHeight: minItemHeight }}>{children}</HStack>
+          <HStack className="min-h-5">{children}</HStack>
         </View>
       </TouchableHighlight>
     </RouterLink>
@@ -436,10 +394,6 @@ export function Link({
 
   bold?: boolean;
 }) {
-  const resolvedChildren = (() => {
-    return children;
-  })();
-
   return (
     <RouterLink
       dynamicTypeRamp="body"
@@ -479,7 +433,7 @@ export function Link({
             }
       }
     >
-      {resolvedChildren}
+      {children}
     </RouterLink>
   );
 }
@@ -489,7 +443,7 @@ if (__DEV__) Link.displayName = "FormLink";
 function getFlatChildren(children: React.ReactNode) {
   const allChildren: React.ReactNode[] = [];
 
-  React.Children.map(children, (child, index) => {
+  React.Children.map(children, (child) => {
     if (!React.isValidElement(child)) {
       return child;
     }
@@ -522,20 +476,17 @@ export function Section({
   title,
   titleHint,
   footer,
-  itemStyle,
   ...props
 }: ViewProps & {
   title?: string | React.ReactNode;
   titleHint?: string | React.ReactNode;
   footer?: string | React.ReactNode;
-  itemStyle?: ViewStyle;
 }) {
   const listStyle = React.use(ListStyleContext) ?? "auto";
   const linkColor = useCSSVariable("--sf-link");
   const placeholderText = useCSSVariable("--sf-text-placeholder");
   const allChildren = getFlatChildren(children);
   const { sheet } = use(CardStyleContext);
-  const bg = useCSSVariable(sheet ? "--sf-bg-2" : "--sf-grouped-bg-2");
 
   const childrenWithSeparator = allChildren.map((child, index) => {
     if (!React.isValidElement(child)) {
@@ -564,7 +515,6 @@ export function Section({
       );
     } else if (isDatePicker) {
       resolvedProps.hint = (
-        // TODO: Add more props
         <DateTimePicker
           locale={resolvedProps.locale}
           minuteInterval={resolvedProps.minuteInterval}
@@ -597,10 +547,7 @@ export function Section({
       const { title, color } = resolvedProps;
 
       delete resolvedProps.title;
-      resolvedProps.style = mergedStyleProp(
-        { color: color ?? linkColor },
-        resolvedProps.style
-      );
+      resolvedProps.style = { color: color ?? linkColor };
       child = <RNText {...resolvedProps}>{title}</RNText>;
     }
 
@@ -618,8 +565,6 @@ export function Section({
         ...resolvedProps,
         onPress: undefined,
         onLongPress: undefined,
-        // ?? {} is required for rncss otherwise no style object is defined from classname
-        style: resolvedProps.style ?? {},
         className: cn("text-sf-text text-lg", resolvedProps?.className),
       });
 
@@ -653,7 +598,6 @@ export function Section({
           <HStack>
             <SymbolView
               systemImage={resolvedProps.systemImage}
-              style={resolvedProps.style}
               className={resolvedProps.imageClassName}
             />
             {child}
@@ -676,7 +620,6 @@ export function Section({
             return (
               <RNText
                 dynamicTypeRamp="body"
-                style={resolvedProps?.style ?? {}}
                 className={cn("text-lg text-sf-text", resolvedProps?.className)}
               >
                 {linkChild}
@@ -713,7 +656,6 @@ export function Section({
           "text-sf-text text-lg web:items-stretch web:flex-col web:flex",
           resolvedProps.className
         ),
-        style: resolvedProps.style ?? {},
         dynamicTypeRamp: "body",
         numberOfLines: 1,
         adjustsFontSizeToFit: true,
@@ -725,7 +667,6 @@ export function Section({
               <SymbolView
                 className={resolvedProps.imageClassName}
                 systemImage={resolvedProps.systemImage}
-                style={resolvedProps.style ?? {}}
               />
               {wrappedTextChildren}
               <Spacer />
@@ -754,18 +695,8 @@ export function Section({
             onPress: undefined,
             onLongPress: undefined,
             className: cn(
-              "text-sf-text text-lg px-5",
+              "text-sf-text text-lg px-5 py-[11px] outline-none",
               resolvedProps?.className
-            ),
-            style: mergedStyleProp(
-              {
-                outline: "none",
-                // outlineWidth: 1,
-                // outlineStyle: "auto",
-                // outlineColor: AppleColors.systemGray4,
-              },
-              styles.itemPadding,
-              resolvedProps.style
             ),
           })}
         </FormItem>
@@ -776,11 +707,7 @@ export function Section({
     if (!wrapsFormItem && !child.props.custom && child.type !== FormItem) {
       // Toggle needs reduced padding to account for the larger element.
       const reducedPadding =
-        isToggle || isDatePicker
-          ? {
-              paddingVertical: 8,
-            }
-          : undefined;
+        isToggle || isDatePicker ? { paddingVertical: 8 } : undefined;
 
       child = (
         <FormItem
@@ -804,12 +731,11 @@ export function Section({
   const contents = (
     <SectionStyleContext
       value={{
-        style: mergedStyleProp<ViewStyle>(styles.itemPadding, itemStyle),
+        itemPadding: defaultItemPadding,
       }}
     >
       <View
         {...props}
-        // style={StyleSheet.flatten([{ backgroundColor: bg }, props.style ?? {}])}
         collapsable={false}
         className={cn(
           sheet ? "bg-sf-bg-2" : "bg-sf-grouped-bg-2",
@@ -826,17 +752,11 @@ export function Section({
     </SectionStyleContext>
   );
 
-  const padding = listStyle === "grouped" ? 0 : 16;
+  const isGrouped = listStyle === "grouped";
 
   if (!title && !footer) {
     return (
-      <View
-        style={{
-          paddingHorizontal: padding,
-        }}
-      >
-        {contents}
-      </View>
+      <View className={isGrouped ? "px-0" : "px-4"}>{contents}</View>
     );
   }
 
@@ -860,11 +780,7 @@ export function Section({
   })();
 
   return (
-    <View
-      style={{
-        paddingHorizontal: padding,
-      }}
-    >
+    <View className={isGrouped ? "px-0" : "px-4"}>
       <View className="px-5 gap-5 flex-row justify-between">
         {title && (
           <RNText
@@ -893,11 +809,9 @@ export function Section({
 
 function SymbolView({
   systemImage,
-  style,
   className,
 }: {
   systemImage?: SystemImageProps | React.ReactNode;
-  style?: StyleProp<TextStyle>;
   className?: string;
 }) {
   if (!systemImage) {
@@ -908,26 +822,18 @@ function SymbolView({
     return systemImage;
   }
 
-  const symbolProps: SystemImageCustomProps =
-    typeof systemImage === "object" && "name" in systemImage
-      ? systemImage
-      : { name: systemImage as unknown as string };
-
-  let color: string | OpaqueColorValue | undefined = symbolProps.color;
-  if (color == null) {
-    const flatStyle = StyleSheet.flatten(style);
-    color = extractStyle(flatStyle, "color");
-  }
+  const symbolProps =
+    typeof systemImage === "object" && systemImage !== null && "name" in systemImage
+      ? (systemImage as SystemImageCustomProps)
+      : { name: systemImage as SFIconName };
 
   return (
     <SFIcon
       name={symbolProps.name}
       size={symbolProps.size ?? 20}
-      style={symbolProps.style ?? {}}
       weight={symbolProps.weight}
+      color={symbolProps.color}
       className={cn("text-sf-text mr-2", className)}
-      // TODO: Remove
-      // color={color ?? AppleColors.label}
     />
   );
 }
@@ -951,20 +857,21 @@ export function LinkChevronIcon({
       if (React.isValidElement(systemImage)) {
         return systemImage;
       }
+      const props = systemImage as SystemImageCustomProps;
       return (
         <SFIcon
-          name={systemImage.name}
-          size={systemImage.size}
-          color={systemImage.color}
+          name={props.name}
+          size={props.size}
+          color={props.color}
           className={cn("text-sf-text-3 text-2xl ios:text-sm", className)}
         />
       );
     }
   }
 
-  const resolvedName =
+  const resolvedName: SFIconName =
     typeof systemImage === "string"
-      ? systemImage
+      ? (systemImage as SFIconName)
       : isHrefExternal
       ? "arrow.up.right"
       : "chevron.right";
@@ -974,10 +881,6 @@ export function LinkChevronIcon({
       name={resolvedName}
       size={size}
       weight="bold"
-      // from xcode, not sure which color is the exact match
-      // #BFBFBF
-      // #9D9DA0
-      // tintColor={AppleColors.tertiaryLabel}
       className={cn("text-sf-text-3 text-2xl ios:text-sm", className)}
     />
   );
@@ -1010,38 +913,6 @@ function Separator(props: ViewProps) {
       )}
     />
   );
-}
-
-export function mergedStyleProp<TStyle extends ViewStyle | TextStyle>(
-  ...styleProps: (StyleProp<TStyle> | null | undefined)[]
-): StyleProp<TStyle> {
-  if (!styleProps.length) return undefined;
-
-  return styleProps
-    .map((style) => {
-      if (Array.isArray(style)) {
-        return mergedStyleProp(...style);
-      } else {
-        return style;
-      }
-    })
-    .filter(Boolean);
-}
-
-function extractStyle<TStyle extends ViewStyle | TextStyle>(
-  styleProp: TStyle,
-  key: keyof TStyle
-) {
-  if (styleProp == null) {
-    return undefined;
-  } else if (Array.isArray(styleProp)) {
-    return styleProp.find((style) => {
-      return style[key] != null;
-    })?.[key];
-  } else if (typeof styleProp === "object") {
-    return styleProp?.[key];
-  }
-  return null;
 }
 
 /** @return true if the node should be wrapped in text. */
