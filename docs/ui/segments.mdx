@@ -1,0 +1,274 @@
+import {
+  Segments,
+  SegmentsContent,
+  SegmentsList,
+  SegmentsTrigger,
+} from "@/components/ui/segments";
+import * as Form from "@/components/ui/form";
+import { View, Text } from "@/tw";
+import { InstallBlock, ComponentPreview, PropsTable } from "@/components/docs";
+
+# Segments
+
+A segmented control component for switching between different views. Uses native `SegmentedControl` on iOS and Radix UI Tabs on web.
+
+## Installation
+
+<InstallBlock packages={["@react-native-segmented-control/segmented-control", "@radix-ui/react-tabs"]} />
+
+## Usage
+
+```tsx
+import {
+  Segments,
+  SegmentsContent,
+  SegmentsList,
+  SegmentsTrigger,
+} from "@/components/ui/segments";
+```
+
+## Examples
+
+### Basic Segments
+
+A simple segments component with two tabs.
+
+<ComponentPreview
+  title="Basic Segments"
+  code={`<Segments defaultValue="account">
+  <SegmentsList>
+    <SegmentsTrigger value="account">Account</SegmentsTrigger>
+    <SegmentsTrigger value="password">Password</SegmentsTrigger>
+  </SegmentsList>
+  <SegmentsContent value="account">
+    <Text>Account Section</Text>
+  </SegmentsContent>
+  <SegmentsContent value="password">
+    <Text>Password Section</Text>
+  </SegmentsContent>
+</Segments>`}
+>
+  <View className="w-full">
+    <Segments defaultValue="account">
+      <SegmentsList>
+        <SegmentsTrigger value="account">Account</SegmentsTrigger>
+        <SegmentsTrigger value="password">Password</SegmentsTrigger>
+      </SegmentsList>
+      <SegmentsContent value="account">
+        <Form.Text className="py-3">Account Section</Form.Text>
+      </SegmentsContent>
+      <SegmentsContent value="password">
+        <Form.Text className="py-3">Password Section</Form.Text>
+      </SegmentsContent>
+    </Segments>
+  </View>
+</ComponentPreview>
+
+### Multiple Segments
+
+Add more segments for additional views.
+
+<ComponentPreview
+  title="Multiple Segments"
+  code={`<Segments defaultValue="overview">
+  <SegmentsList>
+    <SegmentsTrigger value="overview">Overview</SegmentsTrigger>
+    <SegmentsTrigger value="analytics">Analytics</SegmentsTrigger>
+    <SegmentsTrigger value="reports">Reports</SegmentsTrigger>
+  </SegmentsList>
+  <SegmentsContent value="overview">
+    <Text>Overview content</Text>
+  </SegmentsContent>
+  <SegmentsContent value="analytics">
+    <Text>Analytics content</Text>
+  </SegmentsContent>
+  <SegmentsContent value="reports">
+    <Text>Reports content</Text>
+  </SegmentsContent>
+</Segments>`}
+>
+  <View className="w-full">
+    <Segments defaultValue="overview">
+      <SegmentsList>
+        <SegmentsTrigger value="overview">Overview</SegmentsTrigger>
+        <SegmentsTrigger value="analytics">Analytics</SegmentsTrigger>
+        <SegmentsTrigger value="reports">Reports</SegmentsTrigger>
+      </SegmentsList>
+      <SegmentsContent value="overview">
+        <Form.Text className="py-3">Overview dashboard with key metrics</Form.Text>
+      </SegmentsContent>
+      <SegmentsContent value="analytics">
+        <Form.Text className="py-3">Detailed analytics and charts</Form.Text>
+      </SegmentsContent>
+      <SegmentsContent value="reports">
+        <Form.Text className="py-3">Generated reports and exports</Form.Text>
+      </SegmentsContent>
+    </Segments>
+  </View>
+</ComponentPreview>
+
+### Controlled Segments
+
+Control the active segment externally with state.
+
+```tsx
+import { useState } from "react";
+
+function ControlledExample() {
+  const [value, setValue] = useState("account");
+
+  return (
+    <Segments value={value} onValueChange={setValue}>
+      <SegmentsList>
+        <SegmentsTrigger value="account">Account</SegmentsTrigger>
+        <SegmentsTrigger value="password">Password</SegmentsTrigger>
+      </SegmentsList>
+      <SegmentsContent value="account">
+        <Text>Account Section</Text>
+      </SegmentsContent>
+      <SegmentsContent value="password">
+        <Text>Password Section</Text>
+      </SegmentsContent>
+    </Segments>
+  );
+}
+```
+
+### With Rich Content
+
+Add rich content to each segment section.
+
+<ComponentPreview
+  title="Rich Content"
+  code={`<Segments defaultValue="profile">
+  <SegmentsList>
+    <SegmentsTrigger value="profile">Profile</SegmentsTrigger>
+    <SegmentsTrigger value="settings">Settings</SegmentsTrigger>
+  </SegmentsList>
+  <SegmentsContent value="profile">
+    <View className="p-4 gap-2">
+      <Text className="text-lg font-semibold">User Profile</Text>
+      <Text className="text-sf-text-2">Manage your profile information</Text>
+    </View>
+  </SegmentsContent>
+  <SegmentsContent value="settings">
+    <View className="p-4 gap-2">
+      <Text className="text-lg font-semibold">Settings</Text>
+      <Text className="text-sf-text-2">Configure app preferences</Text>
+    </View>
+  </SegmentsContent>
+</Segments>`}
+>
+  <View className="w-full">
+    <Segments defaultValue="profile">
+      <SegmentsList>
+        <SegmentsTrigger value="profile">Profile</SegmentsTrigger>
+        <SegmentsTrigger value="settings">Settings</SegmentsTrigger>
+      </SegmentsList>
+      <SegmentsContent value="profile">
+        <View className="py-4 gap-2">
+          <Text className="text-lg font-semibold text-sf-text">User Profile</Text>
+          <Text className="text-sf-text-2">Manage your profile information and personal details.</Text>
+        </View>
+      </SegmentsContent>
+      <SegmentsContent value="settings">
+        <View className="py-4 gap-2">
+          <Text className="text-lg font-semibold text-sf-text">Settings</Text>
+          <Text className="text-sf-text-2">Configure your app preferences and notifications.</Text>
+        </View>
+      </SegmentsContent>
+    </Segments>
+  </View>
+</ComponentPreview>
+
+## API Reference
+
+### Segments
+
+The root container component that provides context for the segments.
+
+<PropsTable
+  data={[
+    { name: "defaultValue", type: "string", description: "Initial value for uncontrolled segments" },
+    { name: "value", type: "string", description: "Controlled value" },
+    { name: "onValueChange", type: "(value: string) => void", description: "Callback when value changes" },
+    { name: "children", type: "ReactNode", required: true, description: "SegmentsList and SegmentsContent components" },
+    { name: "className", type: "string", description: "CSS classes for styling" },
+  ]}
+/>
+
+### SegmentsList
+
+Container for the segment triggers. Renders the native SegmentedControl on iOS.
+
+<PropsTable
+  data={[
+    { name: "children", type: "ReactNode", required: true, description: "SegmentsTrigger components" },
+    { name: "style", type: "StyleProp<ViewStyle>", description: "Style prop for native platforms" },
+    { name: "className", type: "string", description: "CSS classes for styling (web only)" },
+  ]}
+/>
+
+### SegmentsTrigger
+
+A trigger button for a segment. On native, the component is a marker that provides data to the SegmentedControl.
+
+<PropsTable
+  data={[
+    { name: "value", type: "string", required: true, description: "Unique value for this segment" },
+    { name: "children", type: "ReactNode", required: true, description: "Label text for the trigger" },
+    { name: "className", type: "string", description: "CSS classes for styling (web only)" },
+  ]}
+/>
+
+### SegmentsContent
+
+Container for the content of a segment. Only visible when the parent segment's value matches.
+
+<PropsTable
+  data={[
+    { name: "value", type: "string", required: true, description: "Value that activates this content" },
+    { name: "children", type: "ReactNode", required: true, description: "Content to display" },
+    { name: "className", type: "string", description: "CSS classes for styling" },
+  ]}
+/>
+
+## Platform Differences
+
+### Native (iOS/Android)
+
+- Uses `@react-native-segmented-control/segmented-control`
+- `SegmentsTrigger` components are marker components (don't render anything directly)
+- `SegmentsList` collects trigger metadata and renders a native SegmentedControl
+- Full native appearance and behavior
+- `className` on triggers has no effect
+
+### Web
+
+- Uses Radix UI Tabs primitives
+- Full keyboard navigation support
+- Styled pill-shaped segments with smooth transitions
+- Supports focus-visible ring styles
+- Full `className` customization on all components
+
+## Accessibility
+
+- On web, segments are fully keyboard navigable with arrow keys
+- Screen readers announce segment labels
+- Focus indicators follow accessibility best practices
+- Native segments inherit platform accessibility features
+
+## Static Property Access
+
+You can also access the subcomponents via static properties:
+
+```tsx
+<Segments defaultValue="account">
+  <Segments.List>
+    <Segments.Trigger value="account">Account</Segments.Trigger>
+    <Segments.Trigger value="password">Password</Segments.Trigger>
+  </Segments.List>
+  <Segments.Content value="account">Account content</Segments.Content>
+  <Segments.Content value="password">Password content</Segments.Content>
+</Segments>
+```
