@@ -209,9 +209,15 @@ export function ScrollView(
         bottom: process.env.EXPO_OS === "ios" ? bottom : 0,
       }}
       {...props}
+      style={mergedStyleProp(
+        // Web: Use header inset CSS variable for scroll padding (contentInsetAdjustmentBehavior equivalent)
+        process.env.EXPO_OS === "web"
+          ? ({ scrollPaddingTop: "var(--header-inset, 0)" } as any)
+          : undefined,
+        props.style
+      )}
       className={cn(
         sheet ? "bg-transparent" : "bg-sf-grouped-bg",
-
         props.className
       )}
     />
@@ -232,7 +238,10 @@ function InnerList({ contentContainerStyle, className, ...props }: ListProps) {
             {
               paddingVertical: 16,
               gap: 24,
-              // overflow: "visible",
+              // Web: Add top padding using CSS variable for header inset
+              ...(process.env.EXPO_OS === "web"
+                ? { paddingTop: "var(--header-inset, 0)" }
+                : {}),
             },
             contentContainerStyle
           )}

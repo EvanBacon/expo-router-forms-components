@@ -96,3 +96,41 @@ Stack.Screen = NativeStack.Screen as React.FC<
     modal?: boolean;
   }
 >;
+
+/* ----------------------------------------------------------------------------------
+ * Web-only exports (no-op on native)
+ * ----------------------------------------------------------------------------------*/
+
+/** No-op on native - only used for web stack header */
+export function useStackHeaderConfig(_config: {
+  title?: string;
+  headerLeft?: React.ReactNode;
+  headerRight?: React.ReactNode;
+  headerShown?: boolean;
+}) {
+  // No-op on native - the native stack handles headers automatically
+}
+
+/** No-op on native - renders nothing */
+export function HeaderButton(_props: {
+  icon?: string;
+  children?: React.ReactNode;
+  className?: string;
+  onClick?: () => void;
+}) {
+  return null;
+}
+
+/** No-op on native */
+export function StackFloatingHeader(_props: any) {
+  return null;
+}
+
+/** No-op on native */
+export function StackScreen({ children }: { children: React.ReactNode; [key: string]: any }) {
+  return <>{children}</>;
+}
+
+export function useStackHeaderContext() {
+  return { isSidebarOpen: false, isInsideTabBar: false };
+}

@@ -7,8 +7,9 @@ import { CodeBlock, InlineCode } from "./code-block";
 import { InstallBlock } from "./install-block";
 import { ComponentPreview } from "./component-preview";
 import { PropsTable } from "./props-table";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { MDXComponents } from "@bacons/mdx";
+import { useStackHeaderConfig } from "@/components/layout/stack";
 
 // Re-export components for use in MDX files
 export { CodeBlock, InlineCode, InstallBlock, ComponentPreview, PropsTable };
@@ -254,8 +255,22 @@ interface DocsLayoutProps {
 
 export function DocsLayout({ children, title, description }: DocsLayoutProps) {
   return (
-    <ScrollView className="flex-1">
-      <View className="mx-auto flex w-full max-w-3xl min-w-0 flex-1 flex-col gap-2 px-4 py-6 md:px-0 lg:py-8">
+    <ScrollView
+      className="flex-1"
+      style={
+        process.env.EXPO_OS === "web"
+          ? ({ scrollPaddingTop: "var(--header-inset, 0)" } as any)
+          : undefined
+      }
+    >
+      <View
+        className="mx-auto flex w-full max-w-3xl min-w-0 flex-1 flex-col gap-2 px-4 py-6 md:px-0 lg:py-8"
+        style={
+          process.env.EXPO_OS === "web"
+            ? ({ paddingTop: "var(--header-inset, 0)" } as any)
+            : undefined
+        }
+      >
         {title && (
           <Text className="hidden web:flex text-3xl font-bold text-sf-text mb-2">
             {title}
@@ -286,13 +301,28 @@ export function DocsWrapper({ children, title }: DocsWrapperProps) {
     }
   }, [navigation, title]);
 
+  // Configure web floating header
+  const headerConfig = useMemo(() => ({ title }), [title]);
+  useStackHeaderConfig(headerConfig);
+
   return (
-    <ScrollView className="flex-1">
-      <View className="mx-auto flex w-full max-w-3xl min-w-0 flex-1 flex-col px-4 py-6 md:px-0 lg:py-8">
+    <ScrollView
+      className="min-w-0 flex-1"
+      style={
+        process.env.EXPO_OS === "web"
+          ? ({ scrollPaddingTop: "var(--header-inset, 0)" } as any)
+          : undefined
+      }
+      contentContainerClassName="mx-auto w-full max-w-3xl  flex-col px-4 py-6 md:px-0 lg:py-8"
+      contentContainerStyle={process.env.EXPO_OS === "web"
+            ? ({ paddingTop: "var(--header-inset, 0)" } as any)
+            : {}}
+    >
+     
         <MDXComponents components={mdxComponents}>
           {children}
         </MDXComponents>
-      </View>
+      
     </ScrollView>
   );
 }

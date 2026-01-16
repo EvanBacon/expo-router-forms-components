@@ -266,3 +266,13 @@ export default function ComponentExample() {
 - SVG files are transformed via custom metro transformer (`metro.transformer.js`)
 - Web output uses server rendering (`web.output: "server"`)
 - Typed routes enabled (`experiments.typedRoutes: true`)
+
+## Browser Automation
+
+Use `agent-browser` for web automation. Run `bunx agent-browser --help` for all commands.
+
+Core workflow:
+1. `bunx agent-browser open <url>` - Navigate to page
+2. `bunx agent-browser snapshot -i` - Get interactive elements with refs (@e1, @e2)
+3. `bunx agent-browser click @e1` / `fill @e2 "text"` - Interact using refs
+4. Re-snapshot after page changes

@@ -689,6 +689,7 @@ function TabBarControllerGroupContent({
 function TabBarControllerInset({
   className,
   children,
+  style,
   ...props
 }: React.ComponentProps<"main">) {
   return (
@@ -699,6 +700,12 @@ function TabBarControllerInset({
         "bg-(--sf-grouped-bg)",
         className
       )}
+      style={{
+        // Provide CSS custom property for header inset that scroll views can use
+        // This enables contentInsetAdjustmentBehavior-like behavior on web
+        "--header-inset": "4rem",
+        ...style,
+      } as React.CSSProperties}
       {...props}
     >
       {children}
@@ -977,7 +984,7 @@ function TabBarControllerSlot({ className }: TabBarControllerSlotProps) {
   return (
     <div
       data-slot="tabbar-slot"
-      className={cn("flex flex-1 flex-col pt-16", className)}
+      className={cn("flex flex-1 flex-col", className)}
     >
       <TabSlot style={{ flex: 1 }} />
     </div>

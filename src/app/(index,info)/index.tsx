@@ -9,7 +9,7 @@ import {
   SegmentsList,
   SegmentsTrigger,
 } from "@/components/ui/segments";
-import Stack from "@/components/layout/stack";
+import Stack, { HeaderButton } from "@/components/layout/stack";
 import * as AC from "@bacons/apple-colors";
 import { cn } from "@/lib/utils";
 // import { Image } from "expo-image";
@@ -42,95 +42,6 @@ import { toast } from "@/utils/toast";
 
 //
 
-function ThemeSwitcher() {
-  const { mode, setMode, isDark } = useTheme();
-
-  return (
-    <Form.Section
-      title="Appearance"
-      footer="Controls app-wide color scheme. System follows your device settings."
-    >
-      <View className="py-2">
-        <Segments
-          value={mode}
-          onValueChange={(value) => setMode(value as ThemeMode)}
-        >
-          <SegmentsList>
-            <SegmentsTrigger value="system">System</SegmentsTrigger>
-            <SegmentsTrigger value="light">Light</SegmentsTrigger>
-            <SegmentsTrigger value="dark">Dark</SegmentsTrigger>
-          </SegmentsList>
-        </Segments>
-      </View>
-      <Form.Text
-        systemImage={{ name: isDark ? "moon.fill" : "sun.max.fill" }}
-        hint={isDark ? "Dark" : "Light"}
-      >
-        Current Theme
-      </Form.Text>
-    </Form.Section>
-  );
-}
-
-function Switches() {
-  const [on, setOn] = React.useState(false);
-  return (
-    <Form.Section title="Toggle">
-      <Form.Toggle systemImage="star" value={on} onValueChange={setOn}>
-        Built-in
-      </Form.Toggle>
-      <Form.Text bold hint={<Switch value={on} onValueChange={setOn} />}>
-        Hint
-      </Form.Text>
-
-      <Form.HStack>
-        <Form.Text>Manual</Form.Text>
-        <View className="flex-1" />
-        <Switch value={on} onValueChange={setOn} />
-      </Form.HStack>
-    </Form.Section>
-  );
-}
-
-function FontSection() {
-  const [bold, setBold] = React.useState(false);
-  const fontWeight = bold ? "bold" : "normal";
-  return (
-    <>
-      <Form.Section
-        title="Fonts"
-        titleHint={process.env.EXPO_OS === "ios" ? "San Francisco" : "Roboto"}
-      >
-        <Form.Text
-          className={cn("font-sans", bold ? "font-bold" : "font-normal")}
-        >
-          system
-        </Form.Text>
-        <Form.Text
-          className={cn("font-rounded", bold ? "font-bold" : "font-normal")}
-          hintBoolean={process.env.EXPO_OS === "ios"}
-        >
-          rounded
-        </Form.Text>
-        <Form.Text
-          className={cn("font-mono", bold ? "font-bold" : "font-normal")}
-        >
-          monospaced
-        </Form.Text>
-        <Form.Text
-          className={cn("font-serif", bold ? "font-bold" : "font-normal")}
-        >
-          serif
-        </Form.Text>
-      </Form.Section>
-      <Form.Section>
-        <Form.Toggle value={bold} onValueChange={setBold}>
-          Bold fonts
-        </Form.Toggle>
-      </Form.Section>
-    </>
-  );
-}
 
 export default function Page() {
   const ref = useAnimatedRef();
@@ -151,59 +62,12 @@ export default function Page() {
       {show && <GlurryList setShow={setShow} />}
       <Stack.Screen
         options={{
+          title: "Components",
           headerLargeTitle: false,
-          headerTitle() {
-            if (process.env.EXPO_OS === "web") {
-              return (
-                <Animated.View
-                  style={[
-                    style,
-                    { flexDirection: "row", gap: 12, alignItems: "center" },
-                  ]}
-                >
-                  <Link href="/">
-                    <Link.Trigger>
-                      <Image
-                        source={{ uri: "https://github.com/evanbacon.png" }}
-                        style={{
-                          aspectRatio: 1,
-                          height: 30,
-                          borderRadius: 8,
-                          borderWidth: 0.5,
-                          borderColor: AC.separator,
-                        }}
-                      />
-                    </Link.Trigger>
-                    <Link.Menu>
-                      <Link.MenuAction
-                        icon="star"
-                        title="Profile"
-                        onPress={() => {}}
-                      />
-                    </Link.Menu>
-                  </Link>
-                  <Text className="font-bold text-xl text-sf-text">
-                    Bacon Components
-                  </Text>
-                </Animated.View>
-              );
-            }
-            return (
-              <Animated.Image
-                source={{ uri: "https://github.com/evanbacon.png" }}
-                style={[
-                  style,
-                  {
-                    aspectRatio: 1,
-                    height: 30,
-                    borderRadius: 8,
-                    borderWidth: 0.5,
-                    borderColor: AC.separator,
-                  },
-                ]}
-              />
-            );
-          },
+          // Web-only: headerRight for the floating header
+          headerRight: () => (
+            <HeaderButton icon="gearshape">Settings</HeaderButton>
+          ),
         }}
       />
       <Form.List ref={ref} navigationTitle="Components">
@@ -753,5 +617,95 @@ function HorizontalItem({
 
       <Form.Text className="text-xs text-sf-text-2">{subtitle}</Form.Text>
     </View>
+  );
+}
+
+function ThemeSwitcher() {
+  const { mode, setMode, isDark } = useTheme();
+
+  return (
+    <Form.Section
+      title="Appearance"
+      footer="Controls app-wide color scheme. System follows your device settings."
+    >
+      <View className="py-2">
+        <Segments
+          value={mode}
+          onValueChange={(value) => setMode(value as ThemeMode)}
+        >
+          <SegmentsList>
+            <SegmentsTrigger value="system">System</SegmentsTrigger>
+            <SegmentsTrigger value="light">Light</SegmentsTrigger>
+            <SegmentsTrigger value="dark">Dark</SegmentsTrigger>
+          </SegmentsList>
+        </Segments>
+      </View>
+      <Form.Text
+        systemImage={{ name: isDark ? "moon.fill" : "sun.max.fill" }}
+        hint={isDark ? "Dark" : "Light"}
+      >
+        Current Theme
+      </Form.Text>
+    </Form.Section>
+  );
+}
+
+function Switches() {
+  const [on, setOn] = React.useState(false);
+  return (
+    <Form.Section title="Toggle">
+      <Form.Toggle systemImage="star" value={on} onValueChange={setOn}>
+        Built-in
+      </Form.Toggle>
+      <Form.Text bold hint={<Switch value={on} onValueChange={setOn} />}>
+        Hint
+      </Form.Text>
+
+      <Form.HStack>
+        <Form.Text>Manual</Form.Text>
+        <View className="flex-1" />
+        <Switch value={on} onValueChange={setOn} />
+      </Form.HStack>
+    </Form.Section>
+  );
+}
+
+function FontSection() {
+  const [bold, setBold] = React.useState(false);
+  const fontWeight = bold ? "bold" : "normal";
+  return (
+    <>
+      <Form.Section
+        title="Fonts"
+        titleHint={process.env.EXPO_OS === "ios" ? "San Francisco" : "Roboto"}
+      >
+        <Form.Text
+          className={cn("font-sans", bold ? "font-bold" : "font-normal")}
+        >
+          system
+        </Form.Text>
+        <Form.Text
+          className={cn("font-rounded", bold ? "font-bold" : "font-normal")}
+          hintBoolean={process.env.EXPO_OS === "ios"}
+        >
+          rounded
+        </Form.Text>
+        <Form.Text
+          className={cn("font-mono", bold ? "font-bold" : "font-normal")}
+        >
+          monospaced
+        </Form.Text>
+        <Form.Text
+          className={cn("font-serif", bold ? "font-bold" : "font-normal")}
+        >
+          serif
+        </Form.Text>
+      </Form.Section>
+      <Form.Section>
+        <Form.Toggle value={bold} onValueChange={setBold}>
+          Bold fonts
+        </Form.Toggle>
+      </Form.Section>
+    </>
   );
 }
