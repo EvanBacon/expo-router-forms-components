@@ -1,7 +1,6 @@
 import { BodyScrollView } from "@/components/ui/body-scroll-view";
 import { StyleSheet, Text, View } from "react-native";
 
-import { FadeIn } from "@/components/ui/fade-in";
 import { SFIcon } from "@/components/ui/sf-icon";
 import Skeleton from "@/components/ui/skeleton";
 import TouchableBounce from "@/components/ui/touchable-bounce";
@@ -18,8 +17,6 @@ export default function Page() {
             This is the first page of your app.
           </Text>
 
-          <FadeInTest />
-
           <TouchableBounce>
             <Text>TouchableBounce</Text>
           </TouchableBounce>
@@ -32,20 +29,6 @@ export default function Page() {
         </View>
       </View>
     </BodyScrollView>
-  );
-}
-
-function FadeInTest() {
-  const [show, setShow] = useState(false);
-  return (
-    <>
-      <Text onPress={() => setShow(!show)}>Toggle</Text>
-      {show && (
-        <FadeIn>
-          <Text>FadeIn</Text>
-        </FadeIn>
-      )}
-    </>
   );
 }
 

@@ -3,7 +3,6 @@ import "@/global.css";
 import ThemeProvider from "@/components/ui/theme-provider";
 
 import { AsyncFont } from "@/components/data/async-font";
-import Tabs from "@/components/layout/tabs";
 import { SplashScreen } from "expo-router";
 import { Suspense, useEffect } from "react";
 import { Toaster } from "@/utils/toast";
@@ -33,20 +32,7 @@ export default function Layout() {
       <AsyncFont src={SourceCodePro_400Regular} fontFamily="Source Code Pro" />
       <ThemeProvider>
         <GestureHandlerRootView style={{ flex: 1, display: "contents" }}>
-          {process.env.EXPO_OS === "web" ? (
-            <Tabs>
-              <Tabs.Screen
-                name="(index)"
-                systemImage="house.fill"
-                title="Home"
-              />
-              <Tabs.Screen
-                name="(info)"
-                systemImage="cursorarrow.rays"
-                title="Info"
-              />
-            </Tabs>
-          ) : (
+        
             <NativeTabs tintColor={label}>
               <NativeTabs.Trigger name="(index)">
                 <Label>Home</Label>
@@ -62,7 +48,7 @@ export default function Layout() {
                 <Icon sf="cursorarrow.rays" />
               </NativeTabs.Trigger>
             </NativeTabs>
-          )}
+          
           <Toaster />
         </GestureHandlerRootView>
       </ThemeProvider>
