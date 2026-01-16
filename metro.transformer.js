@@ -1,5 +1,5 @@
 const upstreamTransformer = require("@expo/metro-config/babel-transformer");
-const mdxTransformer = require("@bacons/mdx/transformer");
+const mdxTransformer = require("@bacons/mdx/metro-transformer");
 
 async function convertSvgModule(projectRoot, src, options) {
   const { resolveConfig, transform } = require("@svgr/core");
