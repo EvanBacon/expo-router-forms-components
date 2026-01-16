@@ -1,12 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
-import { Text as RNText, useColorScheme } from "react-native";
+import { Text as RNText } from "react-native";
 import { View, Text } from "@/tw";
 import { Pressable } from "@/tw/touchable";
 import { cn } from "@/lib/utils";
 import "@/components/runtime/clipboard";
 import { Highlight, type Language, type PrismTheme } from "prism-react-renderer";
+import { useTheme } from "@/components/ui/theme-context";
 
 // Subdued light theme
 const lightTheme: PrismTheme = {
@@ -60,7 +61,7 @@ export function CodeBlock({
   showLineNumbers = false,
 }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
-  const colorScheme = useColorScheme();
+  const { isDark } = useTheme();
 
   const code = typeof children === "string" ? children.trim() : children;
 
@@ -74,7 +75,7 @@ export function CodeBlock({
     }
   };
 
-  const theme = colorScheme === "dark" ? darkTheme : lightTheme;
+  const theme = isDark ? darkTheme : lightTheme;
 
   return (
     <View
