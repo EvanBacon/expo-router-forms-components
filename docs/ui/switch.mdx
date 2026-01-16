@@ -1,0 +1,135 @@
+---
+title: Switch
+---
+
+import { Switch } from "@/components/ui/switch";
+import { InstallBlock, ComponentPreview, PropsTable } from "@/components/docs";
+import { html as xhtml } from "@/html";
+
+A toggle control that allows users to switch between two states. Uses the native React Native `Switch` on iOS/Android and a styled Radix UI switch on web.
+
+## Installation
+
+<InstallBlock packages="@radix-ui/react-switch" />
+
+## Usage
+
+```tsx
+import { Switch } from "@/components/ui/switch";
+```
+
+## Examples
+
+### Basic Switch
+
+A simple toggle switch.
+
+<ComponentPreview
+  title="Basic Switch"
+  code={`<Switch />`}
+>
+  <Switch />
+</ComponentPreview>
+
+### Controlled Switch
+
+Control the switch state with `value` and `onValueChange` props.
+
+<ComponentPreview
+  title="Controlled Switch"
+  code={`const [enabled, setEnabled] = React.useState(false);
+
+<Switch value={enabled} onValueChange={setEnabled} />`}
+>
+  <Switch defaultChecked />
+</ComponentPreview>
+
+### Disabled States
+
+Switches can be disabled in either state.
+
+<ComponentPreview
+  title="Disabled Switch"
+  code={`<Switch disabled />
+<Switch disabled defaultChecked />`}
+>
+  <xhtml.div className="flex gap-4">
+    <Switch disabled />
+    <Switch disabled defaultChecked />
+  </xhtml.div>
+</ComponentPreview>
+
+### With Form List
+
+Commonly used within form lists for settings screens.
+
+<ComponentPreview
+  title="In Form List"
+  code={`import { List, Section, Toggle } from "@/components/ui/form";
+
+<List>
+  <Section title="Notifications">
+    <Toggle value={notifications} onValueChange={setNotifications}>
+      Push Notifications
+    </Toggle>
+    <Toggle value={email} onValueChange={setEmail}>
+      Email Updates
+    </Toggle>
+  </Section>
+</List>`}
+>
+  <xhtml.div className="flex flex-col gap-3 w-64">
+    <xhtml.div className="flex items-center justify-between">
+      <xhtml.span className="text-sf-text">Push Notifications</xhtml.span>
+      <Switch defaultChecked />
+    </xhtml.div>
+    <xhtml.div className="flex items-center justify-between">
+      <xhtml.span className="text-sf-text">Email Updates</xhtml.span>
+      <Switch />
+    </xhtml.div>
+  </xhtml.div>
+</ComponentPreview>
+
+## API Reference
+
+### Switch
+
+The switch component.
+
+<PropsTable
+  data={[
+    { name: "value", type: "boolean", description: "Controlled checked state (React Native style)" },
+    { name: "onValueChange", type: "(value: boolean) => void", description: "Callback when checked state changes (React Native style)" },
+    { name: "checked", type: "boolean", description: "Controlled checked state (Radix style)" },
+    { name: "onCheckedChange", type: "(checked: boolean) => void", description: "Callback when checked state changes (Radix style)" },
+    { name: "defaultChecked", type: "boolean", description: "Initial checked state for uncontrolled usage" },
+    { name: "disabled", type: "boolean", default: "false", description: "Whether the switch is disabled" },
+    { name: "required", type: "boolean", description: "Whether the switch is required in a form" },
+    { name: "name", type: "string", description: "Name for form submission" },
+    { name: "className", type: "string", description: "CSS classes for styling (web only)" },
+  ]}
+/>
+
+## Platform Differences
+
+### Native (iOS/Android)
+
+- Uses React Native's built-in `Switch` component
+- Renders with native iOS/Android toggle styling
+- Supports native props like `trackColor`, `thumbColor`, `ios_backgroundColor`
+- `className` prop has no effect
+
+### Web
+
+- Uses Radix UI's Switch primitives
+- Styled with Tailwind CSS to match iOS appearance
+- Full support for `className` customization
+- Supports both React Native style props (`value`/`onValueChange`) and Radix style props (`checked`/`onCheckedChange`)
+- Includes focus-visible ring for keyboard navigation
+
+## Accessibility
+
+- Uses proper `switch` role for screen readers
+- Keyboard accessible: can be toggled with Space key
+- Focus states are clearly visible
+- Native switches inherit platform accessibility features

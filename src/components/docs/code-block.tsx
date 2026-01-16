@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Text as RNText } from "react-native";
-import { View, Text } from "@/tw";
+import { View, Text, useCSSVariable } from "@/tw";
 import { Pressable } from "@/tw/touchable";
 import { cn } from "@/lib/utils";
 import "@/components/runtime/clipboard";
@@ -157,10 +157,10 @@ export function InlineCode({ children, className }: InlineCodeProps) {
   const text = extractText(children);
 
   // Use platform check to render differently on native vs web
+  // Filter out any non-string className values that MDX might pass
+  const safeClassName =
+    typeof className === "string" ? className : undefined;
   if (process.env.EXPO_OS === "web") {
-    // Filter out any non-string className values that MDX might pass
-    const safeClassName =
-      typeof className === "string" ? className : undefined;
 
     return (
       <Text
@@ -174,16 +174,21 @@ export function InlineCode({ children, className }: InlineCodeProps) {
     );
   }
 
+  const color = useCSSVariable("--sf-text");
+  const bgColor = useCSSVariable("--sf-fill");
+  // const fontFamily = useCSSVariable("--font-mono");
+
   // On native, use raw RNText to avoid useCssElement issues with nested Text
   return (
-    <RNText
+    <Text
       style={{
-        backgroundColor: "rgba(120,120,128,0.12)",
+        color,
+        backgroundColor: bgColor,
         fontSize: 14,
         fontFamily: "ui-monospace",
       }}
     >
       {text}
-    </RNText>
+    </Text>
   );
 }
