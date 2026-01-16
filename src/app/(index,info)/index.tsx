@@ -41,6 +41,7 @@ import { HTMLPictureExample } from "@/components/example/html-picture";
 import { toast } from "@/utils/toast";
 
 //
+  import { html } from "@/html";
 
 
 export default function Page() {
@@ -59,6 +60,7 @@ export default function Page() {
 
   return (
     <View className="flex-1">
+
       {show && <GlurryList setShow={setShow} />}
       <Stack.Screen
         options={{
@@ -90,6 +92,7 @@ export default function Page() {
                 Learn more...
               </Form.Link>
             </Form.Text>
+
           </Rounded>
         </Form.Section>
 

@@ -1,6 +1,7 @@
 "use client";
 
-import { View, Text, ScrollView } from "@/tw";
+import { ScrollView } from "@/tw";
+import { html } from "@/html";
 import { Link, useNavigation } from "expo-router";
 import { cn } from "@/lib/utils";
 import { CodeBlock, InlineCode } from "./code-block";
@@ -21,68 +22,66 @@ function H1({ children, className }: { children: React.ReactNode; className?: st
     return null;
   }
   return (
-    <Text className={cn("text-3xl font-bold text-sf-text mb-2", className)}>
+    <html.h1 className={cn("text-3xl font-bold text-sf-text mb-2", className)}>
       {children}
-    </Text>
+    </html.h1>
   );
 }
 
 function H2({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <Text className={cn("text-2xl font-semibold text-sf-text mt-8 mb-4", className)}>
+    <html.h2 className={cn("text-2xl font-semibold text-sf-text mt-8 mb-4", className)}>
       {children}
-    </Text>
+    </html.h2>
   );
 }
 
 function H3({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <Text className={cn("text-xl font-semibold text-sf-text mt-6 mb-3", className)}>
+    <html.h3 className={cn("text-xl font-semibold text-sf-text mt-6 mb-3", className)}>
       {children}
-    </Text>
+    </html.h3>
   );
 }
 
 function H4({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <Text className={cn("text-lg font-semibold text-sf-text mt-4 mb-2", className)}>
+    <html.h4 className={cn("text-lg font-semibold text-sf-text mt-4 mb-2", className)}>
       {children}
-    </Text>
+    </html.h4>
   );
 }
 
 function Paragraph({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <Text className={cn("text-base text-sf-text-2 mb-4 leading-relaxed", className)}>
+    <html.p className={cn("text-base text-sf-text-2 mb-4 leading-relaxed", className)}>
       {children}
-    </Text>
+    </html.p>
   );
 }
 
 function Strong({ children }: { children: React.ReactNode }) {
-  return <Text className="font-semibold text-sf-text">{children}</Text>;
+  return <html.strong className="font-semibold text-sf-text">{children}</html.strong>;
 }
 
 function Em({ children }: { children: React.ReactNode }) {
-  return <Text className="italic">{children}</Text>;
+  return <html.em className="italic">{children}</html.em>;
 }
 
 function Anchor({ href, children }: { href?: string; children: React.ReactNode }) {
-  if (!href) return <Text>{children}</Text>;
+  if (!href) return <html.span>{children}</html.span>;
 
   // Handle external links
   if (href.startsWith("http")) {
     return (
-      <Text
+      <html.a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
         className="text-sf-blue underline"
-        onPress={() => {
-          if (typeof window !== "undefined") {
-            window.open(href, "_blank");
-          }
-        }}
       >
         {children}
-      </Text>
+      </html.a>
     );
   }
 
@@ -96,39 +95,38 @@ function Anchor({ href, children }: { href?: string; children: React.ReactNode }
 
 function UnorderedList({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <View className={cn("mb-4 pl-4", className)}>
+    <html.ul className={cn("mb-4 pl-4 list-disc", className)}>
       {children}
-    </View>
+    </html.ul>
   );
 }
 
 function OrderedList({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <View className={cn("mb-4 pl-4", className)}>
+    <html.ol className={cn("mb-4 pl-4 list-decimal", className)}>
       {children}
-    </View>
+    </html.ol>
   );
 }
 
 function ListItem({ children }: { children: React.ReactNode }) {
   return (
-    <View className="flex-row mb-1">
-      <Text className="text-sf-text-2 mr-2">•</Text>
-      <Text className="flex-1 text-sf-text-2">{children}</Text>
-    </View>
+    <html.li className="mb-1 text-sf-text-2">
+      {children}
+    </html.li>
   );
 }
 
 function Blockquote({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <View className={cn("border-l-4 border-sf-blue pl-4 py-2 mb-4 bg-sf-fill/30 rounded-r-lg", className)}>
-      <Text className="text-sf-text-2 italic">{children}</Text>
-    </View>
+    <html.blockquote className={cn("border-l-4 border-sf-blue pl-4 py-2 mb-4 bg-sf-fill/30 rounded-r-lg text-sf-text-2 italic", className)}>
+      {children}
+    </html.blockquote>
   );
 }
 
 function HorizontalRule() {
-  return <View className="h-px bg-sf-border my-8" />;
+  return <html.hr className="h-px bg-sf-border my-8 border-0" />;
 }
 
 function Pre({ children }: { children: React.ReactNode }) {
@@ -163,45 +161,45 @@ function Code({ children, className }: { children: React.ReactNode; className?: 
 // Table components
 function Table({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <View className={cn("rounded-lg border border-sf-border overflow-hidden mb-4", className)}>
+    <html.table className={cn("w-full rounded-lg border border-sf-border overflow-hidden mb-4", className)}>
       {children}
-    </View>
+    </html.table>
   );
 }
 
 function TableHead({ children }: { children: React.ReactNode }) {
   return (
-    <View className="bg-sf-fill/50 border-b border-sf-border">
+    <html.thead className="bg-sf-fill/50 border-b border-sf-border">
       {children}
-    </View>
+    </html.thead>
   );
 }
 
 function TableBody({ children }: { children: React.ReactNode }) {
-  return <View>{children}</View>;
+  return <html.tbody>{children}</html.tbody>;
 }
 
 function TableRow({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <View className={cn("flex-row border-b border-sf-border last:border-b-0", className)}>
+    <html.tr className={cn("border-b border-sf-border last:border-b-0", className)}>
       {children}
-    </View>
+    </html.tr>
   );
 }
 
 function TableHeader({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <View className={cn("flex-1 px-4 py-3", className)}>
-      <Text className="text-sm text-sf-text font-semibold">{children}</Text>
-    </View>
+    <html.th className={cn("px-4 py-3 text-left text-sm text-sf-text font-semibold", className)}>
+      {children}
+    </html.th>
   );
 }
 
 function TableCell({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <View className={cn("flex-1 px-4 py-3", className)}>
-      <Text className="text-sm text-sf-text-2">{children}</Text>
-    </View>
+    <html.td className={cn("px-4 py-3 text-sm text-sf-text-2", className)}>
+      {children}
+    </html.td>
   );
 }
 
@@ -263,7 +261,7 @@ export function DocsLayout({ children, title, description }: DocsLayoutProps) {
           : undefined
       }
     >
-      <View
+      <html.article
         className="mx-auto flex w-full max-w-3xl min-w-0 flex-1 flex-col gap-2 px-4 py-6 md:px-0 lg:py-8"
         style={
           process.env.EXPO_OS === "web"
@@ -272,15 +270,15 @@ export function DocsLayout({ children, title, description }: DocsLayoutProps) {
         }
       >
         {title && (
-          <Text className="hidden web:flex text-3xl font-bold text-sf-text mb-2">
+          <html.h1 className="hidden web:flex text-3xl font-bold text-sf-text mb-2">
             {title}
-          </Text>
+          </html.h1>
         )}
         {description && (
-          <Text className="text-sf-text-2 mb-6">{description}</Text>
+          <html.p className="text-sf-text-2 mb-6">{description}</html.p>
         )}
-        <View className="flex-1">{children}</View>
-      </View>
+        <html.div className="flex-1">{children}</html.div>
+      </html.article>
     </ScrollView>
   );
 }
@@ -313,16 +311,16 @@ export function DocsWrapper({ children, title }: DocsWrapperProps) {
           ? ({ scrollPaddingTop: "var(--header-inset, 0)" } as any)
           : undefined
       }
-      contentContainerClassName="mx-auto w-full max-w-3xl  flex-col px-4 py-6 md:px-0 lg:py-8"
+      contentContainerClassName="mx-auto w-full max-w-3xl flex-col px-4 py-6 md:px-0 lg:py-8"
       contentContainerStyle={process.env.EXPO_OS === "web"
             ? ({ paddingTop: "var(--header-inset, 0)" } as any)
             : {}}
     >
-     
+      <html.article>
         <MDXComponents components={mdxComponents}>
           {children}
         </MDXComponents>
-      
+      </html.article>
     </ScrollView>
   );
 }
