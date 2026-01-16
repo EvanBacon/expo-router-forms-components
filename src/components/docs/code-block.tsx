@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
+import { Text as RNText } from "react-native";
 import { View, Text } from "@/tw";
 import { Pressable } from "@/tw/touchable";
 import { cn } from "@/lib/utils";
@@ -84,15 +85,50 @@ interface InlineCodeProps {
   className?: string;
 }
 
+// Helper to extract text content from React children
+function extractText(node: React.ReactNode): string {
+  if (typeof node === "string") return node;
+  if (typeof node === "number") return String(node);
+  if (node == null || typeof node === "boolean") return "";
+  if (Array.isArray(node)) return node.map(extractText).join("");
+  if (typeof node === "object" && "props" in node) {
+    return extractText((node as React.ReactElement).props.children);
+  }
+  return "";
+}
+
 export function InlineCode({ children, className }: InlineCodeProps) {
+  // On native, we need to ensure children is a plain string
+  const text = extractText(children);
+
+  // Use platform check to render differently on native vs web
+  if (process.env.EXPO_OS === "web") {
+    // Filter out any non-string className values that MDX might pass
+    const safeClassName =
+      typeof className === "string" ? className : undefined;
+
+    return (
+      <Text
+        className={cn(
+          "px-1.5 py-0.5 rounded bg-sf-fill text-sf-text text-sm font-mono",
+          safeClassName
+        )}
+      >
+        {text}
+      </Text>
+    );
+  }
+
+  // On native, use raw RNText to avoid useCssElement issues with nested Text
   return (
-    <Text
-      className={cn(
-        "px-1.5 py-0.5 rounded bg-sf-fill text-sf-text text-sm font-mono",
-        className
-      )}
+    <RNText
+      style={{
+        backgroundColor: "rgba(120,120,128,0.12)",
+        fontSize: 14,
+        fontFamily: "ui-monospace",
+      }}
     >
-      {children}
-    </Text>
+      {text}
+    </RNText>
   );
 }
