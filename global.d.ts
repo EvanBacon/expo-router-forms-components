@@ -10,6 +10,12 @@ declare module "*.md" {
   import { CustomComponentsProp } from "@bacons/mdx";
   const Component: React.FC<{ components?: CustomComponentsProp }>;
   export default Component;
+  // Frontmatter export from remark-mdx-frontmatter
+  export const frontmatter: {
+    title?: string;
+    description?: string;
+    [key: string]: unknown;
+  };
 }
 
 declare module "*.mdx" {
@@ -17,4 +23,10 @@ declare module "*.mdx" {
   import { CustomComponentsProp } from "@bacons/mdx";
   const Component: React.FC<{ components?: CustomComponentsProp }>;
   export default Component;
+  // Frontmatter export from remark-mdx-frontmatter
+  export const frontmatter: {
+    title?: string;
+    description?: string;
+    [key: string]: unknown;
+  };
 }

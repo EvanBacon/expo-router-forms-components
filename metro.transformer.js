@@ -1,5 +1,12 @@
 const upstreamTransformer = require("@expo/metro-config/babel-transformer");
-const mdxTransformer = require("@bacons/mdx/metro-transformer");
+const { createTransformer } = require("@bacons/mdx/metro-transformer");
+const remarkFrontmatter = require("remark-frontmatter").default;
+const remarkMdxFrontmatter = require("remark-mdx-frontmatter").default;
+
+// Create MDX transformer with frontmatter support
+const mdxTransformer = createTransformer({
+  remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter],
+});
 
 async function convertSvgModule(projectRoot, src, options) {
   const { resolveConfig, transform } = require("@svgr/core");

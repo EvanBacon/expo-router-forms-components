@@ -1,18 +1,24 @@
 "use client";
 
 import { View, Text, ScrollView } from "@/tw";
-import { Link } from "expo-router";
+import { Link, useNavigation } from "expo-router";
 import { cn } from "@/lib/utils";
 import { CodeBlock, InlineCode } from "./code-block";
 import { InstallBlock } from "./install-block";
 import { ComponentPreview } from "./component-preview";
 import { PropsTable } from "./props-table";
+import { useEffect } from "react";
+import { MDXComponents } from "@bacons/mdx";
 
 // Re-export components for use in MDX files
 export { CodeBlock, InlineCode, InstallBlock, ComponentPreview, PropsTable };
 
 // Typography components
 function H1({ children, className }: { children: React.ReactNode; className?: string }) {
+  // Hide on iOS since Stack shows the large header title
+  if (process.env.EXPO_OS === "ios") {
+    return null;
+  }
   return (
     <Text className={cn("text-3xl font-bold text-sf-text mb-2", className)}>
       {children}
@@ -259,6 +265,33 @@ export function DocsLayout({ children, title, description }: DocsLayoutProps) {
           <Text className="text-sf-text-2 mb-6">{description}</Text>
         )}
         <View className="flex-1">{children}</View>
+      </View>
+    </ScrollView>
+  );
+}
+
+// Wrapper for MDX docs that sets navigation title from frontmatter
+interface DocsWrapperProps {
+  children: React.ReactNode;
+  /** Title from frontmatter to display in the Stack header */
+  title?: string;
+}
+
+export function DocsWrapper({ children, title }: DocsWrapperProps) {
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    if (title) {
+      navigation.setOptions({ title });
+    }
+  }, [navigation, title]);
+
+  return (
+    <ScrollView className="flex-1">
+      <View className="mx-auto flex w-full max-w-3xl min-w-0 flex-1 flex-col px-4 py-6 md:px-0 lg:py-8">
+        <MDXComponents components={mdxComponents}>
+          {children}
+        </MDXComponents>
       </View>
     </ScrollView>
   );
