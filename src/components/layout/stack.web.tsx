@@ -132,9 +132,11 @@ function WebStackHeader() {
       data-slot="stack-floating-header"
       data-sidebar-open={isSidebarOpen}
       className={cn(
-        "pointer-events-none absolute top-4 left-0 right-0 z-20",
+        "pointer-events-none fixed top-4 z-30",
         "flex items-start justify-between",
-        "px-4"
+        "right-4",
+        // When sidebar is open, account for its width (sidebar is ~296px + padding)
+        isSidebarOpen ? "left-[19.5rem]" : "left-4"
       )}
     >
       {/* Left toolbar */}
@@ -416,21 +418,19 @@ function StackInner({
 }: StackProps) {
   return (
     <TabBarAwareProviderInner>
-      <div className="relative flex flex-1 flex-col">
-        <WebStackHeader />
-        <ExpoStack
-          screenOptions={{
-            headerShown: false,
-            contentStyle: {
-              backgroundColor: "transparent",
-            },
-            ...screenOptions,
-          }}
-          {...props}
-        >
-          {children}
-        </ExpoStack>
-      </div>
+      <WebStackHeader />
+      <ExpoStack
+        screenOptions={{
+          headerShown: false,
+          contentStyle: {
+            backgroundColor: "transparent",
+          },
+          ...screenOptions,
+        }}
+        {...props}
+      >
+        {children}
+      </ExpoStack>
     </TabBarAwareProviderInner>
   );
 }
@@ -442,21 +442,19 @@ function StackFallback({
 }: StackProps) {
   return (
     <TabBarAwareProviderFallback>
-      <div className="relative flex flex-1 flex-col">
-        <WebStackHeader />
-        <ExpoStack
-          screenOptions={{
-            headerShown: false,
-            contentStyle: {
-              backgroundColor: "transparent",
-            },
-            ...screenOptions,
-          }}
-          {...props}
-        >
-          {children}
-        </ExpoStack>
-      </div>
+      <WebStackHeader />
+      <ExpoStack
+        screenOptions={{
+          headerShown: false,
+          contentStyle: {
+            backgroundColor: "transparent",
+          },
+          ...screenOptions,
+        }}
+        {...props}
+      >
+        {children}
+      </ExpoStack>
     </TabBarAwareProviderFallback>
   );
 }
