@@ -1,4 +1,5 @@
 const upstreamTransformer = require("@expo/metro-config/babel-transformer");
+const mdxTransformer = require("@bacons/mdx/metro-transformer");
 
 async function convertSvgModule(projectRoot, src, options) {
   const { resolveConfig, transform } = require("@svgr/core");
@@ -48,11 +49,18 @@ async function convertSvgModule(projectRoot, src, options) {
 }
 
 module.exports.transform = async ({ src, filename, options }) => {
+  // Handle MDX/MD files
+  if (filename.endsWith(".mdx") || filename.endsWith(".md")) {
+    src = (await mdxTransformer.transform({ src, filename, options })).src;
+  }
+
+  // Handle SVG files
   if (filename.endsWith(".svg")) {
     src = await convertSvgModule(options.projectRoot, src, {
       platform: options.platform,
     });
   }
+
   // Pass the source through the upstream Expo transformer.
   return upstreamTransformer.transform({ src, filename, options });
 };

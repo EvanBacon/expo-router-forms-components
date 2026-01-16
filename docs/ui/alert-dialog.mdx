@@ -1,0 +1,399 @@
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogDestructive,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogInput,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { InstallBlock, ComponentPreview, PropsTable } from "@/components/docs";
+
+# Alert Dialog
+
+A modal dialog that interrupts the user with important content and expects a response. Uses native `Alert.alert()` on iOS/Android and a styled Radix UI dialog on web.
+
+## Installation
+
+<InstallBlock packages="@radix-ui/react-alert-dialog" />
+
+
+## Usage
+
+```tsx
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+```
+
+
+## Examples
+
+### Basic Dialog
+
+A simple alert dialog with a title, description, and action buttons.
+
+<ComponentPreview
+  title="Basic Alert"
+  code={`<AlertDialog>
+  <AlertDialogTrigger className="px-4 py-2 rounded-lg border border-sf-border bg-sf-bg text-sf-text">
+    Show Dialog
+  </AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+      <AlertDialogDescription>
+        This action cannot be undone.
+      </AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel>Cancel</AlertDialogCancel>
+      <AlertDialogAction>Continue</AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>`}
+>
+  <AlertDialog>
+    <AlertDialogTrigger className="px-4 py-2 rounded-lg border border-sf-border bg-sf-bg text-sf-text font-medium hover:bg-sf-fill cursor-pointer">
+      Show Dialog
+    </AlertDialogTrigger>
+    <AlertDialogContent>
+      <AlertDialogHeader>
+        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+        <AlertDialogDescription>
+          This action cannot be undone. This will permanently delete your
+          account and remove your data from our servers.
+        </AlertDialogDescription>
+      </AlertDialogHeader>
+      <AlertDialogFooter>
+        <AlertDialogCancel>Cancel</AlertDialogCancel>
+        <AlertDialogAction>Continue</AlertDialogAction>
+      </AlertDialogFooter>
+    </AlertDialogContent>
+  </AlertDialog>
+</ComponentPreview>
+
+### Destructive Action
+
+Use `AlertDialogDestructive` for dangerous actions like delete operations.
+
+<ComponentPreview
+  title="Destructive Action"
+  code={`<AlertDialog>
+  <AlertDialogTrigger className="px-4 py-2 rounded-lg bg-sf-red text-white">
+    Delete Account
+  </AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Delete Account</AlertDialogTitle>
+      <AlertDialogDescription>
+        Are you sure? This action is permanent.
+      </AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel>Cancel</AlertDialogCancel>
+      <AlertDialogDestructive onPress={() => console.log("Deleted!")}>
+        Delete
+      </AlertDialogDestructive>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>`}
+>
+  <AlertDialog>
+    <AlertDialogTrigger className="px-4 py-2 rounded-lg bg-sf-red text-white font-medium hover:bg-sf-red/90 cursor-pointer">
+      Delete Account
+    </AlertDialogTrigger>
+    <AlertDialogContent>
+      <AlertDialogHeader>
+        <AlertDialogTitle>Delete Account</AlertDialogTitle>
+        <AlertDialogDescription>
+          Are you sure you want to delete your account? This action is
+          permanent and cannot be reversed.
+        </AlertDialogDescription>
+      </AlertDialogHeader>
+      <AlertDialogFooter>
+        <AlertDialogCancel>Cancel</AlertDialogCancel>
+        <AlertDialogDestructive onPress={() => console.log("Account deleted!")}>
+          Delete
+        </AlertDialogDestructive>
+      </AlertDialogFooter>
+    </AlertDialogContent>
+  </AlertDialog>
+</ComponentPreview>
+
+### With Callbacks
+
+Handle user actions with callback functions.
+
+<ComponentPreview
+  title="With Callbacks"
+  code={`<AlertDialog>
+  <AlertDialogTrigger className="px-4 py-2 rounded-lg bg-sf-blue text-white">
+    Save Changes
+  </AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Save Changes?</AlertDialogTitle>
+      <AlertDialogDescription>
+        Do you want to save your changes?
+      </AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel onPress={() => console.log("Cancelled")}>
+        Don't Save
+      </AlertDialogCancel>
+      <AlertDialogAction onPress={() => console.log("Saved!")}>
+        Save
+      </AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>`}
+>
+  <AlertDialog>
+    <AlertDialogTrigger className="px-4 py-2 rounded-lg bg-sf-blue text-white font-medium hover:bg-sf-blue/90 cursor-pointer">
+      Save Changes
+    </AlertDialogTrigger>
+    <AlertDialogContent>
+      <AlertDialogHeader>
+        <AlertDialogTitle>Save Changes?</AlertDialogTitle>
+        <AlertDialogDescription>
+          Do you want to save your changes before leaving?
+        </AlertDialogDescription>
+      </AlertDialogHeader>
+      <AlertDialogFooter>
+        <AlertDialogCancel onPress={() => console.log("Cancelled")}>
+          Don't Save
+        </AlertDialogCancel>
+        <AlertDialogAction onPress={() => console.log("Saved!")}>
+          Save
+        </AlertDialogAction>
+      </AlertDialogFooter>
+    </AlertDialogContent>
+  </AlertDialog>
+</ComponentPreview>
+
+### Prompt with Input
+
+Add `AlertDialogInput` to collect text input from the user. On iOS, this uses the native `Alert.prompt()` API.
+
+<ComponentPreview
+  title="Prompt Dialog"
+  code={`<AlertDialog>
+  <AlertDialogTrigger className="px-4 py-2 rounded-lg bg-sf-blue text-white">
+    Rename Item
+  </AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Rename</AlertDialogTitle>
+      <AlertDialogDescription>
+        Enter a new name for this item.
+      </AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogInput placeholder="Enter name..." defaultValue="My Item" />
+    <AlertDialogFooter>
+      <AlertDialogCancel>Cancel</AlertDialogCancel>
+      <AlertDialogAction onPress={(value) => console.log("Name:", value)}>
+        Rename
+      </AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>`}
+>
+  <AlertDialog>
+    <AlertDialogTrigger className="px-4 py-2 rounded-lg bg-sf-blue text-white font-medium hover:bg-sf-blue/90 cursor-pointer">
+      Rename Item
+    </AlertDialogTrigger>
+    <AlertDialogContent>
+      <AlertDialogHeader>
+        <AlertDialogTitle>Rename</AlertDialogTitle>
+        <AlertDialogDescription>
+          Enter a new name for this item.
+        </AlertDialogDescription>
+      </AlertDialogHeader>
+      <AlertDialogInput placeholder="Enter name..." defaultValue="My Item" />
+      <AlertDialogFooter>
+        <AlertDialogCancel>Cancel</AlertDialogCancel>
+        <AlertDialogAction onPress={(value) => console.log("New name:", value)}>
+          Rename
+        </AlertDialogAction>
+      </AlertDialogFooter>
+    </AlertDialogContent>
+  </AlertDialog>
+</ComponentPreview>
+
+### Secure Input (Password)
+
+Use `type="secure-text"` for password inputs.
+
+<ComponentPreview
+  title="Secure Input"
+  code={`<AlertDialog>
+  <AlertDialogTrigger className="px-4 py-2 rounded-lg border border-sf-border bg-sf-bg text-sf-text">
+    Enter Password
+  </AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Authentication Required</AlertDialogTitle>
+      <AlertDialogDescription>
+        Please enter your password to continue.
+      </AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogInput type="secure-text" placeholder="Password" />
+    <AlertDialogFooter>
+      <AlertDialogCancel>Cancel</AlertDialogCancel>
+      <AlertDialogAction onPress={(pw) => console.log("Auth:", pw ? "***" : "empty")}>
+        Authenticate
+      </AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>`}
+>
+  <AlertDialog>
+    <AlertDialogTrigger className="px-4 py-2 rounded-lg border border-sf-border bg-sf-bg text-sf-text font-medium hover:bg-sf-fill cursor-pointer">
+      Enter Password
+    </AlertDialogTrigger>
+    <AlertDialogContent>
+      <AlertDialogHeader>
+        <AlertDialogTitle>Authentication Required</AlertDialogTitle>
+        <AlertDialogDescription>
+          Please enter your password to continue.
+        </AlertDialogDescription>
+      </AlertDialogHeader>
+      <AlertDialogInput type="secure-text" placeholder="Password" />
+      <AlertDialogFooter>
+        <AlertDialogCancel>Cancel</AlertDialogCancel>
+        <AlertDialogAction
+          onPress={(password) => console.log("Password entered:", password ? "***" : "(empty)")}
+        >
+          Authenticate
+        </AlertDialogAction>
+      </AlertDialogFooter>
+    </AlertDialogContent>
+  </AlertDialog>
+</ComponentPreview>
+
+## API Reference
+
+### AlertDialog
+
+The root component that provides context for the dialog.
+
+<PropsTable
+  data={[
+    { name: "open", type: "boolean", description: "Controlled open state" },
+    { name: "onOpenChange", type: "(open: boolean) => void", description: "Callback when open state changes" },
+    { name: "children", type: "ReactNode", required: true, description: "Dialog content" },
+  ]}
+/>
+
+### AlertDialogTrigger
+
+The button that opens the dialog.
+
+<PropsTable
+  data={[
+    { name: "asChild", type: "boolean", default: "false", description: "Merge props onto child element" },
+    { name: "className", type: "string", description: "CSS classes for styling" },
+    { name: "children", type: "ReactNode", required: true, description: "Trigger content" },
+  ]}
+/>
+
+### AlertDialogContent
+
+Container for the dialog content.
+
+<PropsTable
+  data={[
+    { name: "className", type: "string", description: "CSS classes for styling (web only)" },
+    { name: "children", type: "ReactNode", required: true, description: "Dialog content" },
+  ]}
+/>
+
+### AlertDialogInput
+
+Text input field for prompt dialogs.
+
+<PropsTable
+  data={[
+    { name: "type", type: '"plain-text" | "secure-text" | "login-password"', default: '"plain-text"', description: "Input type" },
+    { name: "defaultValue", type: "string", description: "Initial value" },
+    { name: "placeholder", type: "string", description: "Placeholder text (web only)" },
+    { name: "keyboardType", type: "KeyboardTypeOptions", description: "Keyboard type (native only)" },
+    { name: "className", type: "string", description: "CSS classes for styling (web only)" },
+  ]}
+/>
+
+### AlertDialogAction
+
+Primary action button.
+
+<PropsTable
+  data={[
+    { name: "onPress", type: "(value?: string) => void", description: "Callback when pressed. Receives input value if AlertDialogInput is present." },
+    { name: "className", type: "string", description: "CSS classes for styling (web only)" },
+    { name: "children", type: "ReactNode", required: true, description: "Button text" },
+  ]}
+/>
+
+
+### AlertDialogCancel
+
+Cancel/dismiss button.
+
+<PropsTable
+  data={[
+    { name: "onPress", type: "(value?: string) => void", description: "Callback when pressed" },
+    { name: "className", type: "string", description: "CSS classes for styling (web only)" },
+    { name: "children", type: "ReactNode", required: true, description: "Button text" },
+  ]}
+/>
+
+### AlertDialogDestructive
+
+Destructive action button (styled in red).
+
+<PropsTable
+  data={[
+    { name: "onPress", type: "(value?: string) => void", description: "Callback when pressed" },
+    { name: "className", type: "string", description: "CSS classes for styling (web only)" },
+    { name: "children", type: "ReactNode", required: true, description: "Button text" },
+  ]}
+/>
+
+## Platform Differences
+
+
+### Native (iOS/Android)
+
+- Uses React Native's `Alert.alert()` API
+- When `AlertDialogInput` is present, uses `Alert.prompt()` on iOS
+- Button styles (`cancel`, `destructive`, `default`) are rendered natively
+- `className` props on content components have no effect
+- Dialog appears as a native system alert
+
+### Web
+
+- Uses Radix UI's AlertDialog primitives
+- Renders a styled modal with backdrop
+- Full support for `className` styling
+- `AlertDialogInput` renders as a styled HTML input
+- Supports animations via Tailwind CSS
+
+## Accessibility
+
+- On web, the dialog traps focus and can be dismissed with Escape
+- Screen readers announce the dialog title and description
+- Action buttons are properly labeled
+- Native alerts inherit platform accessibility features
