@@ -130,6 +130,7 @@ Each component should have:
 | Tabs/Segments | `@react-native-segmented-control` | Radix Tabs |
 | Context Menus | Native context menu APIs | Radix Context Menu |
 | Switches | React Native `Switch` | Custom styled component |
+| Accordion/Collapsible | react-native-reanimated (layout + fade) | Radix Accordion + CSS keyframes |
 | Simple components | Direct implementation | Same or enhanced with hover states |
 
 ### Compound Component Pattern
@@ -159,7 +160,12 @@ function ComponentItem({ children }) {
 
 // 4. Attach sub-components as static properties
 Component.Item = ComponentItem;
+
+// 5. Export hook for custom implementations
+export { useComponentContext as useComponentItem };
 ```
+
+**Why export the hook?** This allows users to build custom sub-components that need access to the parent's state (e.g., custom accordion indicators that need `isExpanded`).
 
 ### Props Conventions
 
@@ -285,3 +291,5 @@ Read these documents when working on specific topics:
 |-------|----------|--------------|
 | CSS/Styling Issues | `docs/references/react-native-css-differences.md` | When Tailwind classes don't work on native, layout issues, sizing problems |
 | Testing Native Views | `docs/references/testing-native-views.md` | When debugging native layouts, verifying component dimensions, using xcobra |
+| Animations | `docs/references/animations.md` | When implementing animations, accordion/collapsible components, layout transitions |
+| MDX Documentation | `docs/references/mdx-documentation.md` | When writing component documentation, MDX limitations, ComponentPreview usage |
