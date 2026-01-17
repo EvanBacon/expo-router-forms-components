@@ -30,12 +30,16 @@ export type ChatScrollViewProps<T = any> = LegendListProps<T> & {
   ref: ChatScrollViewRef;
 };
 
+const AnimatedLegendListComponent =
+  Animated.createAnimatedComponent(LegendList);
+const AnimatedKeyboardGestureArea =
+  Animated.createAnimatedComponent(KeyboardGestureArea);
+
 const MeasureNodeContext = React.createContext<{
   uiHeight: SharedValue<number>;
 } | null>(null);
 
 function MeasureNode(props: { children?: React.ReactNode }) {
-  // const [frame, setFrame] = React.useState({ x: 0, y: 0, width: 0, height: 0 });
   const uiHeight = useSharedValue(0);
   return (
     <MeasureNodeContext
@@ -68,7 +72,6 @@ MeasureNode.Trigger = function Trigger(props: { children?: React.ReactNode }) {
 
   const onLayout = React.useCallback(
     ({ nativeEvent: { layout } }) => {
-      // setFrame(layout);
       uiHeight.set(layout.height);
     },
     [uiHeight]
@@ -86,11 +89,6 @@ MeasureNode.useHeightSharedValue = function useFrame() {
   }
   return context.uiHeight;
 };
-
-const AnimatedLegendListComponent =
-  Animated.createAnimatedComponent(LegendList);
-const AnimatedKeyboardGestureArea =
-  Animated.createAnimatedComponent(KeyboardGestureArea);
 
 export function Chat(props: { children?: React.ReactNode }) {
   return (
@@ -138,8 +136,6 @@ function ChatViewToolbarPadding(
         : Math.abs(height.get());
     return {
       bottom: Math.max(paddingBottom, absMax),
-      // bottom: 0,
-      // transform: [{ translateY: -Math.max(paddingBottom, absMax) }],
     };
   }, [paddingBottom, toolbarHeightSharedValue, height, keyboard, progress]);
 
@@ -284,7 +280,7 @@ function ChatScrollView<T>({
         Math.max(0, Math.abs(height.get()) - bottom) +
         toolbarHeightSharedValue.get(),
     };
-  }, [toolbarHeightSharedValue, bottom, height, headerHeight]);
+  }, [toolbarHeightSharedValue, bottom, height]);
 
   const animatedProps = useAnimatedProps(() => {
     return {
