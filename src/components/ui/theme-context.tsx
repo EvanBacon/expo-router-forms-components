@@ -169,12 +169,9 @@ export function ThemeContextProvider({
   defaultMode = "system",
 }: ThemeContextProviderProps) {
   // Initialize from localStorage on web, otherwise use defaultMode
-  const [mode, setModeState] = useState<ThemeMode>(() => {
-    if (process.env.EXPO_OS === "web") {
-      return getStoredTheme() ?? defaultMode;
-    }
-    return defaultMode;
-  });
+  const [mode, setModeState] = useState<ThemeMode>(
+    () => getStoredTheme() ?? defaultMode
+  );
 
   // Get the current system color scheme
   const systemColorScheme = useColorScheme();

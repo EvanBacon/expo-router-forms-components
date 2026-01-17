@@ -40,11 +40,13 @@ import { Rounded } from "@/components/ui/rounded";
 import { HTMLPictureExample } from "@/components/example/html-picture";
 import { toast } from "@/utils/toast";
 
-//
-  import { html } from "@/html";
+import { ChatExample } from "@/components/example/chat-example";
 
+export default function Page2() {
+  return <ChatExample />;
+}
 
-export default function Page() {
+export function Page() {
   const ref = useAnimatedRef();
   const scroll = useScrollViewOffset(ref);
   const style = useAnimatedStyle(() => {
@@ -60,7 +62,6 @@ export default function Page() {
 
   return (
     <View className="flex-1">
-
       {show && <GlurryList setShow={setShow} />}
       <Stack.Screen
         options={{
@@ -92,7 +93,6 @@ export default function Page() {
                 Learn more...
               </Form.Link>
             </Form.Text>
-
           </Rounded>
         </Form.Section>
 
