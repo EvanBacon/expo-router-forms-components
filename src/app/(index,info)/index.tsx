@@ -72,7 +72,11 @@ export default function Page() {
           ),
         }}
       />
-      <Form.List ref={ref} navigationTitle="Components">
+      <Form.List
+        ref={ref}
+        navigationTitle="Components"
+        contentContainerClassName="web:mx-auto web:w-full web:max-w-3xl"
+      >
         <Form.Section>
           <Rounded padding className="items-center gap-2">
             <Image

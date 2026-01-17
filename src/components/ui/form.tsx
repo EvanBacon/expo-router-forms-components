@@ -282,7 +282,8 @@ export function FormItem({
         onPress={onPress}
         onLongPress={onLongPress}
         className={cn(
-          "web:hover:bg-sf-fill web:transition-colors",
+          "web:transition-colors web:duration-150",
+          "web:hover:bg-sf-fill-2 web:active:bg-sf-fill",
           disabled && "opacity-50"
         )}
         disabled={disabled}
@@ -300,6 +301,11 @@ export function FormItem({
         ref={ref}
         underlayColor={systemGray4}
         disabled={disabled}
+        className={cn(
+          "web:transition-colors web:duration-150",
+          "web:hover:bg-sf-fill-2 web:active:bg-sf-fill",
+          disabled && "opacity-50"
+        )}
       >
         <View style={resolvedStyle}>
           <HStack className="min-h-5">{children}</HStack>
