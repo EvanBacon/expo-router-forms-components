@@ -1,0 +1,650 @@
+---
+title: Accordion
+---
+
+import { Accordion } from "@/components/ui/accordion";
+import { SFIcon } from "@/components/ui/sf-icon";
+import { InstallBlock, ComponentPreview, PropsTable } from "@/components/docs";
+import { html as xhtml } from "@/html";
+import { View, Text } from "@/tw";
+
+A vertically stacked set of interactive headings that each reveal a section of content. Uses react-native-reanimated on native and Radix UI Accordion on web.
+
+## Installation
+
+<InstallBlock packages="@radix-ui/react-accordion" />
+
+## Usage
+
+```tsx
+import { Accordion } from "@/components/ui/accordion";
+```
+
+## Examples
+
+### Default
+
+A basic FAQ-style accordion with collapsible items.
+
+<ComponentPreview
+  title="Default Accordion"
+  code={`<Accordion type="single" collapsible defaultValue="item-1">
+  <Accordion.Item value="item-1">
+    <Accordion.Trigger>How do I place an order?</Accordion.Trigger>
+    <Accordion.Content>
+      <Text className="text-sf-text-2">
+        You can place an order by browsing our products, adding items to your cart, and proceeding to checkout. We accept all major credit cards and PayPal.
+      </Text>
+    </Accordion.Content>
+  </Accordion.Item>
+  <Accordion.Item value="item-2">
+    <Accordion.Trigger>Can I modify my order?</Accordion.Trigger>
+    <Accordion.Content>
+      <Text className="text-sf-text-2">
+        Yes, you can modify your order within 24 hours of placing it. Contact our support team or visit your order history to make changes.
+      </Text>
+    </Accordion.Content>
+  </Accordion.Item>
+  <Accordion.Item value="item-3">
+    <Accordion.Trigger>What are the shipping costs?</Accordion.Trigger>
+    <Accordion.Content>
+      <Text className="text-sf-text-2">
+        Shipping costs vary based on your location and the size of your order. Free shipping is available for orders over $50.
+      </Text>
+    </Accordion.Content>
+  </Accordion.Item>
+</Accordion>`}
+>
+  <xhtml.div className="w-full">
+    <Accordion type="single" collapsible defaultValue="item-1">
+      <Accordion.Item value="item-1">
+        <Accordion.Trigger>How do I place an order?</Accordion.Trigger>
+        <Accordion.Content>
+          <Text className="text-sf-text-2">
+            You can place an order by browsing our products, adding items to your cart, and proceeding to checkout. We accept all major credit cards and PayPal.
+          </Text>
+        </Accordion.Content>
+      </Accordion.Item>
+      <Accordion.Item value="item-2">
+        <Accordion.Trigger>Can I modify my order?</Accordion.Trigger>
+        <Accordion.Content>
+          <Text className="text-sf-text-2">
+            Yes, you can modify your order within 24 hours of placing it. Contact our support team or visit your order history to make changes.
+          </Text>
+        </Accordion.Content>
+      </Accordion.Item>
+      <Accordion.Item value="item-3">
+        <Accordion.Trigger>What are the shipping costs?</Accordion.Trigger>
+        <Accordion.Content>
+          <Text className="text-sf-text-2">
+            Shipping costs vary based on your location and the size of your order. Free shipping is available for orders over $50.
+          </Text>
+        </Accordion.Content>
+      </Accordion.Item>
+    </Accordion>
+  </xhtml.div>
+</ComponentPreview>
+
+### With Icons
+
+Add icons to accordion triggers for visual context.
+
+<ComponentPreview
+  title="Accordion with Icons"
+  code={`<Accordion type="single" collapsible>
+  <Accordion.Item value="item-1">
+    <Accordion.Trigger>
+      <View className="flex-row items-center gap-3">
+        <SFIcon name="cart" size={20} className="text-sf-blue" />
+        <Text className="text-sf-text font-medium">Orders & Shipping</Text>
+      </View>
+    </Accordion.Trigger>
+    <Accordion.Content>
+      <Text className="text-sf-text-2">
+        Track your orders, manage shipping preferences, and view delivery estimates all in one place.
+      </Text>
+    </Accordion.Content>
+  </Accordion.Item>
+  <Accordion.Item value="item-2">
+    <Accordion.Trigger>
+      <View className="flex-row items-center gap-3">
+        <SFIcon name="creditcard" size={20} className="text-sf-green" />
+        <Text className="text-sf-text font-medium">Payment Methods</Text>
+      </View>
+    </Accordion.Trigger>
+    <Accordion.Content>
+      <Text className="text-sf-text-2">
+        We accept Visa, Mastercard, American Express, PayPal, and Apple Pay for your convenience.
+      </Text>
+    </Accordion.Content>
+  </Accordion.Item>
+  <Accordion.Item value="item-3">
+    <Accordion.Trigger>
+      <View className="flex-row items-center gap-3">
+        <SFIcon name="arrow.uturn.backward" size={20} className="text-sf-orange" />
+        <Text className="text-sf-text font-medium">Returns & Refunds</Text>
+      </View>
+    </Accordion.Trigger>
+    <Accordion.Content>
+      <Text className="text-sf-text-2">
+        Easy 30-day returns on most items. Refunds are processed within 5-7 business days.
+      </Text>
+    </Accordion.Content>
+  </Accordion.Item>
+</Accordion>`}
+>
+  <xhtml.div className="w-full">
+    <Accordion type="single" collapsible>
+      <Accordion.Item value="item-1">
+        <Accordion.Trigger>
+          <View className="flex-row items-center gap-3">
+            <SFIcon name="cart" size={20} className="text-sf-blue" />
+            <Text className="text-sf-text font-medium">Orders & Shipping</Text>
+          </View>
+        </Accordion.Trigger>
+        <Accordion.Content>
+          <Text className="text-sf-text-2">
+            Track your orders, manage shipping preferences, and view delivery estimates all in one place.
+          </Text>
+        </Accordion.Content>
+      </Accordion.Item>
+      <Accordion.Item value="item-2">
+        <Accordion.Trigger>
+          <View className="flex-row items-center gap-3">
+            <SFIcon name="creditcard" size={20} className="text-sf-green" />
+            <Text className="text-sf-text font-medium">Payment Methods</Text>
+          </View>
+        </Accordion.Trigger>
+        <Accordion.Content>
+          <Text className="text-sf-text-2">
+            We accept Visa, Mastercard, American Express, PayPal, and Apple Pay for your convenience.
+          </Text>
+        </Accordion.Content>
+      </Accordion.Item>
+      <Accordion.Item value="item-3">
+        <Accordion.Trigger>
+          <View className="flex-row items-center gap-3">
+            <SFIcon name="arrow.uturn.backward" size={20} className="text-sf-orange" />
+            <Text className="text-sf-text font-medium">Returns & Refunds</Text>
+          </View>
+        </Accordion.Trigger>
+        <Accordion.Content>
+          <Text className="text-sf-text-2">
+            Easy 30-day returns on most items. Refunds are processed within 5-7 business days.
+          </Text>
+        </Accordion.Content>
+      </Accordion.Item>
+    </Accordion>
+  </xhtml.div>
+</ComponentPreview>
+
+### Multiple Selection
+
+Allow multiple items to be expanded simultaneously.
+
+<ComponentPreview
+  title="Multiple Selection"
+  code={`<Accordion type="multiple" defaultValue={["item-1", "item-3"]}>
+  <Accordion.Item value="item-1">
+    <Accordion.Trigger>Personal Information</Accordion.Trigger>
+    <Accordion.Content>
+      <Text className="text-sf-text-2">
+        Update your name, email, phone number, and profile picture. Your information is securely stored and never shared.
+      </Text>
+    </Accordion.Content>
+  </Accordion.Item>
+  <Accordion.Item value="item-2">
+    <Accordion.Trigger>Security Settings</Accordion.Trigger>
+    <Accordion.Content>
+      <Text className="text-sf-text-2">
+        Manage your password, enable two-factor authentication, and review recent login activity.
+      </Text>
+    </Accordion.Content>
+  </Accordion.Item>
+  <Accordion.Item value="item-3">
+    <Accordion.Trigger>Notification Preferences</Accordion.Trigger>
+    <Accordion.Content>
+      <Text className="text-sf-text-2">
+        Choose how and when you receive notifications. Customize email, push, and SMS preferences.
+      </Text>
+    </Accordion.Content>
+  </Accordion.Item>
+</Accordion>`}
+>
+  <xhtml.div className="w-full">
+    <Accordion type="multiple" defaultValue={["item-1", "item-3"]}>
+      <Accordion.Item value="item-1">
+        <Accordion.Trigger>Personal Information</Accordion.Trigger>
+        <Accordion.Content>
+          <Text className="text-sf-text-2">
+            Update your name, email, phone number, and profile picture. Your information is securely stored and never shared.
+          </Text>
+        </Accordion.Content>
+      </Accordion.Item>
+      <Accordion.Item value="item-2">
+        <Accordion.Trigger>Security Settings</Accordion.Trigger>
+        <Accordion.Content>
+          <Text className="text-sf-text-2">
+            Manage your password, enable two-factor authentication, and review recent login activity.
+          </Text>
+        </Accordion.Content>
+      </Accordion.Item>
+      <Accordion.Item value="item-3">
+        <Accordion.Trigger>Notification Preferences</Accordion.Trigger>
+        <Accordion.Content>
+          <Text className="text-sf-text-2">
+            Choose how and when you receive notifications. Customize email, push, and SMS preferences.
+          </Text>
+        </Accordion.Content>
+      </Accordion.Item>
+    </Accordion>
+  </xhtml.div>
+</ComponentPreview>
+
+### Without Borders
+
+Remove the default border styling for a cleaner look.
+
+<ComponentPreview
+  title="Borderless Accordion"
+  code={`<Accordion type="single" collapsible>
+  <Accordion.Item value="item-1" className="border-0">
+    <Accordion.Trigger className="bg-sf-fill rounded-lg px-4">
+      Getting Started
+    </Accordion.Trigger>
+    <Accordion.Content className="px-4">
+      <Text className="text-sf-text-2">
+        Welcome! Follow our quick start guide to set up your account and explore all features.
+      </Text>
+    </Accordion.Content>
+  </Accordion.Item>
+  <Accordion.Item value="item-2" className="border-0 mt-2">
+    <Accordion.Trigger className="bg-sf-fill rounded-lg px-4">
+      Advanced Features
+    </Accordion.Trigger>
+    <Accordion.Content className="px-4">
+      <Text className="text-sf-text-2">
+        Unlock powerful tools for automation, analytics, and team collaboration.
+      </Text>
+    </Accordion.Content>
+  </Accordion.Item>
+</Accordion>`}
+>
+  <xhtml.div className="w-full">
+    <Accordion type="single" collapsible>
+      <Accordion.Item value="item-1" className="border-0">
+        <Accordion.Trigger className="bg-sf-fill rounded-lg px-4">
+          Getting Started
+        </Accordion.Trigger>
+        <Accordion.Content className="px-4">
+          <Text className="text-sf-text-2">
+            Welcome! Follow our quick start guide to set up your account and explore all features.
+          </Text>
+        </Accordion.Content>
+      </Accordion.Item>
+      <Accordion.Item value="item-2" className="border-0 mt-2">
+        <Accordion.Trigger className="bg-sf-fill rounded-lg px-4">
+          Advanced Features
+        </Accordion.Trigger>
+        <Accordion.Content className="px-4">
+          <Text className="text-sf-text-2">
+            Unlock powerful tools for automation, analytics, and team collaboration.
+          </Text>
+        </Accordion.Content>
+      </Accordion.Item>
+    </Accordion>
+  </xhtml.div>
+</ComponentPreview>
+
+### Rich Content
+
+Accordion content can include any components, not just text.
+
+<ComponentPreview
+  title="Rich Content"
+  code={`<Accordion type="single" collapsible defaultValue="item-1">
+  <Accordion.Item value="item-1">
+    <Accordion.Trigger>App Features</Accordion.Trigger>
+    <Accordion.Content>
+      <View className="gap-3">
+        <View className="flex-row items-center gap-2">
+          <SFIcon name="checkmark.circle.fill" size={18} className="text-sf-green" />
+          <Text className="text-sf-text">Offline mode support</Text>
+        </View>
+        <View className="flex-row items-center gap-2">
+          <SFIcon name="checkmark.circle.fill" size={18} className="text-sf-green" />
+          <Text className="text-sf-text">Real-time sync</Text>
+        </View>
+        <View className="flex-row items-center gap-2">
+          <SFIcon name="checkmark.circle.fill" size={18} className="text-sf-green" />
+          <Text className="text-sf-text">End-to-end encryption</Text>
+        </View>
+        <View className="flex-row items-center gap-2">
+          <SFIcon name="checkmark.circle.fill" size={18} className="text-sf-green" />
+          <Text className="text-sf-text">Cross-platform support</Text>
+        </View>
+      </View>
+    </Accordion.Content>
+  </Accordion.Item>
+  <Accordion.Item value="item-2">
+    <Accordion.Trigger>System Requirements</Accordion.Trigger>
+    <Accordion.Content>
+      <View className="gap-2">
+        <Text className="text-sf-text font-medium">iOS</Text>
+        <Text className="text-sf-text-2 ml-4">iOS 15.0 or later</Text>
+        <Text className="text-sf-text font-medium mt-2">Android</Text>
+        <Text className="text-sf-text-2 ml-4">Android 10 or later</Text>
+        <Text className="text-sf-text font-medium mt-2">Web</Text>
+        <Text className="text-sf-text-2 ml-4">Chrome, Safari, Firefox, Edge</Text>
+      </View>
+    </Accordion.Content>
+  </Accordion.Item>
+</Accordion>`}
+>
+  <xhtml.div className="w-full">
+    <Accordion type="single" collapsible defaultValue="item-1">
+      <Accordion.Item value="item-1">
+        <Accordion.Trigger>App Features</Accordion.Trigger>
+        <Accordion.Content>
+          <View className="gap-3">
+            <View className="flex-row items-center gap-2">
+              <SFIcon name="checkmark.circle.fill" size={18} className="text-sf-green" />
+              <Text className="text-sf-text">Offline mode support</Text>
+            </View>
+            <View className="flex-row items-center gap-2">
+              <SFIcon name="checkmark.circle.fill" size={18} className="text-sf-green" />
+              <Text className="text-sf-text">Real-time sync</Text>
+            </View>
+            <View className="flex-row items-center gap-2">
+              <SFIcon name="checkmark.circle.fill" size={18} className="text-sf-green" />
+              <Text className="text-sf-text">End-to-end encryption</Text>
+            </View>
+            <View className="flex-row items-center gap-2">
+              <SFIcon name="checkmark.circle.fill" size={18} className="text-sf-green" />
+              <Text className="text-sf-text">Cross-platform support</Text>
+            </View>
+          </View>
+        </Accordion.Content>
+      </Accordion.Item>
+      <Accordion.Item value="item-2">
+        <Accordion.Trigger>System Requirements</Accordion.Trigger>
+        <Accordion.Content>
+          <View className="gap-2">
+            <Text className="text-sf-text font-medium">iOS</Text>
+            <Text className="text-sf-text-2 ml-4">iOS 15.0 or later</Text>
+            <Text className="text-sf-text font-medium mt-2">Android</Text>
+            <Text className="text-sf-text-2 ml-4">Android 10 or later</Text>
+            <Text className="text-sf-text font-medium mt-2">Web</Text>
+            <Text className="text-sf-text-2 ml-4">Chrome, Safari, Firefox, Edge</Text>
+          </View>
+        </Accordion.Content>
+      </Accordion.Item>
+    </Accordion>
+  </xhtml.div>
+</ComponentPreview>
+
+### Custom Indicator
+
+Replace the default chevron with a custom indicator using the `indicator` prop. Use the `useAccordionItem` hook to access the expanded state.
+
+```tsx
+import { Accordion, useAccordionItem } from "@/components/ui/accordion";
+
+function PlusMinusIndicator() {
+  const { isExpanded } = useAccordionItem();
+  return (
+    <View className="h-5 w-5 items-center justify-center rounded-full bg-sf-fill">
+      <SFIcon
+        name={isExpanded ? "minus" : "plus"}
+        size={12}
+        className="text-sf-text-2"
+      />
+    </View>
+  );
+}
+
+<Accordion type="single" collapsible>
+  <Accordion.Item value="item-1">
+    <Accordion.Trigger indicator={<PlusMinusIndicator />}>
+      What payment methods do you accept?
+    </Accordion.Trigger>
+    <Accordion.Content>
+      <Text>We accept all major credit cards, PayPal, and Apple Pay.</Text>
+    </Accordion.Content>
+  </Accordion.Item>
+</Accordion>
+```
+
+You can also pass a static element as the indicator:
+
+<ComponentPreview
+  title="Static Custom Indicator"
+  code={`<Accordion type="single" collapsible>
+  <Accordion.Item value="item-1">
+    <Accordion.Trigger
+      indicator={
+        <View className="h-5 w-5 items-center justify-center rounded-full bg-sf-blue">
+          <SFIcon name="info" size={12} className="text-white" />
+        </View>
+      }
+    >
+      What payment methods do you accept?
+    </Accordion.Trigger>
+    <Accordion.Content>
+      <Text className="text-sf-text-2">
+        We accept all major credit cards, PayPal, and Apple Pay.
+      </Text>
+    </Accordion.Content>
+  </Accordion.Item>
+</Accordion>`}
+>
+  <xhtml.div className="w-full">
+    <Accordion type="single" collapsible>
+      <Accordion.Item value="item-1">
+        <Accordion.Trigger
+          indicator={
+            <View className="h-5 w-5 items-center justify-center rounded-full bg-sf-blue">
+              <SFIcon name="info" size={12} className="text-white" />
+            </View>
+          }
+        >
+          <Text className="text-sf-text font-medium">What payment methods do you accept?</Text>
+        </Accordion.Trigger>
+        <Accordion.Content>
+          <Text className="text-sf-text-2">
+            We accept all major credit cards, PayPal, and Apple Pay.
+          </Text>
+        </Accordion.Content>
+      </Accordion.Item>
+    </Accordion>
+  </xhtml.div>
+</ComponentPreview>
+
+### No Indicator
+
+Hide the indicator entirely by setting `indicator={false}`.
+
+<ComponentPreview
+  title="No Indicator"
+  code={`<Accordion type="single" collapsible>
+  <Accordion.Item value="item-1">
+    <Accordion.Trigger indicator={false}>
+      <View className="flex-row items-center justify-between w-full">
+        <Text className="text-sf-text font-medium">Tap anywhere to expand</Text>
+        <Text className="text-sf-text-3 text-sm">Details</Text>
+      </View>
+    </Accordion.Trigger>
+    <Accordion.Content>
+      <Text className="text-sf-text-2">
+        This accordion has no indicator icon, useful for custom layouts.
+      </Text>
+    </Accordion.Content>
+  </Accordion.Item>
+</Accordion>`}
+>
+  <xhtml.div className="w-full">
+    <Accordion type="single" collapsible>
+      <Accordion.Item value="item-1">
+        <Accordion.Trigger indicator={false}>
+          <View className="flex-row items-center justify-between w-full">
+            <Text className="text-sf-text font-medium">Tap anywhere to expand</Text>
+            <Text className="text-sf-text-3 text-sm">Details</Text>
+          </View>
+        </Accordion.Trigger>
+        <Accordion.Content>
+          <Text className="text-sf-text-2">
+            This accordion has no indicator icon, useful for custom layouts.
+          </Text>
+        </Accordion.Content>
+      </Accordion.Item>
+    </Accordion>
+  </xhtml.div>
+</ComponentPreview>
+
+## API Reference
+
+### Accordion
+
+The root container for the accordion.
+
+<PropsTable
+  data={[
+    {
+      name: "type",
+      type: '"single" | "multiple"',
+      default: '"single"',
+      description: "Whether single or multiple items can be expanded at once",
+    },
+    {
+      name: "defaultValue",
+      type: "string | string[]",
+      description: "The value of the item(s) to expand by default",
+    },
+    {
+      name: "value",
+      type: "string | string[]",
+      description: "The controlled value of the expanded item(s)",
+    },
+    {
+      name: "onValueChange",
+      type: "(value: string | string[]) => void",
+      description: "Callback when the expanded item(s) change",
+    },
+    {
+      name: "collapsible",
+      type: "boolean",
+      default: "false",
+      description: "When type is 'single', allows closing all items",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "CSS classes for styling the container",
+    },
+  ]}
+/>
+
+### Accordion.Item
+
+A single accordion item containing a trigger and content.
+
+<PropsTable
+  data={[
+    {
+      name: "value",
+      type: "string",
+      required: true,
+      description: "A unique value for this item",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "CSS classes for styling the item",
+    },
+  ]}
+/>
+
+### Accordion.Trigger
+
+The button that toggles the accordion item.
+
+<PropsTable
+  data={[
+    {
+      name: "children",
+      type: "ReactNode",
+      description: "The trigger content (text or custom components)",
+    },
+    {
+      name: "indicator",
+      type: "ReactNode | false",
+      description: "Custom indicator element, or false to hide the indicator",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "CSS classes for styling the trigger",
+    },
+  ]}
+/>
+
+### Accordion.Content
+
+The content revealed when the accordion item is expanded.
+
+<PropsTable
+  data={[
+    {
+      name: "children",
+      type: "ReactNode",
+      description: "The content to display when expanded",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "CSS classes for styling the content",
+    },
+  ]}
+/>
+
+### useAccordionItem
+
+A hook to access the accordion item state. Useful for building custom indicators.
+
+```tsx
+import { useAccordionItem } from "@/components/ui/accordion";
+
+function CustomIndicator() {
+  const { isExpanded, toggle } = useAccordionItem();
+  return <Text>{isExpanded ? "Open" : "Closed"}</Text>;
+}
+```
+
+**Returns:**
+- `isExpanded: boolean` - Whether the item is currently expanded
+- `toggle: () => void` - Function to toggle the item's expanded state
+- `value: string` - The item's value
+
+## Platform Differences
+
+### Native (iOS/Android)
+
+- Uses react-native-reanimated for smooth height and opacity animations
+- Chevron icon animates rotation using shared values
+- Content height is measured on first render for accurate animations
+- SF Symbols used for the chevron indicator
+
+### Web
+
+- Uses Radix UI Accordion primitives for accessibility
+- CSS keyframe animations for expand/collapse
+- Built-in keyboard navigation support
+- `data-slot` attributes for styling with CSS selectors
+- Lucide icons used for the chevron indicator
+
+## Accessibility
+
+- Trigger buttons have proper ARIA attributes (`aria-expanded`, `aria-controls`)
+- Keyboard navigation: Enter/Space to toggle, Arrow keys to navigate between items
+- Screen reader support through semantic HTML on web
+- Focus management handled automatically
