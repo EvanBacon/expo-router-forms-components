@@ -660,6 +660,8 @@ export function Section({
       child = React.cloneElement(child, {
         className: cn(
           "text-sf-text text-lg web:items-stretch web:flex-col web:flex",
+          "web:transition-colors web:duration-150",
+          "web:hover:bg-sf-fill-2 web:active:bg-sf-fill",
           resolvedProps.className
         ),
         dynamicTypeRamp: "body",
