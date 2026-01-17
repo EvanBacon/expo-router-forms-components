@@ -20,6 +20,7 @@
     "@expo-google-fonts/source-code-pro": "^0.3.0",
     "@expo/vector-icons": "^15.0.3",
     "@radix-ui/react-alert-dialog": "^1.1.15",
+    "@radix-ui/react-avatar": "^1.1.11",
     "@radix-ui/react-context-menu": "^2.2.16",
     "@radix-ui/react-switch": "^1.2.6",
     "@radix-ui/react-tabs": "^1.1.13",
@@ -78,6 +79,7 @@
     "eas-cli": "^16.28.0",
     "eslint": "^9.0.0",
     "eslint-config-expo": "~10.0.0",
+    "shadcn": "^3.7.0",
     "typescript": "^5.3.3"
   },
   "private": true

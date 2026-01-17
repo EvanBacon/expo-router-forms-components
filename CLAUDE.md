@@ -276,3 +276,12 @@ Core workflow:
 2. `bunx agent-browser snapshot -i` - Get interactive elements with refs (@e1, @e2)
 3. `bunx agent-browser click @e1` / `fill @e2 "text"` - Interact using refs
 4. Re-snapshot after page changes
+
+## References
+
+Read these documents when working on specific topics:
+
+| Topic | Document | When to Read |
+|-------|----------|--------------|
+| CSS/Styling Issues | `docs/references/react-native-css-differences.md` | When Tailwind classes don't work on native, layout issues, sizing problems |
+| Testing Native Views | `docs/references/testing-native-views.md` | When debugging native layouts, verifying component dimensions, using xcobra |

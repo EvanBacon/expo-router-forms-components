@@ -1,0 +1,267 @@
+---
+title: Avatar
+---
+
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { InstallBlock, ComponentPreview, PropsTable } from "@/components/docs";
+import { html as xhtml } from "@/html";
+
+An image element with a fallback for representing the user. Uses expo-image on native and Radix UI Avatar on web.
+
+## Installation
+
+<InstallBlock packages="@radix-ui/react-avatar" />
+
+## Usage
+
+```tsx
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+```
+
+## Examples
+
+### Basic Avatar
+
+A simple avatar with an image and fallback initials.
+
+<ComponentPreview
+  title="Basic Avatar"
+  code={`<Avatar>
+  <AvatarImage src="https://github.com/evanbacon.png" alt="@evanbacon" />
+  <AvatarFallback>EB</AvatarFallback>
+</Avatar>`}
+>
+  <Avatar>
+    <AvatarImage src="https://github.com/evanbacon.png" alt="@evanbacon" />
+    <AvatarFallback>EB</AvatarFallback>
+  </Avatar>
+</ComponentPreview>
+
+### Fallback Only
+
+When no image is provided or the image fails to load, the fallback is displayed.
+
+<ComponentPreview
+  title="Fallback Avatar"
+  code={`<Avatar>
+  <AvatarFallback>EB</AvatarFallback>
+</Avatar>`}
+>
+  <Avatar>
+    <AvatarFallback>EB</AvatarFallback>
+  </Avatar>
+</ComponentPreview>
+
+### Custom Sizes
+
+Customize the avatar size using Tailwind classes.
+
+<ComponentPreview
+  title="Avatar Sizes"
+  code={`<Avatar className="h-6 w-6">
+  <AvatarImage src="https://github.com/evanbacon.png" />
+  <AvatarFallback>EB</AvatarFallback>
+</Avatar>
+
+<Avatar className="h-10 w-10">
+  <AvatarImage src="https://github.com/evanbacon.png" />
+  <AvatarFallback>EB</AvatarFallback>
+</Avatar>
+
+<Avatar className="h-14 w-14">
+  <AvatarImage src="https://github.com/evanbacon.png" />
+  <AvatarFallback>EB</AvatarFallback>
+</Avatar>`}
+>
+  <xhtml.div className="flex items-center gap-4">
+    <Avatar className="h-6 w-6">
+      <AvatarImage src="https://github.com/evanbacon.png" alt="@evanbacon" />
+      <AvatarFallback>EB</AvatarFallback>
+    </Avatar>
+    <Avatar className="h-10 w-10">
+      <AvatarImage src="https://github.com/evanbacon.png" alt="@evanbacon" />
+      <AvatarFallback>EB</AvatarFallback>
+    </Avatar>
+    <Avatar className="h-14 w-14">
+      <AvatarImage src="https://github.com/evanbacon.png" alt="@evanbacon" />
+      <AvatarFallback>EB</AvatarFallback>
+    </Avatar>
+  </xhtml.div>
+</ComponentPreview>
+
+### Rounded Variants
+
+Use different border radius values to customize the shape.
+
+<ComponentPreview
+  title="Avatar Shapes"
+  code={`<Avatar className="rounded-full">
+  <AvatarImage src="https://github.com/evanbacon.png" />
+  <AvatarFallback>EB</AvatarFallback>
+</Avatar>
+
+<Avatar className="rounded-lg">
+  <AvatarImage src="https://github.com/evanbacon.png" />
+  <AvatarFallback>EB</AvatarFallback>
+</Avatar>
+
+<Avatar className="rounded-md">
+  <AvatarImage src="https://github.com/evanbacon.png" />
+  <AvatarFallback>EB</AvatarFallback>
+</Avatar>`}
+>
+  <xhtml.div className="flex items-center gap-4">
+    <Avatar className="rounded-full">
+      <AvatarImage src="https://github.com/evanbacon.png" alt="@evanbacon" />
+      <AvatarFallback>EB</AvatarFallback>
+    </Avatar>
+    <Avatar className="rounded-lg">
+      <AvatarImage src="https://github.com/evanbacon.png" alt="@evanbacon" />
+      <AvatarFallback>EB</AvatarFallback>
+    </Avatar>
+    <Avatar className="rounded-md">
+      <AvatarImage src="https://github.com/evanbacon.png" alt="@evanbacon" />
+      <AvatarFallback>EB</AvatarFallback>
+    </Avatar>
+  </xhtml.div>
+</ComponentPreview>
+
+### Avatar Group
+
+Stack avatars together with overlapping effect. Use negative margin on subsequent avatars.
+
+<ComponentPreview
+  title="Avatar Group"
+  code={`<View className="flex-row">
+  <Avatar className="border-2 border-sf-bg">
+    <AvatarImage src="https://github.com/shadcn.png" />
+    <AvatarFallback>CN</AvatarFallback>
+  </Avatar>
+  <Avatar className="border-2 border-sf-bg ml-[-8px]">
+    <AvatarImage src="https://github.com/evanbacon.png" />
+    <AvatarFallback>EB</AvatarFallback>
+  </Avatar>
+  <Avatar className="border-2 border-sf-bg ml-[-8px]">
+    <AvatarImage src="https://github.com/expo.png" />
+    <AvatarFallback>EX</AvatarFallback>
+  </Avatar>
+</View>`}
+>
+  <xhtml.div className="flex flex-row">
+    <Avatar className="border-2 border-sf-bg">
+      <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+      <AvatarFallback>CN</AvatarFallback>
+    </Avatar>
+    <Avatar className="border-2 border-sf-bg ml-[-8px]">
+      <AvatarImage src="https://github.com/evanbacon.png" alt="@evanbacon" />
+      <AvatarFallback>EB</AvatarFallback>
+    </Avatar>
+    <Avatar className="border-2 border-sf-bg ml-[-8px]">
+      <AvatarImage src="https://github.com/expo.png" alt="@expo" />
+      <AvatarFallback>ER</AvatarFallback>
+    </Avatar>
+  </xhtml.div>
+</ComponentPreview>
+
+## API Reference
+
+### Avatar
+
+The root container for the avatar.
+
+<PropsTable
+  data={[
+    {
+      name: "className",
+      type: "string",
+      description: "CSS classes for styling the container",
+    },
+    {
+      name: "children",
+      type: "ReactNode",
+      description: "AvatarImage and AvatarFallback components",
+    },
+  ]}
+/>
+
+### AvatarImage
+
+The image element inside the avatar.
+
+<PropsTable
+  data={[
+    { name: "src", type: "string", description: "URL of the image to display" },
+    {
+      name: "alt",
+      type: "string",
+      description: "Alternative text for the image",
+    },
+    {
+      name: "source",
+      type: "ImageSource",
+      description: "expo-image source object (native only)",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "CSS classes for styling the image",
+    },
+    {
+      name: "onLoad",
+      type: "() => void",
+      description: "Callback when image loads successfully",
+    },
+    {
+      name: "onError",
+      type: "() => void",
+      description: "Callback when image fails to load",
+    },
+  ]}
+/>
+
+### AvatarFallback
+
+The fallback element displayed when the image is loading or fails to load.
+
+<PropsTable
+  data={[
+    {
+      name: "className",
+      type: "string",
+      description: "CSS classes for styling the fallback",
+    },
+    {
+      name: "delayMs",
+      type: "number",
+      default: "0",
+      description: "Delay before showing fallback (useful to avoid flash)",
+    },
+    {
+      name: "children",
+      type: "ReactNode",
+      description: "Fallback content (typically initials or an icon)",
+    },
+  ]}
+/>
+
+## Platform Differences
+
+### Native (iOS/Android)
+
+- Uses expo-image for optimized image loading with caching
+- Supports all expo-image props on AvatarImage
+- React Context used to coordinate image/fallback visibility
+- `data-slot` attribute has no effect
+
+### Web
+
+- Uses Radix UI Avatar primitives
+- Built-in image loading state management
+- `data-slot` attributes for styling with CSS selectors
+- Supports delayed fallback rendering
+
+## Accessibility
+
+- Images include `alt` text for screen readers
+- Fallback content provides alternative identification
+- Radix UI primitives handle ARIA attributes automatically on web
