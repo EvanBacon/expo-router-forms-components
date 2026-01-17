@@ -1,10 +1,33 @@
 "use client";
 
 import * as React from "react";
-import { Stack as ExpoStack, useRouter } from "expo-router";
+import { Stack as ExpoStack, useRouter, useNavigation } from "expo-router";
 import { cn } from "@/lib/utils";
 import { SFIcon } from "@/components/ui/sf-icon";
 import { useTabBarController, ProgressiveBlurBackdrop } from "@/components/ui/tab-bar-controller.web";
+
+/**
+ * Hook to reactively check if navigation can go back.
+ * Uses navigation.canGoBack() but subscribes to state changes
+ * to trigger re-renders when the navigation state changes.
+ */
+function useCanGoBack(): boolean {
+  const navigation = useNavigation();
+
+  const getSnapshot = React.useCallback(() => {
+    return navigation.canGoBack();
+  }, [navigation]);
+
+  const subscribe = React.useCallback(
+    (callback: () => void) => {
+      const unsubscribe = navigation.addListener("state", callback);
+      return unsubscribe;
+    },
+    [navigation]
+  );
+
+  return React.useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
+}
 
 /* ----------------------------------------------------------------------------------
  * Stack Header Context
@@ -104,15 +127,9 @@ function TabBarAwareProviderFallback({ children }: { children: React.ReactNode }
 function WebStackHeader() {
   const router = useRouter();
   const { isSidebarOpen, isInsideTabBar, headerConfig } = useStackHeaderContext();
+  const canGoBack = useCanGoBack();
 
   const { title, headerLeft, headerRight, headerShown = true } = headerConfig;
-
-  // Check if we should show the back button
-  // Use pathname to determine if we're at the root - more reliable than navigation state
-  const pathname = typeof window !== "undefined" ? window.location.pathname : "/";
-  // Root paths end with just "/" or "/index" or match the tab pattern like "/(index)"
-  const isRootScreen = pathname === "/" || pathname.endsWith("/index") || /^\/\([^)]+\)\/?$/.test(pathname);
-  const canGoBack = !isRootScreen;
 
   if (!headerShown) {
     return null;
@@ -576,5 +593,6 @@ export {
   HeaderButton,
   useStackHeaderContext,
   useStackHeaderConfig,
+  useCanGoBack,
   StackHeaderContext,
 };

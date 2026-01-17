@@ -48,7 +48,7 @@ function useTabBarController() {
   const context = React.useContext(TabBarControllerContext);
   if (!context) {
     throw new Error(
-      "useTabBarController must be used within a TabBarControllerProvider."
+      "useTabBarController must be used within a TabBarControllerProvider.",
     );
   }
   return context;
@@ -95,7 +95,7 @@ function TabBarControllerProvider({
         _setValue(newValue);
       }
     },
-    [onValueChange]
+    [onValueChange],
   );
 
   const registerItem = React.useCallback((item: Omit<TabBarItem, "order">) => {
@@ -161,7 +161,7 @@ function TabBarControllerProvider({
       togglePin,
       pinnedItems,
       isRouterMode,
-    ]
+    ],
   );
 
   return (
@@ -202,7 +202,7 @@ function TabBarControllerSidebar({
           "lg:hidden", // Only show on medium and smaller screens
           isSidebarOpen
             ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
+            : "opacity-0 pointer-events-none",
         )}
       />
 
@@ -218,7 +218,7 @@ function TabBarControllerSidebar({
           // Medium screens: fixed overlay
           "max-lg:fixed max-lg:left-0 max-lg:top-0 max-lg:bottom-0 max-lg:z-50",
           "max-lg:transition-transform max-lg:duration-300 max-lg:ease-out",
-          isSidebarOpen ? "max-lg:translate-x-0" : "max-lg:-translate-x-full"
+          isSidebarOpen ? "max-lg:translate-x-0" : "max-lg:-translate-x-full",
         )}
       >
         <div
@@ -232,7 +232,7 @@ function TabBarControllerSidebar({
             isSidebarOpen
               ? "opacity-100 scale-100 blur-0"
               : "opacity-0 scale-95 blur-md",
-            className
+            className,
           )}
           {...props}
         >
@@ -261,7 +261,7 @@ function TabBarControllerSidebarTrigger({
         "flex h-8 w-8 items-center justify-center rounded-md",
         "text-(--sf-text-2) hover:bg-(--sf-fill)",
         "transition-colors",
-        className
+        className,
       )}
       {...props}
     >
@@ -297,7 +297,7 @@ function TabBarControllerHeader({
       data-slot="tabbar-header"
       className={cn(
         "flex shrink-0 flex-row items-center justify-between px-4 py-3",
-        className
+        className,
       )}
       {...props}
     >
@@ -361,7 +361,7 @@ function TabBarControllerEditTrigger({
       className={cn(
         "text-sm text-sf-text",
         "hover:opacity-70 transition-opacity",
-        className
+        className,
       )}
       {...props}
     >
@@ -395,7 +395,7 @@ function TabBarControllerContent({
       data-scrolled={isScrolled}
       className={cn(
         "flex min-h-0 flex-1 flex-col overflow-y-auto overflow-x-hidden px-2 pb-2",
-        className
+        className,
       )}
       style={{
         maskImage: isScrolled
@@ -465,8 +465,10 @@ function TabBarControllerMenuItem({
  * TabBarControllerMenuButton
  * ----------------------------------------------------------------------------------*/
 
-interface TabBarControllerMenuButtonProps
-  extends Omit<React.ComponentProps<"button">, "value"> {
+interface TabBarControllerMenuButtonProps extends Omit<
+  React.ComponentProps<"button">,
+  "value"
+> {
   value: string;
   icon?: SFIconName;
   pinned?: boolean;
@@ -523,7 +525,7 @@ function TabBarControllerMenuButton({
         "transition-colors duration-150",
         "hover:bg-(--sf-fill)",
         "data-[active=true]:bg-(--sf-fill-2)",
-        className
+        className,
       )}
       {...props}
     >
@@ -534,17 +536,19 @@ function TabBarControllerMenuButton({
             "border-2 transition-colors",
             isPinned
               ? "border-(--sf-blue) bg-(--sf-blue)"
-              : "border-(--sf-text-3) bg-transparent"
+              : "border-(--sf-text-3) bg-transparent",
           )}
         >
-          {isPinned && <SFIcon name="checkmark" className="text-xs text-white" />}
+          {isPinned && (
+            <SFIcon name="checkmark" className="text-xs text-white" />
+          )}
         </span>
       )}
       {icon && <SFIcon name={icon} className="text-xl text-sf-text" />}
       <span
         className={cn(
           "flex-1 truncate text-(--sf-text)",
-          isActive && "font-medium"
+          isActive && "font-medium",
         )}
       >
         {children}
@@ -588,7 +592,7 @@ function TabBarControllerGroup({
           className={cn(
             "mx-2 my-1 border-b border-(--sf-border)",
             "transition-opacity duration-200",
-            isOpen ? "opacity-0" : "opacity-100"
+            isOpen ? "opacity-0" : "opacity-100",
           )}
         />
       </div>
@@ -608,7 +612,7 @@ function TabBarControllerGroupLabel({
   const groupContext = React.useContext(GroupContext);
   if (!groupContext) {
     throw new Error(
-      "TabBarControllerGroupLabel must be used within TabBarControllerGroup"
+      "TabBarControllerGroupLabel must be used within TabBarControllerGroup",
     );
   }
 
@@ -622,7 +626,7 @@ function TabBarControllerGroupLabel({
         "flex h-11 w-full shrink-0 items-center justify-between gap-2 rounded-full px-2",
         "text-sm text-(--sf-text-2)",
         "hover:bg-(--sf-fill) transition-colors",
-        className
+        className,
       )}
       {...props}
     >
@@ -630,7 +634,7 @@ function TabBarControllerGroupLabel({
       <span
         className={cn(
           "transition-transform duration-200",
-          isOpen ? "rotate-90" : "rotate-0"
+          isOpen ? "rotate-90" : "rotate-0",
         )}
       >
         <SFIcon name="chevron.right" className="text-lg text-sf-text-3" />
@@ -651,7 +655,7 @@ function TabBarControllerGroupContent({
   const groupContext = React.useContext(GroupContext);
   if (!groupContext) {
     throw new Error(
-      "TabBarControllerGroupContent must be used within TabBarControllerGroup"
+      "TabBarControllerGroupContent must be used within TabBarControllerGroup",
     );
   }
 
@@ -670,7 +674,7 @@ function TabBarControllerGroupContent({
       data-slot="tabbar-group-content"
       className={cn(
         "overflow-hidden transition-all duration-200 ease-out",
-        className
+        className,
       )}
       style={{ height: isOpen ? height : 0 }}
       {...props}
@@ -698,14 +702,16 @@ function TabBarControllerInset({
       className={cn(
         "relative flex w-full flex-1 flex-col",
         "bg-(--sf-grouped-bg)",
-        className
+        className,
       )}
-      style={{
-        // Provide CSS custom property for header inset that scroll views can use
-        // This enables contentInsetAdjustmentBehavior-like behavior on web
-        "--header-inset": "4rem",
-        ...style,
-      } as React.CSSProperties}
+      style={
+        {
+          // Provide CSS custom property for header inset that scroll views can use
+          // This enables contentInsetAdjustmentBehavior-like behavior on web
+          "--header-inset": "4rem",
+          ...style,
+        } as React.CSSProperties
+      }
       {...props}
     >
       {children}
@@ -735,8 +741,8 @@ function ProgressiveBlurBackdrop({
       aria-hidden
       className={cn(
         "pointer-events-none absolute left-0 right-0 z-0",
-        isTop ? "top-0 h-24" : "bottom-0 h-24",
-        className
+        isTop ? "top-0 h-20" : "bottom-0 h-20",
+        className,
       )}
       style={{
         maskImage: isTop
@@ -770,7 +776,7 @@ function TabBarControllerFloatingBar({
         position="top"
         className={cn(
           "transition-opacity duration-300",
-          isSidebarOpen ? "opacity-0" : "opacity-100"
+          isSidebarOpen ? "opacity-0" : "opacity-100",
         )}
       />
 
@@ -786,59 +792,59 @@ function TabBarControllerFloatingBar({
           isSidebarOpen
             ? "left-44 translate-x-0 opacity-0 scale-95 blur-md pointer-events-none"
             : "left-1/2 -translate-x-1/2 opacity-100 scale-100 blur-0",
-          className
+          className,
         )}
         {...props}
       >
-      <button
-        onClick={() => setIsSidebarOpen(true)}
-        className={cn(
-          "flex h-8 w-8 items-center justify-center rounded-full",
-          "text-(--sf-text-2) hover:bg-(--sf-fill)",
-          "transition-colors"
-        )}
-      >
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 36 36"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+        <button
+          onClick={() => setIsSidebarOpen(true)}
+          className={cn(
+            "flex h-8 w-8 items-center justify-center rounded-full",
+            "text-(--sf-text-2) hover:bg-(--sf-fill)",
+            "transition-colors",
+          )}
         >
-          <path
-            d="M5.52758 32H30.4724C33.5005 32 35 30.4764 35 27.4585V9.57082C35 6.55291 33.5005 5.0293 30.4724 5.0293H5.52758C2.514 5.0293 1 6.53825 1 9.57082V27.4585C1 30.4911 2.514 32 5.52758 32ZM5.55642 29.6414C4.11452 29.6414 3.32147 28.8649 3.32147 27.3414V9.68802C3.32147 8.16442 4.11452 7.38796 5.55642 7.38796H30.4436C31.8711 7.38796 32.6786 8.16442 32.6786 9.68802V27.3414C32.6786 28.8649 31.8711 29.6414 30.4436 29.6414H5.55642ZM11.9873 30.0955H14.2511V6.94846H11.9873V30.0955ZM9.21885 12.8231C9.65142 12.8231 10.0407 12.4276 10.0407 12.0027C10.0407 11.5632 9.65142 11.1823 9.21885 11.1823H6.11876C5.68619 11.1823 5.31129 11.5632 5.31129 12.0027C5.31129 12.4276 5.68619 12.8231 6.11876 12.8231H9.21885ZM9.21885 16.6175C9.65142 16.6175 10.0407 16.2219 10.0407 15.7824C10.0407 15.3429 9.65142 14.9767 9.21885 14.9767H6.11876C5.68619 14.9767 5.31129 15.3429 5.31129 15.7824C5.31129 16.2219 5.68619 16.6175 6.11876 16.6175H9.21885ZM9.21885 20.3973C9.65142 20.3973 10.0407 20.0309 10.0407 19.5915C10.0407 19.152 9.65142 18.7711 9.21885 18.7711H6.11876C5.68619 18.7711 5.31129 19.152 5.31129 19.5915C5.31129 20.0309 5.68619 20.3973 6.11876 20.3973H9.21885Z"
-            fill="currentColor"
-          />
-        </svg>
-      </button>
-
-      {pinnedItems.map((item) => {
-        const isActive = value === item.value;
-        return (
-          <button
-            key={item.value}
-            data-active={isActive}
-            onClick={() => setValue(item.value)}
-            className={cn(
-              "flex items-center gap-1.5 rounded-full px-3 py-1.5",
-              "text-sm transition-colors",
-              isActive
-                ? "bg-(--sf-fill) text-(--sf-text) font-medium"
-                : "text-(--sf-text-2) hover:bg-(--sf-fill)"
-            )}
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 36 36"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            {item.icon && (
-              <SFIcon
-                name={item.icon}
-                size={16}
-                color={isActive ? "var(--sf-text)" : "var(--sf-text-2)"}
-              />
-            )}
-            <span>{item.label}</span>
-          </button>
-        );
-      })}
-    </div>
+            <path
+              d="M5.52758 32H30.4724C33.5005 32 35 30.4764 35 27.4585V9.57082C35 6.55291 33.5005 5.0293 30.4724 5.0293H5.52758C2.514 5.0293 1 6.53825 1 9.57082V27.4585C1 30.4911 2.514 32 5.52758 32ZM5.55642 29.6414C4.11452 29.6414 3.32147 28.8649 3.32147 27.3414V9.68802C3.32147 8.16442 4.11452 7.38796 5.55642 7.38796H30.4436C31.8711 7.38796 32.6786 8.16442 32.6786 9.68802V27.3414C32.6786 28.8649 31.8711 29.6414 30.4436 29.6414H5.55642ZM11.9873 30.0955H14.2511V6.94846H11.9873V30.0955ZM9.21885 12.8231C9.65142 12.8231 10.0407 12.4276 10.0407 12.0027C10.0407 11.5632 9.65142 11.1823 9.21885 11.1823H6.11876C5.68619 11.1823 5.31129 11.5632 5.31129 12.0027C5.31129 12.4276 5.68619 12.8231 6.11876 12.8231H9.21885ZM9.21885 16.6175C9.65142 16.6175 10.0407 16.2219 10.0407 15.7824C10.0407 15.3429 9.65142 14.9767 9.21885 14.9767H6.11876C5.68619 14.9767 5.31129 15.3429 5.31129 15.7824C5.31129 16.2219 5.68619 16.6175 6.11876 16.6175H9.21885ZM9.21885 20.3973C9.65142 20.3973 10.0407 20.0309 10.0407 19.5915C10.0407 19.152 9.65142 18.7711 9.21885 18.7711H6.11876C5.68619 18.7711 5.31129 19.152 5.31129 19.5915C5.31129 20.0309 5.68619 20.3973 6.11876 20.3973H9.21885Z"
+              fill="currentColor"
+            />
+          </svg>
+        </button>
+
+        {pinnedItems.map((item) => {
+          const isActive = value === item.value;
+          return (
+            <button
+              key={item.value}
+              data-active={isActive}
+              onClick={() => setValue(item.value)}
+              className={cn(
+                "flex items-center gap-1.5 rounded-full px-3 py-1.5",
+                "text-sm transition-colors",
+                isActive
+                  ? "bg-(--sf-fill) text-(--sf-text) font-medium"
+                  : "text-(--sf-text-2) hover:bg-(--sf-fill)",
+              )}
+            >
+              {item.icon && (
+                <SFIcon
+                  name={item.icon}
+                  size={16}
+                  color={isActive ? "var(--sf-text)" : "var(--sf-text-2)"}
+                />
+              )}
+              <span>{item.label}</span>
+            </button>
+          );
+        })}
+      </div>
     </>
   );
 }
@@ -878,8 +884,10 @@ function TabBarControllerPanel({
  * TabBarControllerTabs (Expo Router Integration)
  * ----------------------------------------------------------------------------------*/
 
-interface TabBarControllerTabsProps
-  extends Omit<TabBarControllerProviderProps, "isRouterMode"> {
+interface TabBarControllerTabsProps extends Omit<
+  TabBarControllerProviderProps,
+  "isRouterMode"
+> {
   children: React.ReactNode;
 }
 
@@ -924,7 +932,7 @@ function TabBarControllerTabs({
 }: TabBarControllerTabsProps) {
   const [isEditMode, setIsEditMode] = React.useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(
-    defaultSidebarOpen ?? false
+    defaultSidebarOpen ?? false,
   );
   const [items, setItems] = React.useState<Map<string, TabBarItem>>(new Map());
   const orderRef = React.useRef(0);
@@ -994,7 +1002,7 @@ function TabBarControllerTabs({
       unregisterItem,
       togglePin,
       pinnedItems,
-    ]
+    ],
   );
 
   return (
@@ -1045,8 +1053,10 @@ function TabBarControllerSlot({ className }: TabBarControllerSlotProps) {
  * TabBarControllerLink (Expo Router Integration)
  * ----------------------------------------------------------------------------------*/
 
-interface TabBarControllerLinkProps
-  extends Omit<React.ComponentProps<"button">, "value"> {
+interface TabBarControllerLinkProps extends Omit<
+  React.ComponentProps<"button">,
+  "value"
+> {
   /** Route href for Expo Router navigation */
   href: React.ComponentProps<typeof TabTrigger>["href"];
   /** Tab name for Expo Router (usually matches the route segment) */
@@ -1099,7 +1109,7 @@ function TabBarControllerLink({
           "flex w-full items-center gap-3 rounded-full px-2 py-2 text-left text-sm",
           "transition-colors duration-150",
           "hover:bg-(--sf-fill)",
-          className
+          className,
         )}
         {...props}
       >
@@ -1109,10 +1119,12 @@ function TabBarControllerLink({
             "border-2 transition-colors",
             isPinned
               ? "border-(--sf-blue) bg-(--sf-blue)"
-              : "border-(--sf-text-3) bg-transparent"
+              : "border-(--sf-text-3) bg-transparent",
           )}
         >
-          {isPinned && <SFIcon name="checkmark" className="text-xs text-white" />}
+          {isPinned && (
+            <SFIcon name="checkmark" className="text-xs text-white" />
+          )}
         </span>
         {icon && <SFIcon name={icon} className="text-xl text-sf-text" />}
         <span className="flex-1 truncate text-(--sf-text)">{children}</span>
@@ -1159,7 +1171,7 @@ function TabBarLinkButton({
         "transition-colors duration-150",
         "hover:bg-(--sf-fill)",
         isFocused && "bg-(--sf-fill-2)",
-        className
+        className,
       )}
       onClick={onPress}
       {...props}
@@ -1168,7 +1180,7 @@ function TabBarLinkButton({
       <span
         className={cn(
           "flex-1 truncate text-(--sf-text)",
-          isFocused && "font-medium"
+          isFocused && "font-medium",
         )}
       >
         {children}
@@ -1198,7 +1210,7 @@ function FloatingBarButton({
         "text-sm transition-colors",
         isFocused
           ? "bg-(--sf-fill) text-(--sf-text) font-medium"
-          : "text-(--sf-text-2) hover:bg-(--sf-fill)"
+          : "text-(--sf-text-2) hover:bg-(--sf-fill)",
       )}
       onClick={onPress}
       {...props}
@@ -1237,7 +1249,7 @@ function TabBarControllerRouterFloatingBar({
         position="top"
         className={cn(
           "transition-opacity duration-300",
-          isSidebarOpen ? "opacity-0" : "opacity-100"
+          isSidebarOpen ? "opacity-0" : "opacity-100",
         )}
       />
 
@@ -1253,7 +1265,7 @@ function TabBarControllerRouterFloatingBar({
           isSidebarOpen
             ? "left-44 translate-x-0 opacity-0 scale-95 blur-md pointer-events-none"
             : "left-1/2 -translate-x-1/2 opacity-100 scale-100 blur-0",
-          className
+          className,
         )}
         {...props}
       >
@@ -1262,7 +1274,7 @@ function TabBarControllerRouterFloatingBar({
           className={cn(
             "flex h-8 w-8 items-center justify-center rounded-full",
             "text-(--sf-text-2) hover:bg-(--sf-fill)",
-            "transition-colors"
+            "transition-colors",
           )}
         >
           <svg
@@ -1280,7 +1292,12 @@ function TabBarControllerRouterFloatingBar({
         </button>
 
         {pinnedItems.map((item) => (
-          <TabTrigger key={item.value} name={item.value} href={item.href} asChild>
+          <TabTrigger
+            key={item.value}
+            name={item.value}
+            href={item.href}
+            asChild
+          >
             <FloatingBarButton icon={item.icon} label={item.label} />
           </TabTrigger>
         ))}
