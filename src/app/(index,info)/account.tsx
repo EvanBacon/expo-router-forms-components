@@ -17,10 +17,6 @@ export default function Page() {
               borderRadius: 999,
             }}
           />
-          <View style={{ gap: 4 }}>
-            <Form.Text style={Form.FormFont.default}>Evan's world</Form.Text>
-            <Form.Text style={Form.FormFont.caption}>Today</Form.Text>
-          </View>
         </Form.HStack>
         <Form.Link
           href="/account"
@@ -79,10 +75,6 @@ function AppUpdate({ name, icon }: { name: string; icon: string }) {
             borderRadius: 12,
           }}
         />
-        <View style={{ gap: 4 }}>
-          <Form.Text style={Form.FormFont.default}>{name}</Form.Text>
-          <Form.Text style={Form.FormFont.caption}>Today</Form.Text>
-        </View>
 
         <View style={{ flex: 1 }} />
 

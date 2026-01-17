@@ -296,7 +296,6 @@
 
 @layer theme {
   @theme {
-
     /* Accent colors */
     --color-sf-blue: var(--sf-blue) /* rgba(0, 122, 255, 1) */;
     --color-sf-brown: var(--sf-brown) /* rgba(162, 132, 94, 1) */;
@@ -347,9 +346,14 @@
 
     /* Border and link colors */
     --color-sf-border: var(--sf-border) /* rgba(61.2, 61.2, 66, 0.29) */;
-    --color-sf-border-opaque: var(--sf-border-opaque) /* rgba(198.9, 198.9, 198.9, 1) */;
+    --color-sf-border-opaque: var(--sf-border-opaque)
+      /* rgba(198.9, 198.9, 198.9, 1) */;
     --color-sf-link: var(--sf-link) /* rgba(0, 122.4, 255, 1) */;
-
   }
 }
 
+@custom-variant ios (@media ios);
+@custom-variant android (@media android);
+@custom-variant native (@media native);
+@custom-variant tv (@media (display-mode: tv));
+@custom-variant web (@supports selector(div > div));
