@@ -7,7 +7,7 @@ import Animated, {
   useAnimatedScrollHandler,
   useAnimatedProps,
 } from "react-native-reanimated";
-import React, { useImperativeHandle, useState } from "react";
+import React, { useImperativeHandle } from "react";
 
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LegendList, LegendListProps, LegendListRef } from "@legendapp/list";
@@ -18,11 +18,17 @@ import {
   useKeyboardHandler,
 } from "react-native-keyboard-controller";
 
+import { useReanimatedHeaderHeight } from "react-native-screens/reanimated";
 
 import { useLayoutEffect, useRef } from "react";
 
 import { SharedValue } from "react-native-reanimated";
 import { View } from "react-native";
+
+export type ChatScrollViewRef = AnimatedRef<LegendListRef>;
+export type ChatScrollViewProps<T = any> = LegendListProps<T> & {
+  ref: ChatScrollViewRef;
+};
 
 const MeasureNodeContext = React.createContext<{
   uiHeight: SharedValue<number>;
@@ -53,7 +59,10 @@ MeasureNode.Trigger = function Trigger(props: { children?: React.ReactNode }) {
 
   useLayoutEffect(() => {
     if (!ref.current) return;
-    const rect = 'getBoundingClientRect' in ref.current ? ref.current.getBoundingClientRect() : ref.current.unstable_getBoundingClientRect();
+    const rect =
+      "getBoundingClientRect" in ref.current
+        ? ref.current.getBoundingClientRect()
+        : ref.current.unstable_getBoundingClientRect();
     uiHeight.value = rect.height;
   }, [ref, uiHeight]);
 
@@ -77,7 +86,6 @@ MeasureNode.useHeightSharedValue = function useFrame() {
   }
   return context.uiHeight;
 };
-
 
 const AnimatedLegendListComponent =
   Animated.createAnimatedComponent(LegendList);
@@ -232,12 +240,6 @@ const useKeyboardAnimation = () => {
 
   return { height, onScroll, inset, offset, scroll, isCloseToEnd };
 };
-
-export type ChatScrollViewRef = AnimatedRef<LegendListRef>;
-export type ChatScrollViewProps<T = any> = LegendListProps<T> & {
-  ref: ChatScrollViewRef;
-};
-import { useReanimatedHeaderHeight } from "react-native-screens/reanimated";
 
 function ChatScrollView<T>({
   children,
