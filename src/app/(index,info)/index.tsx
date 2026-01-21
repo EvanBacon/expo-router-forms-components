@@ -105,6 +105,7 @@ export default function Page() {
           <Form.Link href="/ui/alert-dialog">Alert Dialog</Form.Link>
           <Form.Link href="/ui/avatar">Avatar</Form.Link>
           <Form.Link href="/ui/segments">Segments</Form.Link>
+          <Form.Link href="/ui/slider">Slider</Form.Link>
           <Form.Link href="/ui/switch">Switch</Form.Link>
         </Form.Section>
         <Form.Section title="Features">
