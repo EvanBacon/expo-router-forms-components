@@ -1,0 +1,148 @@
+---
+title: Slider
+---
+
+import { Slider } from "@/components/ui/slider";
+import { InstallBlock, ComponentPreview, PropsTable } from "@/components/docs";
+import { html as xhtml } from "@/html";
+
+A slider component that allows users to select a value or range from a continuous or discrete set of values. Uses gesture-based interaction on native platforms and Radix UI on web.
+
+## Installation
+
+<InstallBlock packages="@radix-ui/react-slider" />
+
+## Usage
+
+```tsx
+import { Slider } from "@/components/ui/slider";
+```
+
+## Examples
+
+### Basic Slider
+
+A simple slider with a single thumb.
+
+<ComponentPreview
+  title="Basic Slider"
+  code={`<Slider defaultValue={[50]} max={100} step={1} />`}
+>
+  <xhtml.div className="w-64">
+    <Slider defaultValue={[50]} max={100} step={1} />
+  </xhtml.div>
+</ComponentPreview>
+
+### Range Slider
+
+A slider with two thumbs for selecting a range.
+
+<ComponentPreview
+  title="Range Slider"
+  code={`<Slider defaultValue={[25, 75]} max={100} step={1} />`}
+>
+  <xhtml.div className="w-64">
+    <Slider defaultValue={[25, 75]} max={100} step={1} />
+  </xhtml.div>
+</ComponentPreview>
+
+### With Steps
+
+A slider that snaps to specific step values.
+
+<ComponentPreview
+  title="Stepped Slider"
+  code={`<Slider defaultValue={[50]} max={100} step={10} />`}
+>
+  <xhtml.div className="w-64">
+    <Slider defaultValue={[50]} max={100} step={10} />
+  </xhtml.div>
+</ComponentPreview>
+
+### Custom Range
+
+A slider with custom min and max values.
+
+<ComponentPreview
+  title="Custom Range"
+  code={`<Slider defaultValue={[0]} min={-50} max={50} step={1} />`}
+>
+  <xhtml.div className="w-64">
+    <Slider defaultValue={[0]} min={-50} max={50} step={1} />
+  </xhtml.div>
+</ComponentPreview>
+
+### Disabled
+
+A disabled slider that cannot be interacted with.
+
+<ComponentPreview
+  title="Disabled Slider"
+  code={`<Slider defaultValue={[50]} disabled />`}
+>
+  <xhtml.div className="w-64">
+    <Slider defaultValue={[50]} disabled />
+  </xhtml.div>
+</ComponentPreview>
+
+### Controlled
+
+Control the slider value with React state.
+
+<ComponentPreview
+  title="Controlled Slider"
+  code={`const [value, setValue] = React.useState([50]);
+
+<Slider value={value} onValueChange={setValue} />
+<Text>Value: {value[0]}</Text>`}
+>
+  <xhtml.div className="w-64">
+    <Slider defaultValue={[50]} />
+  </xhtml.div>
+</ComponentPreview>
+
+## API Reference
+
+### Slider
+
+The slider component.
+
+<PropsTable
+  data={[
+    { name: "value", type: "number[]", description: "Controlled value (array of numbers for each thumb)" },
+    { name: "onValueChange", type: "(value: number[]) => void", description: "Callback when value changes during interaction" },
+    { name: "onValueCommit", type: "(value: number[]) => void", description: "Callback when interaction ends (native) or on pointer up (web)" },
+    { name: "defaultValue", type: "number[]", default: "[0]", description: "Initial value for uncontrolled usage" },
+    { name: "min", type: "number", default: "0", description: "Minimum value" },
+    { name: "max", type: "number", default: "100", description: "Maximum value" },
+    { name: "step", type: "number", default: "1", description: "Step increment" },
+    { name: "disabled", type: "boolean", default: "false", description: "Whether the slider is disabled" },
+    { name: "minStepsBetweenThumbs", type: "number", default: "0", description: "Minimum steps between multiple thumbs (native only)" },
+    { name: "className", type: "string", description: "CSS classes for styling" },
+  ]}
+/>
+
+## Platform Differences
+
+### Native (iOS/Android)
+
+- Uses `react-native-gesture-handler` for touch interactions
+- Animated with `react-native-reanimated` for smooth thumb movement
+- Thumbs scale up slightly when pressed for visual feedback
+- Supports `minStepsBetweenThumbs` to prevent thumbs from overlapping
+
+### Web
+
+- Uses Radix UI's Slider primitives
+- Full keyboard navigation support (arrow keys to adjust value)
+- Hover and active states with smooth transitions
+- Focus-visible ring for accessibility
+- Supports all Radix slider props
+
+## Accessibility
+
+- Uses proper `slider` role for screen readers
+- Keyboard accessible: use arrow keys to adjust value
+- Focus states are clearly visible
+- Value changes are announced to assistive technologies
+- Supports `aria-label`, `aria-labelledby`, and `aria-describedby` props
