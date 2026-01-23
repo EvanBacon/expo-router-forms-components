@@ -295,6 +295,8 @@ export function ToolbarMenu({
               "border border-sf-border",
               "shadow-lg shadow-black/10",
               "p-1",
+              // Reset prose styles that leak into menus
+              "[&_p]:m-0 [&_span]:m-0",
               // Animations
               "data-[state=open]:animate-in data-[state=closed]:animate-out",
               "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
@@ -584,6 +586,8 @@ export function ToolbarMenuSub({
             "border border-sf-border",
             "shadow-lg shadow-black/10",
             "p-1",
+            // Reset prose styles that leak into menus
+            "[&_p]:m-0 [&_span]:m-0",
             // Animations
             "data-[state=open]:animate-in data-[state=closed]:animate-out",
             "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
