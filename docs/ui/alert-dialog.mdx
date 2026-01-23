@@ -25,7 +25,6 @@ A modal dialog that interrupts the user with important content and expects a res
 
 <InstallBlock packages="@radix-ui/react-alert-dialog" />
 
-
 ## Usage
 
 ```tsx
@@ -42,7 +41,6 @@ import {
 } from "@/components/ui/alert-dialog";
 ```
 
-
 ## Examples
 
 ### Basic Dialog
@@ -52,7 +50,7 @@ A simple alert dialog with a title, description, and action buttons.
 <ComponentPreview
   title="Basic Alert"
   code={`<AlertDialog>
-  <AlertDialogTrigger className="px-4 py-2 rounded-lg border border-sf-border bg-sf-bg text-sf-text">
+  <AlertDialogTrigger className="px-4 rounded-lg border border-sf-border bg-sf-bg text-sf-text">
     Show Dialog
   </AlertDialogTrigger>
   <AlertDialogContent>
@@ -123,8 +121,8 @@ Use `AlertDialogDestructive` for dangerous actions like delete operations.
       <AlertDialogHeader>
         <AlertDialogTitle>Delete Account</AlertDialogTitle>
         <AlertDialogDescription>
-          Are you sure you want to delete your account? This action is
-          permanent and cannot be reversed.
+          Are you sure you want to delete your account? This action is permanent
+          and cannot be reversed.
         </AlertDialogDescription>
       </AlertDialogHeader>
       <AlertDialogFooter>
@@ -279,7 +277,9 @@ Use `type="secure-text"` for password inputs.
       <AlertDialogFooter>
         <AlertDialogCancel>Cancel</AlertDialogCancel>
         <AlertDialogAction
-          onPress={(password) => console.log("Password entered:", password ? "***" : "(empty)")}
+          onPress={(password) =>
+            console.log("Password entered:", password ? "***" : "(empty)")
+          }
         >
           Authenticate
         </AlertDialogAction>
@@ -297,8 +297,17 @@ The root component that provides context for the dialog.
 <PropsTable
   data={[
     { name: "open", type: "boolean", description: "Controlled open state" },
-    { name: "onOpenChange", type: "(open: boolean) => void", description: "Callback when open state changes" },
-    { name: "children", type: "ReactNode", required: true, description: "Dialog content" },
+    {
+      name: "onOpenChange",
+      type: "(open: boolean) => void",
+      description: "Callback when open state changes",
+    },
+    {
+      name: "children",
+      type: "ReactNode",
+      required: true,
+      description: "Dialog content",
+    },
   ]}
 />
 
@@ -308,9 +317,23 @@ The button that opens the dialog.
 
 <PropsTable
   data={[
-    { name: "asChild", type: "boolean", default: "false", description: "Merge props onto child element" },
-    { name: "className", type: "string", description: "CSS classes for styling" },
-    { name: "children", type: "ReactNode", required: true, description: "Trigger content" },
+    {
+      name: "asChild",
+      type: "boolean",
+      default: "false",
+      description: "Merge props onto child element",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "CSS classes for styling",
+    },
+    {
+      name: "children",
+      type: "ReactNode",
+      required: true,
+      description: "Trigger content",
+    },
   ]}
 />
 
@@ -320,8 +343,17 @@ Container for the dialog content.
 
 <PropsTable
   data={[
-    { name: "className", type: "string", description: "CSS classes for styling (web only)" },
-    { name: "children", type: "ReactNode", required: true, description: "Dialog content" },
+    {
+      name: "className",
+      type: "string",
+      description: "CSS classes for styling (web only)",
+    },
+    {
+      name: "children",
+      type: "ReactNode",
+      required: true,
+      description: "Dialog content",
+    },
   ]}
 />
 
@@ -331,11 +363,28 @@ Text input field for prompt dialogs.
 
 <PropsTable
   data={[
-    { name: "type", type: '"plain-text" | "secure-text" | "login-password"', default: '"plain-text"', description: "Input type" },
+    {
+      name: "type",
+      type: '"plain-text" | "secure-text" | "login-password"',
+      default: '"plain-text"',
+      description: "Input type",
+    },
     { name: "defaultValue", type: "string", description: "Initial value" },
-    { name: "placeholder", type: "string", description: "Placeholder text (web only)" },
-    { name: "keyboardType", type: "KeyboardTypeOptions", description: "Keyboard type (native only)" },
-    { name: "className", type: "string", description: "CSS classes for styling (web only)" },
+    {
+      name: "placeholder",
+      type: "string",
+      description: "Placeholder text (web only)",
+    },
+    {
+      name: "keyboardType",
+      type: "KeyboardTypeOptions",
+      description: "Keyboard type (native only)",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "CSS classes for styling (web only)",
+    },
   ]}
 />
 
@@ -345,12 +394,25 @@ Primary action button.
 
 <PropsTable
   data={[
-    { name: "onPress", type: "(value?: string) => void", description: "Callback when pressed. Receives input value if AlertDialogInput is present." },
-    { name: "className", type: "string", description: "CSS classes for styling (web only)" },
-    { name: "children", type: "ReactNode", required: true, description: "Button text" },
+    {
+      name: "onPress",
+      type: "(value?: string) => void",
+      description:
+        "Callback when pressed. Receives input value if AlertDialogInput is present.",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "CSS classes for styling (web only)",
+    },
+    {
+      name: "children",
+      type: "ReactNode",
+      required: true,
+      description: "Button text",
+    },
   ]}
 />
-
 
 ### AlertDialogCancel
 
@@ -358,9 +420,22 @@ Cancel/dismiss button.
 
 <PropsTable
   data={[
-    { name: "onPress", type: "(value?: string) => void", description: "Callback when pressed" },
-    { name: "className", type: "string", description: "CSS classes for styling (web only)" },
-    { name: "children", type: "ReactNode", required: true, description: "Button text" },
+    {
+      name: "onPress",
+      type: "(value?: string) => void",
+      description: "Callback when pressed",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "CSS classes for styling (web only)",
+    },
+    {
+      name: "children",
+      type: "ReactNode",
+      required: true,
+      description: "Button text",
+    },
   ]}
 />
 
@@ -370,14 +445,26 @@ Destructive action button (styled in red).
 
 <PropsTable
   data={[
-    { name: "onPress", type: "(value?: string) => void", description: "Callback when pressed" },
-    { name: "className", type: "string", description: "CSS classes for styling (web only)" },
-    { name: "children", type: "ReactNode", required: true, description: "Button text" },
+    {
+      name: "onPress",
+      type: "(value?: string) => void",
+      description: "Callback when pressed",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "CSS classes for styling (web only)",
+    },
+    {
+      name: "children",
+      type: "ReactNode",
+      required: true,
+      description: "Button text",
+    },
   ]}
 />
 
 ## Platform Differences
-
 
 ### Native (iOS/Android)
 
