@@ -38,9 +38,9 @@ interface BottomAccessoryProps {
 }
 
 /**
- * BottomAccessory renders content fixed at the bottom of the viewport.
+ * BottomAccessory renders content above the tab bar (like Apple Music's mini-player).
  *
- * On web, this creates a floating accessory bar above the bottom safe area.
+ * On web, this creates a floating accessory bar at the bottom of the viewport.
  * Use the usePlacement() hook to adapt content based on placement.
  */
 function BottomAccessory({ children, className }: BottomAccessoryProps) {

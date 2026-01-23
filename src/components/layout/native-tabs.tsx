@@ -40,11 +40,11 @@ interface BottomAccessoryProps {
 }
 
 /**
- * BottomAccessory renders content below the tab bar.
+ * BottomAccessory renders content above the tab bar (like Apple Music's mini-player).
  *
  * On iOS 26+, this uses the native tab bar accessory API.
  * On Android and older iOS versions, this renders a user-space implementation
- * that positions content at the bottom of the screen above the safe area.
+ * that positions content directly above the tab bar.
  */
 function BottomAccessory({ children }: BottomAccessoryProps) {
   const insets = useSafeAreaInsets();
