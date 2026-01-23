@@ -25,7 +25,7 @@ Personal component library for building iOS-style universal apps with Expo Route
 
 ## Stack
 
-- **Framework**: Expo SDK 54 with Expo Router 6
+- **Framework**: Expo SDK 55 beta with Expo Router 55 beta
 - **Styling**: Tailwind CSS v4 + react-native-css + NativeWind v5 preview
 - **Icons**: expo-symbols (SF Symbols) with fallback to @expo/vector-icons
 
@@ -267,8 +267,8 @@ export default function ComponentExample() {
 ## Important Notes
 
 - ONLY use bun when installing dependencies. Never use npm.
-- Uses React 19 with React Compiler enabled
-- New Architecture enabled (`newArchEnabled: true`)
+- Uses React 19.2 with React Compiler enabled
+- New Architecture only (SDK 55+ requires New Architecture, no opt-out available)
 - SVG files are transformed via custom metro transformer (`metro.transformer.js`)
 - Web output uses server rendering (`web.output: "server"`)
 - Typed routes enabled (`experiments.typedRoutes: true`)
