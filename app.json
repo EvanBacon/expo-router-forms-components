@@ -7,7 +7,6 @@
     "icon": "./assets/images/icon.png",
     "scheme": "acme",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
       "bundleIdentifier": "com.bacon.crispy",
       "supportsTablet": false,
@@ -48,7 +47,8 @@
       "expo-sqlite",
       "expo-font",
       "expo-web-browser",
-      "@react-native-community/datetimepicker"
+      "@react-native-community/datetimepicker",
+      "expo-image"
     ],
     "experiments": {
       "typedRoutes": true,
