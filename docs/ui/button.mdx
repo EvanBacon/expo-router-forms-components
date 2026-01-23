@@ -1,0 +1,432 @@
+---
+title: Button
+---
+
+import { Button } from "@/components/ui/button";
+import { SFIcon } from "@/components/ui/sf-icon";
+import { InstallBlock, ComponentPreview, PropsTable } from "@/components/docs";
+import { html as xhtml } from "@/html";
+import { View, Text } from "@/tw";
+
+A versatile button component with multiple variants and sizes. Uses native Pressable on mobile and semantic HTML button with Radix Slot on web.
+
+## Installation
+
+<InstallBlock packages="@radix-ui/react-slot class-variance-authority" />
+
+## Usage
+
+```tsx
+import { Button } from "@/components/ui/button";
+```
+
+## Examples
+
+### Default
+
+Basic button variants for different purposes.
+
+<ComponentPreview
+  title="Button Variants"
+  code={`<View className="gap-3 w-full">
+  <Button>Default</Button>
+  <Button variant="secondary">Secondary</Button>
+  <Button variant="outline">Outline</Button>
+  <Button variant="ghost">Ghost</Button>
+  <Button variant="destructive">Destructive</Button>
+  <Button variant="link">Link</Button>
+</View>`}
+>
+  <xhtml.div className="w-full">
+    <View className="gap-3 w-full">
+      <Button>Default</Button>
+      <Button variant="secondary">Secondary</Button>
+      <Button variant="outline">Outline</Button>
+      <Button variant="ghost">Ghost</Button>
+      <Button variant="destructive">Destructive</Button>
+      <Button variant="link">Link</Button>
+    </View>
+  </xhtml.div>
+</ComponentPreview>
+
+### Sizes
+
+Available in small, default, and large sizes.
+
+<ComponentPreview
+  title="Button Sizes"
+  code={`<View className="gap-3 w-full">
+  <Button size="sm">Small Button</Button>
+  <Button size="default">Default Button</Button>
+  <Button size="lg">Large Button</Button>
+</View>`}
+>
+  <xhtml.div className="w-full">
+    <View className="gap-3 w-full">
+      <Button size="sm">Small Button</Button>
+      <Button size="default">Default Button</Button>
+      <Button size="lg">Large Button</Button>
+    </View>
+  </xhtml.div>
+</ComponentPreview>
+
+### With Icons
+
+Combine text and icons using compound components.
+
+<ComponentPreview
+  title="Buttons with Icons"
+  code={`<View className="gap-3 w-full">
+  <Button>
+    <Button.Icon><SFIcon name="plus" size={18} /></Button.Icon>
+    <Button.Text>Add Item</Button.Text>
+  </Button>
+  <Button variant="secondary">
+    <Button.Text>Download</Button.Text>
+    <Button.Icon><SFIcon name="arrow.down.circle" size={18} /></Button.Icon>
+  </Button>
+  <Button variant="destructive">
+    <Button.Icon><SFIcon name="trash" size={18} /></Button.Icon>
+    <Button.Text>Delete</Button.Text>
+  </Button>
+</View>`}
+>
+  <xhtml.div className="w-full">
+    <View className="gap-3 w-full">
+      <Button>
+        <Button.Icon>
+          <SFIcon name="plus" size={18} />
+        </Button.Icon>
+        <Button.Text>Add Item</Button.Text>
+      </Button>
+      <Button variant="secondary">
+        <Button.Text>Download</Button.Text>
+        <Button.Icon>
+          <SFIcon name="arrow.down.circle" size={18} />
+        </Button.Icon>
+      </Button>
+      <Button variant="destructive">
+        <Button.Icon>
+          <SFIcon name="trash" size={18} />
+        </Button.Icon>
+        <Button.Text>Delete</Button.Text>
+      </Button>
+    </View>
+  </xhtml.div>
+</ComponentPreview>
+
+### Icon Only
+
+Use icon sizes for square icon-only buttons.
+
+<ComponentPreview
+  title="Icon Only Buttons"
+  code={`<View className="flex-row gap-3 items-center">
+  <Button size="icon-sm">
+    <Button.Icon><SFIcon name="plus" size={16} /></Button.Icon>
+  </Button>
+  <Button size="icon" variant="secondary">
+    <Button.Icon><SFIcon name="heart.fill" size={20} /></Button.Icon>
+  </Button>
+  <Button size="icon-lg" variant="destructive">
+    <Button.Icon><SFIcon name="trash" size={24} /></Button.Icon>
+  </Button>
+</View>`}
+>
+  <xhtml.div className="w-full flex justify-center">
+    <View className="flex-row gap-3 items-center">
+      <Button size="icon-sm">
+        <Button.Icon>
+          <SFIcon name="plus" size={16} />
+        </Button.Icon>
+      </Button>
+      <Button size="icon" variant="secondary">
+        <Button.Icon>
+          <SFIcon name="heart.fill" size={20} />
+        </Button.Icon>
+      </Button>
+      <Button size="icon-lg" variant="destructive">
+        <Button.Icon>
+          <SFIcon name="trash" size={24} />
+        </Button.Icon>
+      </Button>
+    </View>
+  </xhtml.div>
+</ComponentPreview>
+
+### Disabled State
+
+Buttons can be disabled to prevent interaction.
+
+<ComponentPreview
+  title="Disabled Buttons"
+  code={`<View className="gap-3 w-full">
+  <Button disabled>Disabled Default</Button>
+  <Button variant="secondary" disabled>Disabled Secondary</Button>
+  <Button variant="outline" disabled>Disabled Outline</Button>
+</View>`}
+>
+  <xhtml.div className="w-full">
+    <View className="gap-3 w-full">
+      <Button disabled>Disabled Default</Button>
+      <Button variant="secondary" disabled>
+        Disabled Secondary
+      </Button>
+      <Button variant="outline" disabled>
+        Disabled Outline
+      </Button>
+    </View>
+  </xhtml.div>
+</ComponentPreview>
+
+### Custom Styling
+
+Override styles with className for custom appearances.
+
+<ComponentPreview
+  title="Custom Styled Buttons"
+  code={`<View className="gap-3 w-full">
+  <Button className="bg-purple-500 active:opacity-90">
+    <Button.Text className="text-white">Purple Button</Button.Text>
+  </Button>
+  <Button className="bg-linear-to-r from-pink-500 to-violet-500 rounded-full">
+    <Button.Text className="text-white font-bold">Gradient Button</Button.Text>
+  </Button>
+  <Button variant="outline" className="border-2 border-sf-green">
+    <Button.Text className="text-sf-green">Success Outline</Button.Text>
+  </Button>
+</View>`}
+>
+  <xhtml.div className="w-full">
+    <View className="gap-3 w-full">
+      <Button className="bg-purple-500 active:opacity-90">
+        <Button.Text className="text-white">Purple Button</Button.Text>
+      </Button>
+      <Button className="bg-linear-to-r from-pink-500 to-violet-500 rounded-full">
+        <Button.Text className="text-white font-bold">
+          Gradient Button
+        </Button.Text>
+      </Button>
+      <Button variant="outline" className="border-2 border-sf-green">
+        <Button.Text className="text-sf-green">Success Outline</Button.Text>
+      </Button>
+    </View>
+  </xhtml.div>
+</ComponentPreview>
+
+### Button Row
+
+Arrange buttons horizontally for action groups.
+
+<ComponentPreview
+  title="Button Row"
+  code={`<View className="flex-row gap-2 justify-center">
+  <Button variant="outline" size="sm">Cancel</Button>
+  <Button size="sm">Confirm</Button>
+</View>`}
+>
+  <xhtml.div className="w-full flex justify-center">
+    <View className="flex-row gap-2 justify-center">
+      <Button variant="outline" size="sm">
+        Cancel
+      </Button>
+      <Button size="sm">Confirm</Button>
+    </View>
+  </xhtml.div>
+</ComponentPreview>
+
+### Full Width
+
+Buttons expand to fill their container by default on native. Use flex utilities for layout control.
+
+<ComponentPreview
+  title="Full Width Button"
+  code={`<View className="gap-3 w-full">
+  <Button>Full Width</Button>
+  <View className="flex-row gap-2">
+    <Button variant="secondary" className="flex-1">Half</Button>
+    <Button className="flex-1">Half</Button>
+  </View>
+</View>`}
+>
+  <xhtml.div className="w-full">
+    <View className="gap-3 w-full">
+      <Button>Full Width</Button>
+      <View className="flex-row gap-2">
+        <Button variant="secondary" className="flex-1">
+          Half
+        </Button>
+        <Button className="flex-1">Half</Button>
+      </View>
+    </View>
+  </xhtml.div>
+</ComponentPreview>
+
+## API Reference
+
+### Button
+
+The main button component.
+
+<PropsTable
+  data={[
+    {
+      name: "variant",
+      type: '"default" | "secondary" | "outline" | "ghost" | "destructive" | "link"',
+      default: '"default"',
+      description: "The visual style of the button",
+    },
+    {
+      name: "size",
+      type: '"sm" | "default" | "lg" | "icon" | "icon-sm" | "icon-lg"',
+      default: '"default"',
+      description: "The size of the button",
+    },
+    {
+      name: "disabled",
+      type: "boolean",
+      default: "false",
+      description: "Whether the button is disabled",
+    },
+    {
+      name: "asChild",
+      type: "boolean",
+      default: "false",
+      description: "(Web only) Render as child element using Radix Slot",
+    },
+    {
+      name: "onPress",
+      type: "(event: GestureResponderEvent) => void",
+      description: "Callback when the button is pressed",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "Additional CSS classes for custom styling",
+    },
+    {
+      name: "children",
+      type: "ReactNode | string",
+      description:
+        "Button content. Strings are automatically wrapped in Button.Text",
+    },
+  ]}
+/>
+
+### Button.Text
+
+Text content wrapper that inherits styles from the button variant.
+
+<PropsTable
+  data={[
+    {
+      name: "children",
+      type: "ReactNode",
+      description: "The text content",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "Additional CSS classes for custom styling",
+    },
+    {
+      name: "asChild",
+      type: "boolean",
+      default: "false",
+      description: "(Web only) Render as child element using Radix Slot",
+    },
+  ]}
+/>
+
+### Button.Icon
+
+Icon wrapper that inherits color from the button variant.
+
+<PropsTable
+  data={[
+    {
+      name: "children",
+      type: "ReactNode",
+      description: "The icon element",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "Additional CSS classes for custom styling",
+    },
+    {
+      name: "asChild",
+      type: "boolean",
+      default: "false",
+      description: "(Web only) Render as child element using Radix Slot",
+    },
+  ]}
+/>
+
+### useButtonContext
+
+A hook to access button state from compound components.
+
+```tsx
+import { useButtonContext } from "@/components/ui/button";
+
+function CustomContent() {
+  const { variant, size, disabled } = useButtonContext();
+  return <Text>Current variant: {variant}</Text>;
+}
+```
+
+**Returns:**
+
+- `variant: ButtonVariant` - The current button variant
+- `size: ButtonSize` - The current button size
+- `disabled: boolean` - Whether the button is disabled
+
+## Platform Differences
+
+### Native (iOS/Android)
+
+- Uses React Native Pressable for touch handling
+- `active:opacity-80` provides press feedback
+- No hover states (touch-based interaction)
+- SF Icons or Expo Vector Icons for icons
+
+### Web
+
+- Uses semantic HTML `<button>` element
+- Radix Slot support for `asChild` pattern
+- Full hover, focus, and active states
+- `focus-visible` ring for keyboard navigation
+- CSS transitions for smooth state changes
+- Lucide React for icons (or any icon library)
+
+## Accessibility
+
+- Proper button semantics on web
+- Disabled state removes interactivity
+- Focus ring visible for keyboard users
+- Supports reduced motion preferences via CSS
+
+## Usage with Links
+
+On web, use `asChild` to render the button as a link:
+
+```tsx
+import Link from "next/link";
+
+<Button asChild>
+  <Link href="/dashboard">Go to Dashboard</Link>
+</Button>;
+```
+
+On native with Expo Router:
+
+```tsx
+import { Link } from "expo-router";
+
+<Link href="/dashboard" asChild>
+  <Button>
+    <Button.Text>Go to Dashboard</Button.Text>
+  </Button>
+</Link>;
+```
