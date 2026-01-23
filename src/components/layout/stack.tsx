@@ -97,6 +97,41 @@ Stack.Screen = NativeStack.Screen as React.FC<
   }
 >;
 
+// Re-export Toolbar as a sub-component of Stack
+import {
+  Toolbar,
+  ToolbarButton,
+  ToolbarSeparator,
+  ToolbarLink,
+  ToolbarMenu,
+  ToolbarMenuItem,
+  ToolbarMenuSeparator,
+  ToolbarMenuLabel,
+  ToolbarMenuCheckboxItem,
+  ToolbarMenuRadioGroup,
+  ToolbarMenuRadioItem,
+  ToolbarMenuSub,
+  ToolbarGroup,
+  ToolbarToggleItem,
+  ToolbarSpacer,
+} from "./toolbar";
+
+Stack.Toolbar = Toolbar;
+Stack.ToolbarButton = ToolbarButton;
+Stack.ToolbarSeparator = ToolbarSeparator;
+Stack.ToolbarLink = ToolbarLink;
+Stack.ToolbarMenu = ToolbarMenu;
+Stack.ToolbarMenuItem = ToolbarMenuItem;
+Stack.ToolbarMenuSeparator = ToolbarMenuSeparator;
+Stack.ToolbarMenuLabel = ToolbarMenuLabel;
+Stack.ToolbarMenuCheckboxItem = ToolbarMenuCheckboxItem;
+Stack.ToolbarMenuRadioGroup = ToolbarMenuRadioGroup;
+Stack.ToolbarMenuRadioItem = ToolbarMenuRadioItem;
+Stack.ToolbarMenuSub = ToolbarMenuSub;
+Stack.ToolbarGroup = ToolbarGroup;
+Stack.ToolbarToggleItem = ToolbarToggleItem;
+Stack.ToolbarSpacer = ToolbarSpacer;
+
 /* ----------------------------------------------------------------------------------
  * Web-only exports (no-op on native)
  * ----------------------------------------------------------------------------------*/
