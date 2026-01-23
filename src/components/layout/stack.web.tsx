@@ -5,6 +5,12 @@ import { Stack as ExpoStack, useRouter, useNavigation } from "expo-router";
 import { cn } from "@/lib/utils";
 import { SFIcon } from "@/components/ui/sf-icon";
 import { useTabBarController, ProgressiveBlurBackdrop } from "@/components/ui/tab-bar-controller.web";
+import {
+  StackHeaderContext,
+  useStackHeaderContext,
+  useStackHeaderConfig,
+  type StackHeaderConfig,
+} from "@/components/layout/stack-context.web";
 
 /**
  * Hook to reactively check if navigation can go back.
@@ -29,57 +35,7 @@ function useCanGoBack(): boolean {
   return React.useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
 }
 
-/* ----------------------------------------------------------------------------------
- * Stack Header Context
- * ----------------------------------------------------------------------------------
- *
- * Context for managing the custom web stack header.
- * Screens can use useStackHeaderConfig to set their header content.
- */
-
-interface StackHeaderConfig {
-  title?: string;
-  headerLeft?: React.ReactNode;
-  headerRight?: React.ReactNode;
-  headerShown?: boolean;
-}
-
-interface StackHeaderContextValue {
-  /** Whether the sidebar is open (from tab bar controller) */
-  isSidebarOpen: boolean;
-  /** Whether we're inside a tab bar controller */
-  isInsideTabBar: boolean;
-  /** Current header configuration */
-  headerConfig: StackHeaderConfig;
-  /** Set header configuration */
-  setHeaderConfig: (config: StackHeaderConfig) => void;
-}
-
-const StackHeaderContext = React.createContext<StackHeaderContextValue>({
-  isSidebarOpen: false,
-  isInsideTabBar: false,
-  headerConfig: {},
-  setHeaderConfig: () => {},
-});
-
-function useStackHeaderContext() {
-  return React.useContext(StackHeaderContext);
-}
-
-/** Hook for screens to configure their header */
-function useStackHeaderConfig(config: StackHeaderConfig) {
-  const { setHeaderConfig } = useStackHeaderContext();
-
-  React.useEffect(() => {
-    setHeaderConfig(config);
-    return () => setHeaderConfig({});
-  }, [config.title, config.headerShown, setHeaderConfig]);
-
-  // Also update when headerLeft/headerRight change
-  React.useEffect(() => {
-    setHeaderConfig(config);
-  }, [config.headerLeft, config.headerRight, setHeaderConfig]);
-}
+/* Stack Header Context is imported from stack-context.web.tsx to avoid require cycles */
 
 /* ----------------------------------------------------------------------------------
  * Inner component that uses the tab bar hook

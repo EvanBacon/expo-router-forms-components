@@ -7,7 +7,7 @@ import { Link as RouterLink } from "expo-router";
 
 import { cn } from "@/lib/utils";
 import { SFIcon } from "@/components/ui/sf-icon";
-import { useStackHeaderContext } from "@/components/layout/stack.web";
+import { useStackHeaderContext } from "@/components/layout/stack-context.web";
 import { ProgressiveBlurBackdrop } from "@/components/ui/tab-bar-controller.web";
 
 /* ----------------------------------------------------------------------------------

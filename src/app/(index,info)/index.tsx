@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ComponentProps } from "react";
 
 import { ContentUnavailable } from "@/components/ui/content-unavailable";
 import * as Form from "@/components/ui/form";
@@ -14,7 +14,6 @@ import * as AC from "@bacons/apple-colors";
 import { cn } from "@/lib/utils";
 // import { Image } from "expo-image";
 import { Image } from "@/components/ui/img";
-import { ComponentProps } from "react";
 import {
   Button,
   OpaqueColorValue,
@@ -41,8 +40,7 @@ import { HTMLPictureExample } from "@/components/example/html-picture";
 import { toast } from "@/utils/toast";
 
 //
-  import { html } from "@/html";
-
+import { html } from "@/html";
 
 export default function Page() {
   const ref = useAnimatedRef();
@@ -60,7 +58,6 @@ export default function Page() {
 
   return (
     <View className="flex-1">
-
       {show && <GlurryList setShow={setShow} />}
       <Stack.Screen
         options={{
@@ -96,7 +93,6 @@ export default function Page() {
                 Learn more...
               </Form.Link>
             </Form.Text>
-
           </Rounded>
         </Form.Section>
 
@@ -105,6 +101,7 @@ export default function Page() {
           <Form.Link href="/ui/alert-dialog">Alert Dialog</Form.Link>
           <Form.Link href="/ui/avatar">Avatar</Form.Link>
           <Form.Link href="/ui/segments">Segments</Form.Link>
+          <Form.Link href="/ui/toolbar">Toolbar</Form.Link>
           <Form.Link href="/ui/switch">Switch</Form.Link>
         </Form.Section>
         <Form.Section title="Features">
