@@ -8,7 +8,7 @@ import { Suspense, useEffect } from "react";
 import { Toaster } from "@/utils/toast";
 import { GestureHandlerRootView } from "@/utils/native-gesture-provider";
 import { SourceCodePro_400Regular } from "@expo-google-fonts/source-code-pro";
-import { Icon, Label, NativeTabs } from "expo-router/unstable-native-tabs";
+import { NativeTabs } from "expo-router/unstable-native-tabs";
 import { useCSSVariable } from "@/tw";
 SplashScreen.preventAutoHideAsync();
 
@@ -35,8 +35,8 @@ export default function Layout() {
         
             <NativeTabs tintColor={label}>
               <NativeTabs.Trigger name="(index)">
-                <Label>Home</Label>
-                <Icon
+                <NativeTabs.Trigger.Label>Home</NativeTabs.Trigger.Label>
+                <NativeTabs.Trigger.Icon
                   sf={{
                     default: "house",
                     selected: "house.fill",
@@ -44,8 +44,8 @@ export default function Layout() {
                 />
               </NativeTabs.Trigger>
               <NativeTabs.Trigger name="(info)" role="search">
-                <Label>Info</Label>
-                <Icon sf="cursorarrow.rays" />
+                <NativeTabs.Trigger.Label>Info</NativeTabs.Trigger.Label>
+                <NativeTabs.Trigger.Icon sf="cursorarrow.rays" />
               </NativeTabs.Trigger>
             </NativeTabs>
           
