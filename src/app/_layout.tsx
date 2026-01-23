@@ -8,7 +8,7 @@ import { Suspense, useEffect } from "react";
 import { Toaster } from "@/utils/toast";
 import { GestureHandlerRootView } from "@/utils/native-gesture-provider";
 import { SourceCodePro_400Regular } from "@expo-google-fonts/source-code-pro";
-import { NativeTabs } from "expo-router/unstable-native-tabs";
+import { Tabs } from "@/components/layout/native-tabs";
 import { useCSSVariable } from "@/tw";
 SplashScreen.preventAutoHideAsync();
 
@@ -32,23 +32,33 @@ export default function Layout() {
       <AsyncFont src={SourceCodePro_400Regular} fontFamily="Source Code Pro" />
       <ThemeProvider>
         <GestureHandlerRootView style={{ flex: 1, display: "contents" }}>
-        
-            <NativeTabs tintColor={label}>
-              <NativeTabs.Trigger name="(index)">
-                <NativeTabs.Trigger.Label>Home</NativeTabs.Trigger.Label>
-                <NativeTabs.Trigger.Icon
-                  sf={{
-                    default: "house",
-                    selected: "house.fill",
-                  }}
-                />
-              </NativeTabs.Trigger>
-              <NativeTabs.Trigger name="(info)" role="search">
-                <NativeTabs.Trigger.Label>Info</NativeTabs.Trigger.Label>
-                <NativeTabs.Trigger.Icon sf="cursorarrow.rays" />
-              </NativeTabs.Trigger>
-            </NativeTabs>
-          
+          {/*
+            Use the Tabs wrapper for cross-platform BottomAccessory support.
+            On iOS 26+, BottomAccessory uses native tab bar accessories.
+            On Android/web, it renders a user-space implementation.
+          */}
+          <Tabs tintColor={label}>
+            <Tabs.Trigger name="(index)">
+              <Tabs.Trigger.Label>Home</Tabs.Trigger.Label>
+              <Tabs.Trigger.Icon
+                sf={{
+                  default: "house",
+                  selected: "house.fill",
+                }}
+              />
+            </Tabs.Trigger>
+            <Tabs.Trigger name="(info)" role="search">
+              <Tabs.Trigger.Label>Info</Tabs.Trigger.Label>
+              <Tabs.Trigger.Icon sf="cursorarrow.rays" />
+            </Tabs.Trigger>
+
+            {/* Example BottomAccessory - uncomment to see it in action
+            <Tabs.BottomAccessory>
+              <NowPlayingBar />
+            </Tabs.BottomAccessory>
+            */}
+          </Tabs>
+
           <Toaster />
         </GestureHandlerRootView>
       </ThemeProvider>

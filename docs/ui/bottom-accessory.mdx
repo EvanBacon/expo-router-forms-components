@@ -1,0 +1,123 @@
+---
+title: Bottom Accessory
+description: A cross-platform tab bar accessory component with native iOS 26 support
+---
+
+# Bottom Accessory
+
+The `Tabs.BottomAccessory` component allows you to render content below the tab bar. On iOS 26+, it uses the native tab bar accessory API. On Android and web, it provides a user-space implementation that positions content above the tab bar.
+
+## Installation
+
+The Bottom Accessory is part of the native-tabs wrapper. No additional installation is required.
+
+## Usage
+
+```tsx
+import { Tabs } from "@/components/layout/native-tabs";
+
+export default function Layout() {
+  return (
+    <Tabs>
+      <Tabs.Trigger name="home">
+        <Tabs.Trigger.Label>Home</Tabs.Trigger.Label>
+        <Tabs.Trigger.Icon sf="house.fill" />
+      </Tabs.Trigger>
+
+      <Tabs.BottomAccessory>
+        <NowPlayingBar />
+      </Tabs.BottomAccessory>
+    </Tabs>
+  );
+}
+```
+
+## Placement Hook
+
+Use the `usePlacement()` hook to adapt your accessory content based on how it's rendered:
+
+```tsx
+import { Tabs } from "@/components/layout/native-tabs";
+
+function MyAccessoryContent() {
+  const placement = Tabs.BottomAccessory.usePlacement();
+
+  // placement is 'inline' on iOS 26+ when rendered inline with tab bar
+  // placement is 'regular' on Android, web, and older iOS
+
+  return (
+    <View style={placement === 'inline' ? styles.compact : styles.regular}>
+      {/* Your content */}
+    </View>
+  );
+}
+```
+
+## API Reference
+
+### Tabs.BottomAccessory
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `children` | `ReactNode` | The content to render in the accessory area |
+| `className` | `string` | (Web only) Additional CSS classes |
+
+### usePlacement
+
+Returns the current placement mode of the accessory:
+
+| Value | Description |
+|-------|-------------|
+| `'regular'` | Standard positioning (Android, web, older iOS) |
+| `'inline'` | Inline with tab bar (iOS 26+ native mode) |
+
+## Platform Differences
+
+| Platform | Behavior |
+|----------|----------|
+| iOS 26+ | Uses native `NativeTabs.BottomAccessory` API for seamless integration |
+| iOS (older) | User-space implementation positioned above tab bar |
+| Android | User-space implementation positioned above tab bar |
+| Web | Fixed position at bottom of viewport |
+
+## Examples
+
+### Now Playing Bar
+
+A common use case is a "Now Playing" bar for music apps:
+
+```tsx
+function NowPlayingBar() {
+  const placement = Tabs.BottomAccessory.usePlacement();
+
+  return (
+    <View className="w-full max-w-lg rounded-xl bg-sf-fill p-3 flex-row items-center gap-3">
+      <Image source={{ uri: albumArt }} className="w-12 h-12 rounded-lg" />
+      <View className="flex-1">
+        <Text className="text-sf-text font-medium">Song Title</Text>
+        <Text className="text-sf-text-2 text-sm">Artist Name</Text>
+      </View>
+      <Pressable>
+        <SFIcon name="play.fill" className="text-sf-text text-xl" />
+      </Pressable>
+    </View>
+  );
+}
+```
+
+### Search Bar
+
+Another use case is a contextual search or filter bar:
+
+```tsx
+function SearchAccessory() {
+  return (
+    <View className="w-full max-w-lg">
+      <TextInput
+        placeholder="Search..."
+        className="bg-sf-fill rounded-full px-4 py-2 text-sf-text"
+      />
+    </View>
+  );
+}
+```
