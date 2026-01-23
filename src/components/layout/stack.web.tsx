@@ -530,12 +530,12 @@ function Stack(props: StackProps) {
 }
 
 /* ----------------------------------------------------------------------------------
- * Stack.Screen with Web Header Integration
+ * Stack.Screen
  * ----------------------------------------------------------------------------------
  *
- * Custom Stack.Screen that automatically configures the web floating header
- * from the options prop. This eliminates the need to call useStackHeaderConfig
- * separately - just use Stack.Screen with options.title, headerLeft, headerRight.
+ * Re-export ExpoStack.Screen directly. Screen components are configuration elements,
+ * not rendered components, so we can't use hooks in them.
+ * Use useStackHeaderConfig() in your actual screen component to configure the header.
  */
 
 type StackScreenComponentProps = React.ComponentProps<typeof ExpoStack.Screen> & {
@@ -545,41 +545,7 @@ type StackScreenComponentProps = React.ComponentProps<typeof ExpoStack.Screen> &
   modal?: boolean;
 };
 
-function StackScreenWithWebHeader({ options, ...props }: StackScreenComponentProps) {
-  const { setHeaderConfig } = useStackHeaderContext();
-
-  // Extract web header config from options (handle both object and function forms)
-  const resolvedOptions = typeof options === "function" ? null : options;
-  const title = typeof resolvedOptions?.title === "string" ? resolvedOptions.title : undefined;
-  const headerLeft = resolvedOptions?.headerLeft;
-  const headerRight = resolvedOptions?.headerRight;
-  const headerShown = resolvedOptions?.headerShown;
-
-  // Update web header config when options change
-  React.useEffect(() => {
-    setHeaderConfig({
-      title,
-      headerLeft: typeof headerLeft === "function" ? headerLeft({} as any) : headerLeft,
-      headerRight: typeof headerRight === "function" ? headerRight({} as any) : headerRight,
-      headerShown,
-    });
-    return () => setHeaderConfig({});
-  }, [title, headerShown, setHeaderConfig]);
-
-  // Update headerLeft/headerRight separately to avoid object comparison issues
-  React.useEffect(() => {
-    setHeaderConfig({
-      title,
-      headerLeft: typeof headerLeft === "function" ? headerLeft({} as any) : headerLeft,
-      headerRight: typeof headerRight === "function" ? headerRight({} as any) : headerRight,
-      headerShown,
-    });
-  }, [headerLeft, headerRight]);
-
-  return <ExpoStack.Screen options={options} {...props} />;
-}
-
-Stack.Screen = StackScreenWithWebHeader as React.FC<StackScreenComponentProps>;
+Stack.Screen = ExpoStack.Screen as React.FC<StackScreenComponentProps>;
 
 // Re-export Toolbar as a sub-component of Stack
 import {
