@@ -14,7 +14,7 @@ import { ProgressiveBlurBackdrop } from "@/components/ui/tab-bar-controller.web"
  * Toolbar Context
  * ----------------------------------------------------------------------------------*/
 
-export type ToolbarPlacement = "top" | "bottom";
+export type ToolbarPlacement = "top" | "bottom" | "relative";
 
 interface ToolbarContextValue {
   placement: ToolbarPlacement;
@@ -39,7 +39,7 @@ export function useToolbarContext() {
  */
 
 export interface ToolbarProps {
-  /** Toolbar placement - 'top' integrates with header, 'bottom' renders fixed bar */
+  /** Toolbar placement - 'top' integrates with header, 'bottom' renders fixed bar, 'relative' for inline use */
   placement?: ToolbarPlacement;
   /** Toolbar content */
   children?: React.ReactNode;
@@ -73,12 +73,13 @@ export function Toolbar({ placement = "bottom", children, className }: ToolbarPr
           "rounded-full px-1.5 py-1",
           "bg-(--sf-grouped-bg-2)/80 backdrop-blur-xl",
           "shadow-lg shadow-black/10",
-          // Fixed positioning based on placement
+          // Fixed positioning for bottom placement
           placement === "bottom" && cn(
             "fixed bottom-4 left-1/2 z-30 -translate-x-1/2",
             isSidebarOpen && "translate-x-[calc(-50%+156px)]"
           ),
-          placement === "top" && "relative",
+          // Relative positioning for top and relative placements
+          (placement === "top" || placement === "relative") && "relative",
           className
         )}
       >

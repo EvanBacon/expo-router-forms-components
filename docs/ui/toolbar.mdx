@@ -51,8 +51,8 @@ A simple toolbar with icon buttons.
   <Toolbar.Button icon="trash" onPress={() => console.log("Delete")} />
 </Toolbar>`}
 >
-  <xhtml.div className="relative h-32 w-full flex items-end justify-center pb-4">
-    <Toolbar>
+  <xhtml.div className="relative h-16 w-full flex items-center justify-center">
+    <Toolbar placement="relative">
       <Toolbar.Button icon="arrow.left" onPress={() => console.log("Back")} />
       <Toolbar.Separator />
       <Toolbar.Button icon="square.and.arrow.up" onPress={() => console.log("Share")} />
@@ -76,8 +76,8 @@ Buttons can include text labels alongside icons.
   <Toolbar.Button icon="doc.on.doc">Duplicate</Toolbar.Button>
 </Toolbar>`}
 >
-  <xhtml.div className="relative h-32 w-full flex items-end justify-center pb-4">
-    <Toolbar>
+  <xhtml.div className="relative h-16 w-full flex items-center justify-center">
+    <Toolbar placement="relative">
       <Toolbar.Button icon="pencil">Edit</Toolbar.Button>
       <Toolbar.Separator />
       <Toolbar.Button icon="plus">Add</Toolbar.Button>
@@ -114,8 +114,8 @@ Include dropdown menus for additional actions.
   </Toolbar.Menu>
 </Toolbar>`}
 >
-  <xhtml.div className="relative h-48 w-full flex items-end justify-center pb-4">
-    <Toolbar>
+  <xhtml.div className="relative h-16 w-full flex items-center justify-center">
+    <Toolbar placement="relative">
       <Toolbar.Button icon="house" />
       <Toolbar.Button icon="magnifyingglass" />
       <Toolbar.Spacer />
@@ -161,8 +161,8 @@ Menus can include checkbox items for toggleable options.
   </Toolbar.Menu>
 </Toolbar>`}
 >
-  <xhtml.div className="relative h-64 w-full flex items-end justify-center pb-4">
-    <Toolbar>
+  <xhtml.div className="relative h-16 w-full flex items-center justify-center">
+    <Toolbar placement="relative">
       <Toolbar.Menu icon="line.3.horizontal.decrease" label="View">
         <Toolbar.MenuLabel>View Options</Toolbar.MenuLabel>
         <Toolbar.MenuCheckboxItem checked={true}>
@@ -198,8 +198,8 @@ Use radio groups for mutually exclusive options.
   </Toolbar.Menu>
 </Toolbar>`}
 >
-  <xhtml.div className="relative h-64 w-full flex items-end justify-center pb-4">
-    <Toolbar>
+  <xhtml.div className="relative h-16 w-full flex items-center justify-center">
+    <Toolbar placement="relative">
       <Toolbar.Menu icon="arrow.up.arrow.down" label="Sort">
         <Toolbar.MenuLabel>Sort By</Toolbar.MenuLabel>
         <Toolbar.MenuRadioGroup value="name">
@@ -232,8 +232,8 @@ Menus can contain nested submenus.
   </Toolbar.Menu>
 </Toolbar>`}
 >
-  <xhtml.div className="relative h-56 w-full flex items-end justify-center pb-4">
-    <Toolbar>
+  <xhtml.div className="relative h-16 w-full flex items-center justify-center">
+    <Toolbar placement="relative">
       <Toolbar.Menu icon="ellipsis">
         <Toolbar.MenuItem icon="doc.on.doc">Duplicate</Toolbar.MenuItem>
         <Toolbar.MenuSub trigger="Share" icon="square.and.arrow.up">
@@ -261,8 +261,8 @@ Use `Toolbar.Link` for navigation actions.
   <Toolbar.Link href="/info" icon="info.circle" />
 </Toolbar>`}
 >
-  <xhtml.div className="relative h-32 w-full flex items-end justify-center pb-4">
-    <Toolbar>
+  <xhtml.div className="relative h-16 w-full flex items-center justify-center">
+    <Toolbar placement="relative">
       <Toolbar.Link href="/" icon="house">Home</Toolbar.Link>
       <Toolbar.Link href="/settings" icon="gear">Settings</Toolbar.Link>
       <Toolbar.Separator />
@@ -286,8 +286,8 @@ Buttons can show an active/selected state.
   <Toolbar.Button icon="list.number" />
 </Toolbar>`}
 >
-  <xhtml.div className="relative h-32 w-full flex items-end justify-center pb-4">
-    <Toolbar>
+  <xhtml.div className="relative h-16 w-full flex items-center justify-center">
+    <Toolbar placement="relative">
       <Toolbar.Button icon="bold" active />
       <Toolbar.Button icon="italic" />
       <Toolbar.Button icon="underline" active />
@@ -342,9 +342,9 @@ The root container for toolbar items.
   data={[
     {
       name: "placement",
-      type: '"top" | "bottom"',
+      type: '"top" | "bottom" | "relative"',
       default: '"bottom"',
-      description: "Position of the toolbar on screen",
+      description: "Position of the toolbar - 'bottom' for fixed bottom bar, 'top' for header integration, 'relative' for inline use",
     },
     {
       name: "children",

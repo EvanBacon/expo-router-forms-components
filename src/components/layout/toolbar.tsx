@@ -11,7 +11,7 @@ import * as React from "react";
  * Android and web implementations provide full rendering.
  */
 
-export type ToolbarPlacement = "top" | "bottom";
+export type ToolbarPlacement = "top" | "bottom" | "relative";
 
 interface ToolbarContextValue {
   placement: ToolbarPlacement;
