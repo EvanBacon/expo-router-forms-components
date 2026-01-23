@@ -161,16 +161,16 @@ export function InlineCode({ children, className }: InlineCodeProps) {
   const safeClassName =
     typeof className === "string" ? className : undefined;
   if (process.env.EXPO_OS === "web") {
-
+    // Use <code> element on web for proper inline semantics (can be inside <p>)
     return (
-      <Text
+      <code
         className={cn(
           "px-1.5 py-0.5 rounded bg-sf-fill text-sf-text text-sm font-mono",
           safeClassName
         )}
       >
         {text}
-      </Text>
+      </code>
     );
   }
 
