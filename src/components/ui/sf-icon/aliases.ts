@@ -666,6 +666,13 @@ const MAPPING = {
   "curlybraces.square": "code-braces-box",
   "person.fill": "account-circle-outline",
   swift: "language-swift",
+
+  "list.number": "format-list-numbered",
+  "arrow.up.arrow.down": "unfold-more-horizontal",
+  "line.3.horizontal.decrease": "format-list-bulleted",
+  "moon.fill": "moon-waning-crescent",
+  "slash.circle": "cancel",
+  "rectangle.grid.2x2": "view-grid-outline",
 } satisfies ToMC;
 
 const MATERIAL_MAPPING = {

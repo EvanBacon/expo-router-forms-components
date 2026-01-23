@@ -5,6 +5,12 @@ import { Stack as ExpoStack, useRouter, useNavigation } from "expo-router";
 import { cn } from "@/lib/utils";
 import { SFIcon } from "@/components/ui/sf-icon";
 import { useTabBarController, ProgressiveBlurBackdrop } from "@/components/ui/tab-bar-controller.web";
+import {
+  StackHeaderContext,
+  useStackHeaderContext,
+  useStackHeaderConfig,
+  type StackHeaderConfig,
+} from "@/components/layout/stack-context.web";
 
 /**
  * Hook to reactively check if navigation can go back.
@@ -29,57 +35,7 @@ function useCanGoBack(): boolean {
   return React.useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
 }
 
-/* ----------------------------------------------------------------------------------
- * Stack Header Context
- * ----------------------------------------------------------------------------------
- *
- * Context for managing the custom web stack header.
- * Screens can use useStackHeaderConfig to set their header content.
- */
-
-interface StackHeaderConfig {
-  title?: string;
-  headerLeft?: React.ReactNode;
-  headerRight?: React.ReactNode;
-  headerShown?: boolean;
-}
-
-interface StackHeaderContextValue {
-  /** Whether the sidebar is open (from tab bar controller) */
-  isSidebarOpen: boolean;
-  /** Whether we're inside a tab bar controller */
-  isInsideTabBar: boolean;
-  /** Current header configuration */
-  headerConfig: StackHeaderConfig;
-  /** Set header configuration */
-  setHeaderConfig: (config: StackHeaderConfig) => void;
-}
-
-const StackHeaderContext = React.createContext<StackHeaderContextValue>({
-  isSidebarOpen: false,
-  isInsideTabBar: false,
-  headerConfig: {},
-  setHeaderConfig: () => {},
-});
-
-function useStackHeaderContext() {
-  return React.useContext(StackHeaderContext);
-}
-
-/** Hook for screens to configure their header */
-function useStackHeaderConfig(config: StackHeaderConfig) {
-  const { setHeaderConfig } = useStackHeaderContext();
-
-  React.useEffect(() => {
-    setHeaderConfig(config);
-    return () => setHeaderConfig({});
-  }, [config.title, config.headerShown, setHeaderConfig]);
-
-  // Also update when headerLeft/headerRight change
-  React.useEffect(() => {
-    setHeaderConfig(config);
-  }, [config.headerLeft, config.headerRight, setHeaderConfig]);
-}
+/* Stack Header Context is imported from stack-context.web.tsx to avoid require cycles */
 
 /* ----------------------------------------------------------------------------------
  * Inner component that uses the tab bar hook
@@ -530,12 +486,12 @@ function Stack(props: StackProps) {
 }
 
 /* ----------------------------------------------------------------------------------
- * Stack.Screen with Web Header Integration
+ * Stack.Screen
  * ----------------------------------------------------------------------------------
  *
- * Custom Stack.Screen that automatically configures the web floating header
- * from the options prop. This eliminates the need to call useStackHeaderConfig
- * separately - just use Stack.Screen with options.title, headerLeft, headerRight.
+ * Re-export ExpoStack.Screen directly. Screen components are configuration elements,
+ * not rendered components, so we can't use hooks in them.
+ * Use useStackHeaderConfig() in your actual screen component to configure the header.
  */
 
 type StackScreenComponentProps = React.ComponentProps<typeof ExpoStack.Screen> & {
@@ -545,41 +501,42 @@ type StackScreenComponentProps = React.ComponentProps<typeof ExpoStack.Screen> &
   modal?: boolean;
 };
 
-function StackScreenWithWebHeader({ options, ...props }: StackScreenComponentProps) {
-  const { setHeaderConfig } = useStackHeaderContext();
+Stack.Screen = ExpoStack.Screen as React.FC<StackScreenComponentProps>;
 
-  // Extract web header config from options (handle both object and function forms)
-  const resolvedOptions = typeof options === "function" ? null : options;
-  const title = typeof resolvedOptions?.title === "string" ? resolvedOptions.title : undefined;
-  const headerLeft = resolvedOptions?.headerLeft;
-  const headerRight = resolvedOptions?.headerRight;
-  const headerShown = resolvedOptions?.headerShown;
+// Re-export Toolbar as a sub-component of Stack
+import {
+  Toolbar,
+  ToolbarButton,
+  ToolbarSeparator,
+  ToolbarLink,
+  ToolbarMenu,
+  ToolbarMenuItem,
+  ToolbarMenuSeparator,
+  ToolbarMenuLabel,
+  ToolbarMenuCheckboxItem,
+  ToolbarMenuRadioGroup,
+  ToolbarMenuRadioItem,
+  ToolbarMenuSub,
+  ToolbarGroup,
+  ToolbarToggleItem,
+  ToolbarSpacer,
+} from "./toolbar.web";
 
-  // Update web header config when options change
-  React.useEffect(() => {
-    setHeaderConfig({
-      title,
-      headerLeft: typeof headerLeft === "function" ? headerLeft({} as any) : headerLeft,
-      headerRight: typeof headerRight === "function" ? headerRight({} as any) : headerRight,
-      headerShown,
-    });
-    return () => setHeaderConfig({});
-  }, [title, headerShown, setHeaderConfig]);
-
-  // Update headerLeft/headerRight separately to avoid object comparison issues
-  React.useEffect(() => {
-    setHeaderConfig({
-      title,
-      headerLeft: typeof headerLeft === "function" ? headerLeft({} as any) : headerLeft,
-      headerRight: typeof headerRight === "function" ? headerRight({} as any) : headerRight,
-      headerShown,
-    });
-  }, [headerLeft, headerRight]);
-
-  return <ExpoStack.Screen options={options} {...props} />;
-}
-
-Stack.Screen = StackScreenWithWebHeader as React.FC<StackScreenComponentProps>;
+Stack.Toolbar = Toolbar;
+Stack.ToolbarButton = ToolbarButton;
+Stack.ToolbarSeparator = ToolbarSeparator;
+Stack.ToolbarLink = ToolbarLink;
+Stack.ToolbarMenu = ToolbarMenu;
+Stack.ToolbarMenuItem = ToolbarMenuItem;
+Stack.ToolbarMenuSeparator = ToolbarMenuSeparator;
+Stack.ToolbarMenuLabel = ToolbarMenuLabel;
+Stack.ToolbarMenuCheckboxItem = ToolbarMenuCheckboxItem;
+Stack.ToolbarMenuRadioGroup = ToolbarMenuRadioGroup;
+Stack.ToolbarMenuRadioItem = ToolbarMenuRadioItem;
+Stack.ToolbarMenuSub = ToolbarMenuSub;
+Stack.ToolbarGroup = ToolbarGroup;
+Stack.ToolbarToggleItem = ToolbarToggleItem;
+Stack.ToolbarSpacer = ToolbarSpacer;
 
 export default Stack;
 

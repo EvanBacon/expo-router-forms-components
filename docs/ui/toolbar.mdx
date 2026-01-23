@@ -1,0 +1,711 @@
+---
+title: Toolbar
+---
+
+import { Toolbar } from "@/components/layout/toolbar";
+import { SFIcon } from "@/components/ui/sf-icon";
+import { InstallBlock, ComponentPreview, PropsTable } from "@/components/docs";
+import { html as xhtml } from "@/html";
+import { View, Text } from "@/tw";
+
+A floating toolbar component for actions, navigation, and menus. Designed to work with Stack navigation and supports placement at the top or bottom of the screen. Uses Radix UI Toolbar and Dropdown Menu primitives on web.
+
+## Installation
+
+<InstallBlock packages="@radix-ui/react-toolbar @radix-ui/react-dropdown-menu" />
+
+## Usage
+
+```tsx
+import Stack from "@/components/layout/stack";
+
+// Using as Stack.Toolbar
+<Stack.Toolbar placement="bottom">
+  <Stack.ToolbarButton icon="house" onPress={() => {}} />
+  <Stack.ToolbarSeparator />
+  <Stack.ToolbarButton icon="gear">Settings</Stack.ToolbarButton>
+</Stack.Toolbar>
+
+// Or import directly
+import { Toolbar } from "@/components/layout/toolbar";
+
+<Toolbar placement="bottom">
+  <Toolbar.Button icon="house" onPress={() => {}} />
+</Toolbar>
+```
+
+## Examples
+
+### Basic Toolbar
+
+A simple toolbar with icon buttons.
+
+<ComponentPreview
+  title="Basic Toolbar"
+  code={`<Toolbar placement="bottom">
+  <Toolbar.Button icon="arrow.left" onPress={() => console.log("Back")} />
+  <Toolbar.Separator />
+  <Toolbar.Button icon="square.and.arrow.up" onPress={() => console.log("Share")} />
+  <Toolbar.Button icon="bookmark" onPress={() => console.log("Bookmark")} />
+  <Toolbar.Separator />
+  <Toolbar.Button icon="trash" onPress={() => console.log("Delete")} />
+</Toolbar>`}
+>
+  <xhtml.div className="relative h-16 w-full flex items-center justify-center">
+    <Toolbar placement="relative">
+      <Toolbar.Button icon="arrow.left" onPress={() => console.log("Back")} />
+      <Toolbar.Separator />
+      <Toolbar.Button icon="square.and.arrow.up" onPress={() => console.log("Share")} />
+      <Toolbar.Button icon="bookmark" onPress={() => console.log("Bookmark")} />
+      <Toolbar.Separator />
+      <Toolbar.Button icon="trash" onPress={() => console.log("Delete")} />
+    </Toolbar>
+  </xhtml.div>
+</ComponentPreview>
+
+### Toolbar with Labels
+
+Buttons can include text labels alongside icons.
+
+<ComponentPreview
+  title="Toolbar with Labels"
+  code={`<Toolbar>
+  <Toolbar.Button icon="pencil">Edit</Toolbar.Button>
+  <Toolbar.Separator />
+  <Toolbar.Button icon="plus">Add</Toolbar.Button>
+  <Toolbar.Button icon="doc.on.doc">Duplicate</Toolbar.Button>
+</Toolbar>`}
+>
+  <xhtml.div className="relative h-16 w-full flex items-center justify-center">
+    <Toolbar placement="relative">
+      <Toolbar.Button icon="pencil">Edit</Toolbar.Button>
+      <Toolbar.Separator />
+      <Toolbar.Button icon="plus">Add</Toolbar.Button>
+      <Toolbar.Button icon="doc.on.doc">Duplicate</Toolbar.Button>
+    </Toolbar>
+  </xhtml.div>
+</ComponentPreview>
+
+### Toolbar with Menu
+
+Include dropdown menus for additional actions.
+
+<ComponentPreview
+  title="Toolbar with Menu"
+  code={`<Toolbar>
+  <Toolbar.Button icon="house" />
+  <Toolbar.Button icon="magnifyingglass" />
+  <Toolbar.Spacer />
+  <Toolbar.Menu icon="ellipsis">
+    <Toolbar.MenuItem icon="doc" onSelect={() => console.log("New")}>
+      New Document
+    </Toolbar.MenuItem>
+    <Toolbar.MenuItem icon="folder" onSelect={() => console.log("Open")}>
+      Open Folder
+    </Toolbar.MenuItem>
+    <Toolbar.MenuSeparator />
+    <Toolbar.MenuItem icon="gear" onSelect={() => console.log("Settings")}>
+      Settings
+    </Toolbar.MenuItem>
+    <Toolbar.MenuSeparator />
+    <Toolbar.MenuItem icon="trash" destructive onSelect={() => console.log("Delete")}>
+      Delete
+    </Toolbar.MenuItem>
+  </Toolbar.Menu>
+</Toolbar>`}
+>
+  <xhtml.div className="relative h-16 w-full flex items-center justify-center">
+    <Toolbar placement="relative">
+      <Toolbar.Button icon="house" />
+      <Toolbar.Button icon="magnifyingglass" />
+      <Toolbar.Spacer />
+      <Toolbar.Menu icon="ellipsis">
+        <Toolbar.MenuItem icon="doc" onSelect={() => console.log("New")}>
+          New Document
+        </Toolbar.MenuItem>
+        <Toolbar.MenuItem icon="folder" onSelect={() => console.log("Open")}>
+          Open Folder
+        </Toolbar.MenuItem>
+        <Toolbar.MenuSeparator />
+        <Toolbar.MenuItem icon="gear" onSelect={() => console.log("Settings")}>
+          Settings
+        </Toolbar.MenuItem>
+        <Toolbar.MenuSeparator />
+        <Toolbar.MenuItem icon="trash" destructive onSelect={() => console.log("Delete")}>
+          Delete
+        </Toolbar.MenuItem>
+      </Toolbar.Menu>
+    </Toolbar>
+  </xhtml.div>
+</ComponentPreview>
+
+### Menu with Checkbox Items
+
+Menus can include checkbox items for toggleable options.
+
+<ComponentPreview
+  title="Checkbox Menu Items"
+  code={`<Toolbar>
+  <Toolbar.Menu icon="line.3.horizontal.decrease" label="View">
+    <Toolbar.MenuLabel>View Options</Toolbar.MenuLabel>
+    <Toolbar.MenuCheckboxItem checked={true}>
+      Show Hidden Files
+    </Toolbar.MenuCheckboxItem>
+    <Toolbar.MenuCheckboxItem checked={false}>
+      Show Extensions
+    </Toolbar.MenuCheckboxItem>
+    <Toolbar.MenuSeparator />
+    <Toolbar.MenuCheckboxItem checked={true}>
+      Preview Panel
+    </Toolbar.MenuCheckboxItem>
+  </Toolbar.Menu>
+</Toolbar>`}
+>
+  <xhtml.div className="relative h-16 w-full flex items-center justify-center">
+    <Toolbar placement="relative">
+      <Toolbar.Menu icon="line.3.horizontal.decrease" label="View">
+        <Toolbar.MenuLabel>View Options</Toolbar.MenuLabel>
+        <Toolbar.MenuCheckboxItem checked={true}>
+          Show Hidden Files
+        </Toolbar.MenuCheckboxItem>
+        <Toolbar.MenuCheckboxItem checked={false}>
+          Show Extensions
+        </Toolbar.MenuCheckboxItem>
+        <Toolbar.MenuSeparator />
+        <Toolbar.MenuCheckboxItem checked={true}>
+          Preview Panel
+        </Toolbar.MenuCheckboxItem>
+      </Toolbar.Menu>
+    </Toolbar>
+  </xhtml.div>
+</ComponentPreview>
+
+### Menu with Radio Items
+
+Use radio groups for mutually exclusive options.
+
+<ComponentPreview
+  title="Radio Menu Items"
+  code={`<Toolbar>
+  <Toolbar.Menu icon="arrow.up.arrow.down" label="Sort">
+    <Toolbar.MenuLabel>Sort By</Toolbar.MenuLabel>
+    <Toolbar.MenuRadioGroup value="name">
+      <Toolbar.MenuRadioItem value="name">Name</Toolbar.MenuRadioItem>
+      <Toolbar.MenuRadioItem value="date">Date Modified</Toolbar.MenuRadioItem>
+      <Toolbar.MenuRadioItem value="size">Size</Toolbar.MenuRadioItem>
+      <Toolbar.MenuRadioItem value="kind">Kind</Toolbar.MenuRadioItem>
+    </Toolbar.MenuRadioGroup>
+  </Toolbar.Menu>
+</Toolbar>`}
+>
+  <xhtml.div className="relative h-16 w-full flex items-center justify-center">
+    <Toolbar placement="relative">
+      <Toolbar.Menu icon="arrow.up.arrow.down" label="Sort">
+        <Toolbar.MenuLabel>Sort By</Toolbar.MenuLabel>
+        <Toolbar.MenuRadioGroup value="name">
+          <Toolbar.MenuRadioItem value="name">Name</Toolbar.MenuRadioItem>
+          <Toolbar.MenuRadioItem value="date">Date Modified</Toolbar.MenuRadioItem>
+          <Toolbar.MenuRadioItem value="size">Size</Toolbar.MenuRadioItem>
+          <Toolbar.MenuRadioItem value="kind">Kind</Toolbar.MenuRadioItem>
+        </Toolbar.MenuRadioGroup>
+      </Toolbar.Menu>
+    </Toolbar>
+  </xhtml.div>
+</ComponentPreview>
+
+### Submenu
+
+Menus can contain nested submenus.
+
+<ComponentPreview
+  title="Submenu"
+  code={`<Toolbar>
+  <Toolbar.Menu icon="ellipsis">
+    <Toolbar.MenuItem icon="doc.on.doc">Duplicate</Toolbar.MenuItem>
+    <Toolbar.MenuSub trigger="Share" icon="square.and.arrow.up">
+      <Toolbar.MenuItem icon="message">Messages</Toolbar.MenuItem>
+      <Toolbar.MenuItem icon="envelope">Mail</Toolbar.MenuItem>
+      <Toolbar.MenuItem icon="link">Copy Link</Toolbar.MenuItem>
+    </Toolbar.MenuSub>
+    <Toolbar.MenuSeparator />
+    <Toolbar.MenuItem icon="trash" destructive>Delete</Toolbar.MenuItem>
+  </Toolbar.Menu>
+</Toolbar>`}
+>
+  <xhtml.div className="relative h-16 w-full flex items-center justify-center">
+    <Toolbar placement="relative">
+      <Toolbar.Menu icon="ellipsis">
+        <Toolbar.MenuItem icon="doc.on.doc">Duplicate</Toolbar.MenuItem>
+        <Toolbar.MenuSub trigger="Share" icon="square.and.arrow.up">
+          <Toolbar.MenuItem icon="message">Messages</Toolbar.MenuItem>
+          <Toolbar.MenuItem icon="envelope">Mail</Toolbar.MenuItem>
+          <Toolbar.MenuItem icon="link">Copy Link</Toolbar.MenuItem>
+        </Toolbar.MenuSub>
+        <Toolbar.MenuSeparator />
+        <Toolbar.MenuItem icon="trash" destructive>Delete</Toolbar.MenuItem>
+      </Toolbar.Menu>
+    </Toolbar>
+  </xhtml.div>
+</ComponentPreview>
+
+### Toolbar with Links
+
+Use `Toolbar.Link` for navigation actions.
+
+<ComponentPreview
+  title="Toolbar with Links"
+  code={`<Toolbar>
+  <Toolbar.Link href="/" icon="house">Home</Toolbar.Link>
+  <Toolbar.Link href="/settings" icon="gear">Settings</Toolbar.Link>
+  <Toolbar.Separator />
+  <Toolbar.Link href="/info" icon="info.circle" />
+</Toolbar>`}
+>
+  <xhtml.div className="relative h-16 w-full flex items-center justify-center">
+    <Toolbar placement="relative">
+      <Toolbar.Link href="/" icon="house">Home</Toolbar.Link>
+      <Toolbar.Link href="/settings" icon="gear">Settings</Toolbar.Link>
+      <Toolbar.Separator />
+      <Toolbar.Link href="/info" icon="info.circle" />
+    </Toolbar>
+  </xhtml.div>
+</ComponentPreview>
+
+### Active State
+
+Buttons can show an active/selected state.
+
+<ComponentPreview
+  title="Active State"
+  code={`<Toolbar>
+  <Toolbar.Button icon="bold" active />
+  <Toolbar.Button icon="italic" />
+  <Toolbar.Button icon="underline" active />
+  <Toolbar.Separator />
+  <Toolbar.Button icon="list.bullet" />
+  <Toolbar.Button icon="list.number" />
+</Toolbar>`}
+>
+  <xhtml.div className="relative h-16 w-full flex items-center justify-center">
+    <Toolbar placement="relative">
+      <Toolbar.Button icon="bold" active />
+      <Toolbar.Button icon="italic" />
+      <Toolbar.Button icon="underline" active />
+      <Toolbar.Separator />
+      <Toolbar.Button icon="list.bullet" />
+      <Toolbar.Button icon="list.number" />
+    </Toolbar>
+  </xhtml.div>
+</ComponentPreview>
+
+### With Stack Integration
+
+Use `Stack.Toolbar` to add a toolbar to your stack screens.
+
+```tsx
+import Stack from "@/components/layout/stack";
+
+export default function Layout() {
+  return (
+    <Stack>
+      <Stack.Screen name="index" />
+    </Stack>
+  );
+}
+
+// In your screen component:
+function HomeScreen() {
+  return (
+    <View className="flex-1">
+      <Text>Content</Text>
+
+      <Stack.Toolbar placement="bottom">
+        <Stack.ToolbarButton icon="house" />
+        <Stack.ToolbarButton icon="magnifyingglass" />
+        <Stack.ToolbarSpacer />
+        <Stack.ToolbarMenu icon="ellipsis">
+          <Stack.ToolbarMenuItem>Settings</Stack.ToolbarMenuItem>
+        </Stack.ToolbarMenu>
+      </Stack.Toolbar>
+    </View>
+  );
+}
+```
+
+## API Reference
+
+### Toolbar
+
+The root container for toolbar items.
+
+<PropsTable
+  data={[
+    {
+      name: "placement",
+      type: '"top" | "bottom" | "relative"',
+      default: '"bottom"',
+      description: "Position of the toolbar - 'bottom' for fixed bottom bar, 'top' for header integration, 'relative' for inline use",
+    },
+    {
+      name: "children",
+      type: "ReactNode",
+      description: "Toolbar content (buttons, menus, separators)",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "Additional CSS classes",
+    },
+  ]}
+/>
+
+### Toolbar.Button
+
+An interactive button in the toolbar.
+
+<PropsTable
+  data={[
+    {
+      name: "icon",
+      type: "string",
+      description: "SF Symbol icon name",
+    },
+    {
+      name: "children",
+      type: "ReactNode",
+      description: "Button label text",
+    },
+    {
+      name: "onPress",
+      type: "() => void",
+      description: "Called when the button is pressed",
+    },
+    {
+      name: "active",
+      type: "boolean",
+      default: "false",
+      description: "Whether the button appears selected/active",
+    },
+    {
+      name: "disabled",
+      type: "boolean",
+      default: "false",
+      description: "Whether the button is disabled",
+    },
+    {
+      name: "className",
+      type: "string",
+      description: "Additional CSS classes",
+    },
+  ]}
+/>
+
+### Toolbar.Link
+
+A toolbar button that navigates to a route.
+
+<PropsTable
+  data={[
+    {
+      name: "href",
+      type: "string",
+      required: true,
+      description: "The route to navigate to",
+    },
+    {
+      name: "icon",
+      type: "string",
+      description: "SF Symbol icon name",
+    },
+    {
+      name: "children",
+      type: "ReactNode",
+      description: "Link label text",
+    },
+    {
+      name: "active",
+      type: "boolean",
+      description: "Whether the link appears selected",
+    },
+    {
+      name: "disabled",
+      type: "boolean",
+      description: "Whether the link is disabled",
+    },
+  ]}
+/>
+
+### Toolbar.Separator
+
+A visual divider between toolbar items.
+
+<PropsTable
+  data={[
+    {
+      name: "className",
+      type: "string",
+      description: "Additional CSS classes",
+    },
+  ]}
+/>
+
+### Toolbar.Spacer
+
+A flexible spacer that pushes items apart.
+
+<PropsTable
+  data={[
+    {
+      name: "className",
+      type: "string",
+      description: "Additional CSS classes",
+    },
+  ]}
+/>
+
+### Toolbar.Menu
+
+A dropdown menu in the toolbar.
+
+<PropsTable
+  data={[
+    {
+      name: "icon",
+      type: "string",
+      default: '"ellipsis"',
+      description: "SF Symbol icon for the trigger button",
+    },
+    {
+      name: "label",
+      type: "string",
+      description: "Text label for the trigger button",
+    },
+    {
+      name: "trigger",
+      type: "ReactNode",
+      description: "Custom trigger element (overrides icon/label)",
+    },
+    {
+      name: "children",
+      type: "ReactNode",
+      description: "Menu items",
+    },
+    {
+      name: "open",
+      type: "boolean",
+      description: "Controlled open state",
+    },
+    {
+      name: "onOpenChange",
+      type: "(open: boolean) => void",
+      description: "Called when open state changes",
+    },
+    {
+      name: "align",
+      type: '"start" | "center" | "end"',
+      default: '"center"',
+      description: "Menu alignment relative to trigger",
+    },
+    {
+      name: "side",
+      type: '"top" | "bottom" | "left" | "right"',
+      default: '"top"',
+      description: "Which side of the trigger the menu appears",
+    },
+  ]}
+/>
+
+### Toolbar.MenuItem
+
+An item in the toolbar menu.
+
+<PropsTable
+  data={[
+    {
+      name: "icon",
+      type: "string",
+      description: "SF Symbol icon name",
+    },
+    {
+      name: "children",
+      type: "ReactNode",
+      description: "Item label text",
+    },
+    {
+      name: "onSelect",
+      type: "() => void",
+      description: "Called when the item is selected",
+    },
+    {
+      name: "destructive",
+      type: "boolean",
+      description: "Whether this is a destructive action (shows in red)",
+    },
+    {
+      name: "disabled",
+      type: "boolean",
+      description: "Whether the item is disabled",
+    },
+    {
+      name: "shortcut",
+      type: "string",
+      description: "Keyboard shortcut hint",
+    },
+  ]}
+/>
+
+### Toolbar.MenuSeparator
+
+A divider between menu items.
+
+### Toolbar.MenuLabel
+
+A non-interactive label in a menu.
+
+<PropsTable
+  data={[
+    {
+      name: "children",
+      type: "ReactNode",
+      description: "Label text",
+    },
+  ]}
+/>
+
+### Toolbar.MenuCheckboxItem
+
+A toggleable checkbox item in a menu.
+
+<PropsTable
+  data={[
+    {
+      name: "checked",
+      type: "boolean",
+      description: "Whether the item is checked",
+    },
+    {
+      name: "onCheckedChange",
+      type: "(checked: boolean) => void",
+      description: "Called when checked state changes",
+    },
+    {
+      name: "children",
+      type: "ReactNode",
+      description: "Item label",
+    },
+    {
+      name: "disabled",
+      type: "boolean",
+      description: "Whether the item is disabled",
+    },
+  ]}
+/>
+
+### Toolbar.MenuRadioGroup
+
+A group of mutually exclusive radio items.
+
+<PropsTable
+  data={[
+    {
+      name: "value",
+      type: "string",
+      description: "The selected value",
+    },
+    {
+      name: "onValueChange",
+      type: "(value: string) => void",
+      description: "Called when the value changes",
+    },
+    {
+      name: "children",
+      type: "ReactNode",
+      description: "Radio items",
+    },
+  ]}
+/>
+
+### Toolbar.MenuRadioItem
+
+A radio item within a radio group.
+
+<PropsTable
+  data={[
+    {
+      name: "value",
+      type: "string",
+      required: true,
+      description: "The value of this item",
+    },
+    {
+      name: "children",
+      type: "ReactNode",
+      description: "Item label",
+    },
+    {
+      name: "disabled",
+      type: "boolean",
+      description: "Whether the item is disabled",
+    },
+  ]}
+/>
+
+### Toolbar.MenuSub
+
+A submenu within a menu.
+
+<PropsTable
+  data={[
+    {
+      name: "trigger",
+      type: "ReactNode",
+      required: true,
+      description: "The submenu trigger text",
+    },
+    {
+      name: "icon",
+      type: "string",
+      description: "SF Symbol icon for the trigger",
+    },
+    {
+      name: "children",
+      type: "ReactNode",
+      description: "Submenu items",
+    },
+    {
+      name: "disabled",
+      type: "boolean",
+      description: "Whether the submenu is disabled",
+    },
+  ]}
+/>
+
+## Platform Differences
+
+### Native (iOS)
+
+- On iOS, the native toolbar is rendered by the native stack navigator
+- This component is a no-op on iOS - use the native `headerRight`/`headerLeft` options instead
+- Future versions will integrate with Expo Router v7's toolbar API
+
+### Web
+
+- Full implementation using Radix UI primitives
+- Floating pill-style toolbar with backdrop blur
+- Responsive to sidebar state from TabBarController
+- Supports keyboard navigation and focus management
+- Smooth animations for menu open/close
+
+### Android
+
+- Currently renders as no-op (same as iOS)
+- Future versions will render a bottom toolbar similar to web
+
+## Accessibility
+
+- Full keyboard navigation support on web
+- Arrow keys to navigate between items
+- Enter/Space to activate buttons and menu items
+- Escape to close menus
+- Focus trap when menu is open
+- Screen reader announcements for menu state changes
