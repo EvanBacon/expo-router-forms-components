@@ -41,6 +41,33 @@ import { toast } from "@/utils/toast";
 
 //
 import { html } from "@/html";
+import { Href } from "expo-router";
+
+// Auto-discover all MDX docs from docs/ui/
+const docsContext = require.context("../../../docs/ui", false, /\.mdx$/);
+// Convert MDX filename to route info for docs
+function getDocsRouteInfo(key: string) {
+  const filename = key.replace(/^\.\//, "").replace(/\.mdx$/, "");
+  // Try to get title from frontmatter, fallback to filename
+  const mod = docsContext(key);
+  const title =
+    mod.frontmatter?.title ??
+    filename
+      .split("-")
+      .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  return {
+    name: `ui-${filename}`,
+    title,
+    href: `/(index)/ui/${filename}` as Href,
+  };
+}
+
+// Get all discovered docs routes
+const discoveredDocs = docsContext
+  .keys()
+  .map(getDocsRouteInfo)
+  .sort((a, b) => a.title.localeCompare(b.title));
 
 export default function Page() {
   const ref = useAnimatedRef();
@@ -97,12 +124,11 @@ export default function Page() {
         </Form.Section>
 
         <Form.Section title="Components">
-          <Form.Link href="/ui/accordion">Accordion</Form.Link>
-          <Form.Link href="/ui/alert-dialog">Alert Dialog</Form.Link>
-          <Form.Link href="/ui/avatar">Avatar</Form.Link>
-          <Form.Link href="/ui/segments">Segments</Form.Link>
-          <Form.Link href="/ui/toolbar">Toolbar</Form.Link>
-          <Form.Link href="/ui/switch">Switch</Form.Link>
+          {discoveredDocs.map((route) => (
+            <Form.Link key={route.name} href={route.href}>
+              {route.title}
+            </Form.Link>
+          ))}
         </Form.Section>
         <Form.Section title="Features">
           <Form.Text
