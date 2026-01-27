@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useNavigation } from "expo-router";
 
 /* ----------------------------------------------------------------------------------
  * Stack Header Context
@@ -55,4 +56,27 @@ export function useStackHeaderConfig(config: StackHeaderConfig) {
   React.useEffect(() => {
     setHeaderConfig(config);
   }, [config.headerLeft, config.headerRight, setHeaderConfig]);
+}
+
+/**
+ * Hook to reactively check if navigation can go back.
+ * Uses navigation.canGoBack() but subscribes to state changes
+ * to trigger re-renders when the navigation state changes.
+ */
+export function useCanGoBack(): boolean {
+  const navigation = useNavigation();
+
+  const getSnapshot = React.useCallback(() => {
+    return navigation.canGoBack();
+  }, [navigation]);
+
+  const subscribe = React.useCallback(
+    (callback: () => void) => {
+      const unsubscribe = navigation.addListener("state", callback);
+      return unsubscribe;
+    },
+    [navigation]
+  );
+
+  return React.useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
 }
