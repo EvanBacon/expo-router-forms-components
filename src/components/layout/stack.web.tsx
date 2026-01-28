@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Stack as ExpoStack, useRouter } from "expo-router";
+import { Stack as ExpoStack, useRouter, useNavigation } from "expo-router";
 import { cn } from "@/lib/utils";
 import { SFIcon } from "@/components/ui/sf-icon";
 import { useTabBarController, ProgressiveBlurBackdrop } from "@/components/ui/tab-bar-controller.web";
@@ -9,10 +9,31 @@ import {
   StackHeaderContext,
   useStackHeaderContext,
   useStackHeaderConfig,
-  useCanGoBack,
   type StackHeaderConfig,
 } from "@/components/layout/stack-context.web";
-import { KonstaStackHeader, KonstaHeaderButton } from "./konsta-stack-header.web";
+
+/**
+ * Hook to reactively check if navigation can go back.
+ * Uses navigation.canGoBack() but subscribes to state changes
+ * to trigger re-renders when the navigation state changes.
+ */
+function useCanGoBack(): boolean {
+  const navigation = useNavigation();
+
+  const getSnapshot = React.useCallback(() => {
+    return navigation.canGoBack();
+  }, [navigation]);
+
+  const subscribe = React.useCallback(
+    (callback: () => void) => {
+      const unsubscribe = navigation.addListener("state", callback);
+      return unsubscribe;
+    },
+    [navigation]
+  );
+
+  return React.useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
+}
 
 /* Stack Header Context is imported from stack-context.web.tsx to avoid require cycles */
 
@@ -52,10 +73,127 @@ function TabBarAwareProviderFallback({ children }: { children: React.ReactNode }
 }
 
 /* ----------------------------------------------------------------------------------
- * Standalone Floating Header (for manual use)
+ * Web Stack Header
  * ----------------------------------------------------------------------------------
- * Updated to use iOS Liquid Glass styling with enhanced blur effects
+ *
+ * Reads navigation state and renders a floating header.
+ * This is rendered alongside the Stack, not as a native header option.
  */
+
+function WebStackHeader() {
+  const router = useRouter();
+  const { isSidebarOpen, isInsideTabBar, headerConfig } = useStackHeaderContext();
+  const canGoBack = useCanGoBack();
+
+  const { title, headerLeft, headerRight, headerShown = true } = headerConfig;
+
+  if (!headerShown) {
+    return null;
+  }
+
+  // When floating bar is visible (sidebar closed in tab bar mode),
+  // hide the center title to let the floating bar be prominent
+  const showCenterTitle = !isInsideTabBar || isSidebarOpen;
+
+  const hasLeftContent = canGoBack || !!headerLeft;
+  const hasRightContent = !!headerRight;
+
+  // Don't render header if there's nothing to show
+  if (!hasLeftContent && !hasRightContent && !title) {
+    return null;
+  }
+
+  return (
+    <>
+      {/* Progressive blur backdrop for header area */}
+      <ProgressiveBlurBackdrop
+        position="top"
+        className={cn(
+          "fixed z-20",
+          isSidebarOpen ? "left-78" : "left-0"
+        )}
+      />
+
+      <header
+        data-slot="stack-floating-header"
+        data-sidebar-open={isSidebarOpen}
+        className={cn(
+          "pointer-events-none fixed top-4 z-30",
+          "flex items-start justify-between",
+          "right-4",
+          // When sidebar is open, account for its width (sidebar is ~296px + padding)
+          isSidebarOpen ? "left-78" : "left-4"
+        )}
+      >
+        {/* Left toolbar */}
+        <div
+          data-slot="stack-header-left"
+          className={cn(
+            "pointer-events-auto flex items-center",
+            "rounded-full",
+            "bg-(--sf-grouped-bg-2)/80 backdrop-blur-xl",
+            "shadow-lg shadow-black/10",
+            "transition-all duration-300",
+            !hasLeftContent && "opacity-0 scale-95 pointer-events-none"
+          )}
+        >
+        {canGoBack && !headerLeft && (
+          <button
+            onClick={() => router.back()}
+            className={cn(
+              "flex h-10 items-center gap-1 rounded-full pl-2 pr-3",
+              "text-sf-text hover:bg-sf-fill",
+              "transition-colors"
+            )}
+          >
+            <SFIcon name="chevron.left" className="text-sf-text text-xl" />
+            <span className="text-sm font-medium">Back</span>
+          </button>
+          )}
+          {headerLeft}
+        </div>
+
+        {/* Center title - hidden when floating bar is visible */}
+        <div
+          data-slot="stack-header-center"
+          className={cn(
+            "pointer-events-auto",
+            "rounded-full px-4 py-2.5",
+            "bg-(--sf-grouped-bg-2)/80 backdrop-blur-xl",
+            "shadow-lg shadow-black/10",
+            "transition-all duration-300 ease-out",
+            showCenterTitle && title
+              ? "opacity-100 scale-100"
+              : "opacity-0 scale-95 pointer-events-none"
+          )}
+        >
+          <span className="text-sm font-semibold text-(--sf-text) whitespace-nowrap">
+            {title}
+          </span>
+        </div>
+
+        {/* Right toolbar */}
+        <div
+          data-slot="stack-header-right"
+          className={cn(
+            "pointer-events-auto flex items-center",
+            "rounded-full",
+            "bg-(--sf-grouped-bg-2)/80 backdrop-blur-xl",
+            "shadow-lg shadow-black/10",
+            "transition-all duration-300",
+            !hasRightContent && "opacity-0 scale-95 pointer-events-none"
+          )}
+        >
+          {headerRight}
+        </div>
+      </header>
+    </>
+  );
+}
+
+/* ----------------------------------------------------------------------------------
+ * Standalone Floating Header (for manual use)
+ * ----------------------------------------------------------------------------------*/
 
 interface StackFloatingHeaderProps {
   /** The page title */
@@ -91,18 +229,6 @@ function StackFloatingHeader({
   const hasLeftContent = canGoBack || headerLeft;
   const hasRightContent = !!headerRight;
 
-  // Liquid glass pill styling
-  const liquidGlassStyle: React.CSSProperties = {
-    background: "color-mix(in srgb, var(--sf-grouped-bg-2) 65%, transparent)",
-    backdropFilter: "blur(40px) saturate(180%)",
-    WebkitBackdropFilter: "blur(40px) saturate(180%)",
-    boxShadow: `
-      0 0 0 0.5px color-mix(in srgb, var(--sf-border) 50%, transparent),
-      0 2px 8px -2px rgba(0, 0, 0, 0.15),
-      0 8px 24px -4px rgba(0, 0, 0, 0.12)
-    `.trim(),
-  };
-
   return (
     <>
       {/* Progressive blur backdrop */}
@@ -113,7 +239,7 @@ function StackFloatingHeader({
         data-sidebar-open={isSidebarOpen}
         className={cn(
           "pointer-events-none absolute top-4 left-0 right-0 z-20",
-          "flex items-start justify-between gap-2",
+          "flex items-start justify-between",
           "px-4",
           className
         )}
@@ -122,11 +248,12 @@ function StackFloatingHeader({
           data-slot="stack-header-left"
           className={cn(
             "pointer-events-auto flex items-center",
-            "rounded-full overflow-hidden",
+            "rounded-full",
+            "bg-(--sf-grouped-bg-2)/80 backdrop-blur-xl",
+            "shadow-lg shadow-black/10",
             "transition-all duration-300",
             !hasLeftContent && "opacity-0 scale-95 pointer-events-none"
           )}
-          style={liquidGlassStyle}
         >
           {canGoBack && !headerLeft && (
             <button
@@ -148,13 +275,14 @@ function StackFloatingHeader({
           data-slot="stack-header-center"
           className={cn(
             "pointer-events-auto",
-            "rounded-full px-4 py-2.5 overflow-hidden",
+            "rounded-full px-4 py-2.5",
+            "bg-(--sf-grouped-bg-2)/80 backdrop-blur-xl",
+            "shadow-lg shadow-black/10",
             "transition-all duration-300 ease-out",
             showCenterTitle && title
               ? "opacity-100 scale-100"
               : "opacity-0 scale-95 pointer-events-none"
           )}
-          style={liquidGlassStyle}
         >
           <span className="text-sm font-semibold text-(--sf-text) whitespace-nowrap">
             {title}
@@ -165,11 +293,12 @@ function StackFloatingHeader({
           data-slot="stack-header-right"
           className={cn(
             "pointer-events-auto flex items-center",
-            "rounded-full overflow-hidden",
+            "rounded-full",
+            "bg-(--sf-grouped-bg-2)/80 backdrop-blur-xl",
+            "shadow-lg shadow-black/10",
             "transition-all duration-300",
             !hasRightContent && "opacity-0 scale-95 pointer-events-none"
           )}
-          style={liquidGlassStyle}
         >
           {headerRight}
         </div>
@@ -180,11 +309,34 @@ function StackFloatingHeader({
 
 /* ----------------------------------------------------------------------------------
  * Header Toolbar Button
- * ----------------------------------------------------------------------------------
- * Re-export from Konsta header for consistency
- */
+ * ----------------------------------------------------------------------------------*/
 
-const HeaderButton = KonstaHeaderButton;
+interface HeaderButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  icon?: string;
+  children?: React.ReactNode;
+}
+
+function HeaderButton({
+  icon,
+  children,
+  className,
+  ...props
+}: HeaderButtonProps) {
+  return (
+    <button
+      className={cn(
+        "flex h-10 items-center gap-1.5 rounded-full px-3",
+        "text-sf-text hover:bg-sf-fill",
+        "transition-colors",
+        className
+      )}
+      {...props}
+    >
+      {icon && <SFIcon name={icon as any} className="text-sf-text text-xl" />}
+      {children && <span className="text-sm font-medium">{children}</span>}
+    </button>
+  );
+}
 
 /* ----------------------------------------------------------------------------------
  * Screen Wrapper with Header
@@ -258,7 +410,7 @@ function StackInner({
 }: StackProps) {
   return (
     <TabBarAwareProviderInner>
-      <KonstaStackHeader />
+      <WebStackHeader />
       <ExpoStack
         screenOptions={{
           headerShown: false,
@@ -282,7 +434,7 @@ function StackFallback({
 }: StackProps) {
   return (
     <TabBarAwareProviderFallback>
-      <KonstaStackHeader />
+      <WebStackHeader />
       <ExpoStack
         screenOptions={{
           headerShown: false,
@@ -396,8 +548,6 @@ export {
   StackFloatingHeader,
   StackScreen,
   HeaderButton,
-  KonstaStackHeader,
-  KonstaHeaderButton,
   useStackHeaderContext,
   useStackHeaderConfig,
   useCanGoBack,

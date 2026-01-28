@@ -52,7 +52,6 @@
     "expo-system-ui": "~55.0.1",
     "expo-updates": "~55.0.3",
     "expo-web-browser": "~55.0.1",
-    "konsta": "^5.0.6",
     "lucide-react": "^0.562.0",
     "nativewind": "5.0.0-preview.2",
     "prism-react-renderer": "^2.4.1",
